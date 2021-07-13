@@ -3,16 +3,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../../common/copyright';
-import Sex from '../../common/genderComponent';
-import Role from '../../common/role';
 import Axios from 'axios';
 import "../../../App.css"
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -53,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-    const CreateRegistrarAccount = () => {
+    const CreateDeanAccount = () => {
 
       const[genderReg, setGenderReg] = useState('');
       const[collegeReg, setCollegeReg] = useState('');
@@ -86,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
-            Axios.post("http://localhost:3001/createRegistrar", {
+            Axios.post("http://localhost:3001/createDean", {
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
@@ -95,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
               phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
               college: collegeReg,
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
+              role: JSON.stringify("dean").replace(/['"]+/g, ''),
               
             }).then((response) => {
               console.log(response);
@@ -105,12 +101,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-            Axios.post("http://localhost:3001/createUserFromRegistrar", {
+            Axios.post("http://localhost:3001/createUserFromDean", {
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("registrar").replace(/['"]+/g, ''),
+              role: JSON.stringify("dean").replace(/['"]+/g, ''),
               
             }).then((response) => {
               console.log(response);
@@ -130,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create Registrar
+            Create College Dean
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
@@ -333,4 +329,4 @@ const useStyles = makeStyles((theme) => ({
         )
     }
     
-    export default CreateRegistrarAccount;
+    export default CreateDeanAccount;

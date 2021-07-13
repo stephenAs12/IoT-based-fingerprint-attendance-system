@@ -8,12 +8,7 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 export const SidebarData1 = [
    
     {
-        title: "View My Account",
-        icon: <ViewmyaccountIcon fontSize="large"  color="primary"/>,
-        link: "/admin/index/my_account/view"
-    },
-    {
-        title: "Update My Account",
+        title: "View and Update",
         icon: <UpdateIcon fontSize="large" color="primary"/>,
         link: "/admin/index/my_account/update"
     },
@@ -21,9 +16,9 @@ export const SidebarData1 = [
 
 export const SidebarData2 = [
     {
-        title: "Create Registrar ",
+        title: "Create Dean ",
         icon: <CreateIcon fontSize="large" color="primary"/>,
-        link: "/admin/index/registrar_account/create_registrar"
+        link: "/registrar/index/dean_account/create_dean"
     },
     {
         title: "View Registrar ",

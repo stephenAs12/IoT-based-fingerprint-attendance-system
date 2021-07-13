@@ -9,9 +9,10 @@ import viewRegistrarList from './components/Admin/registrarAcc/RegistrarList';
 import About from './components/About';
 import Contact from './components/Contact';
 import Home from './components/teacher/Home';
-import Home_reg from './components/registrar/Home_reg';
 import Home_dept from './components/Dept_head/Home_dept';
 import Home_dean from './components/College_dean/Home_dean';
+import RegistrarIndex from './components/registrar/index';
+import CreateDeanAccount from './components/registrar/deanAcc/Create';
 
 
 
@@ -30,9 +31,10 @@ function App() {
       <Route path="/about" exact component={About}/>
       <Route path="/contact" exact component={Contact}/>
       <Route path="/teacher/home" exact component={Home}/>
-      <Route path="/registrar/home_reg" exact component={Home_reg}/>
       <Route path="/Dept_head/home_reg" exact component={Home_dept}/>
       <Route path="/College_dean/home_dean" exact component={Home_dean}/>
+      <Route path="/registrar/index" exact component={RegistrarIndex}/>
+      <Route path="/registrar/index/dean_account/create_dean" exact component={CreateDeanAccount}/>
 
 
 

@@ -10,14 +10,11 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../components/common/copyright';
-
-import "../App.css";
 import Axios from 'axios';
-import { useHistory } from "react-router-dom";
-import Bounce from 'react-reveal/Bounce';
+import "../../../App.css"
 
-
+let userEmail=null;
+let set_fname=null;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,67 +44,107 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  minDivision:{
+    border: '2px solid red'
+  },
 }));
 
-var userEmail=null;
-export {userEmail};
+export default function UpdateMyAccount() {
 
-export default function SignInSide() {
 
-  const [email,  setEmail] = useState('');
-  const [password,  setPassword] = useState('');
+    const [firstNameReg,  setFirstNameReg] = useState('')
+    const [middleNameReg,  setMiddleNameReg] = useState('')
+    const [lastNameReg,  setLastNameReg] = useState('')
+    const [phoneReg,  setPhoneReg] = useState('')
+    const [emailReg,  setEmailReg] = useState('')
+    const [passwordReg,  setPasswordReg] = useState('')
+  
 
-  // const [loginStatus, setLoginStatus] = useState("");
+    React.useEffect(() => {
+        if(localStorage.getItem("identify-logged-user")) {
+        userEmail = JSON.parse(localStorage.getItem("identify-logged-user"));
+        console.log("user email "+userEmail);
+        }
+      }, []);
 
-  const history = useHistory();
-
-  const Login = (event) => {
-    Axios.post("http://localhost:3001/login", {
-      email: email,
-      password: password,
+      const view = (event) => {
+      Axios.post("http://localhost:3001/view_profile", {
+      email: userEmail,
     }).then((response) => {
        console.log(response.data);
+       set_fname=response.data[0].first_name;
       
       if (response.data.message) {
-        // setLoginStatus(response.data.message);
         alert(response.data.message);
       } else {
-        userEmail=response.data[0].email;
-        let path = null;
-        if(response.data[0].role == "admin"){
-          path =  'admin/index';
-        } else{
-          path = 'registrar/index';
-        }
-        history.push(path);
-        // setLoginStatus(response.data[0].email);
+        console.log("email : " + userEmail);
       }
-
     });
-   event.preventDefault();
-  };
+    event.preventDefault();
+};
+
+
+
+//   const register = (event) => {
+//     Axios.post("http://localhost:3001/registration", {
+//       firstname: firstNameReg,
+//       middlename: middleNameReg,
+//       lastname: lastNameReg,
+//       phonenumber: phoneReg,
+//       email: emailReg,
+//       password: passwordReg,
+//     }).then((response) => {
+//       console.log(response);
+//     });
+//    event.preventDefault();
+//   };
 
   const classes = useStyles();
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-     <div className="box"> 
-      <Grid item xs={8} sm={8} md={12} component={Paper} elevation={2} square >
-        <div className={classes.paper} >
-          <Bounce top>
+    <div className="box">
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          </Bounce>
-          <Bounce top>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
-          </Bounce>
-          <form method="POST" className={classes.form} >
-          <Bounce top>
+          <form  className={classes.form} >
+              <label>{set_fname}</label>
             <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="first_name"
+              label="First Name"
+              name="first_name"
+              type="text"
+              autoFocus
+              onChange={(e) => {
+                setFirstNameReg(e.target.value);
+              }}
+            />
+
+<TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="middle_name"
+              label="Middle Name"
+              name="middle_name"
+              type="text"
+              onChange={(e) => {
+                setMiddleNameReg(e.target.value);
+              }}
+            />
+
+<TextField
               variant="outlined"
               margin="normal"
               required
@@ -115,14 +152,11 @@ export default function SignInSide() {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
               type="email"
-              autoFocus
               onChange={(e) => {
-                setEmail(e.target.value);
+                setEmailReg(e.target.value);
               }}
             />
-          </Bounce>
             <TextField
               variant="outlined"
               margin="normal"
@@ -134,45 +168,43 @@ export default function SignInSide() {
               id="password"
               autoComplete="current-password"
               onChange={(e) => {
-                setPassword(e.target.value);
+                setPasswordReg(e.target.value);
               }}
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-          <Bounce bottom>
+
+
+
+<Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={view}
+            >
+              view
+            </Button>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={Login}
+            //   onClick={register}
             >
-              Sign in
+              Update
             </Button>
-            <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
-              <Grid item>
-                <Link to="signup" variant="body2">
-                  <p>Don't have an account? Sign Up</p>
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-            </Bounce>
           </form>
         </div>
       </Grid>
       </div>
     </Grid>
-    
   );
 }
+
+

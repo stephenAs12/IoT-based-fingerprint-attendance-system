@@ -29,6 +29,7 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import {userEmail} from '../login';
 import CustomizedDialogs from '../dialog';
+import "./registrar.css";
 
 
 const drawerWidth = 240;
@@ -118,45 +119,16 @@ const useStyles = makeStyles((theme) => ({
     },
     marginLeft:950,
     width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      
-      width: 'auto',
-      alignItems: "right",
-      
-    },
-  },
-  profile:{
-    
-marginLeft:940,
+   
   },
 
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft:0,
-  },
+
+ 
  
   inputRoot: {
     color: 'inherit',
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
+ 
   logo_design: {
     display: 'flex',
     '& > *': {
@@ -167,6 +139,9 @@ marginLeft:940,
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
+  wku: {
+    paddingLeft: "20px",
+  } ,
   if1: {
       width: "100%",
       height: "70vh",
@@ -221,7 +196,7 @@ const Accordion = withStyles({
   }))(MuiAccordionDetails);
 
 
-export default function Home_reg() {
+export default function SideMenu() {
   
   const classes = useStyles();
   const theme = useTheme();
@@ -242,15 +217,16 @@ export default function Home_reg() {
     setExpanded(newExpanded ? panel : false);
   };
 
-  // React.useEffect(() => {
-  //   if(localStorage.getItem("identify-logged-user")) {
-  //     user = JSON.parse(localStorage.getItem("identify-logged-user"));
-  //   }
-  // }, []);
+  React.useEffect(() => {
+    if(localStorage.getItem("identify-logged-user")) {
+     const user = JSON.parse(localStorage.getItem("identify-logged-user"));
+     console.log(user);
+    }
+  }, []);
 
-  // React.useEffect(() => {
-  //   localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
-  // });
+  React.useEffect(() => {
+    localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
+  });
 
   // var Transferuser=user;
   // console.log("Transferuser"+Transferuser);
@@ -279,7 +255,7 @@ export default function Home_reg() {
               [classes.hide]: open,
             })}
           >
-          
+          REGISTRAR
             <MenuIcon />
           </IconButton>
           <Avatar 
@@ -288,29 +264,16 @@ export default function Home_reg() {
             className={classes.large} 
            
             />
-        <Typography variant="h6" noWrap>
+        <Typography variant="h6" className={classes.wku} >
             FAS for WKU
           </Typography>
 
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-              
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            
+            <p>{userEmail}</p>
             
           </div>
-          <div className={classes.profile}>
           
-          <CustomizedDialogs  />
-          </div>
         </Toolbar>
       </AppBar>
      
@@ -333,7 +296,7 @@ export default function Home_reg() {
           </IconButton>
         </div>
         
-        <p>Email : {userEmail}</p>
+        
         <Divider />
             <List >
                 
@@ -364,7 +327,7 @@ export default function Home_reg() {
             <Divider />
             <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                 <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>Registrar</Typography>
+                <Typography>Dean</Typography>
                 </AccordionSummary>
                 <AccordionDetails> <div>
             {SidebarData2.map((val,key) => {
@@ -407,7 +370,9 @@ export default function Home_reg() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <iframe title="iframe" name="content" className={classes.if1} id="content"></iframe>
+        <iframe title="iframe" name="content" className={classes.if1} id="content" src="/images/111.png" >
+       
+        </iframe>
         
         
         

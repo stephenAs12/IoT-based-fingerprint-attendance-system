@@ -255,7 +255,7 @@ export default function SideMenu() {
               [classes.hide]: open,
             })}
           >
-          
+          ADMINISTRATOR
             <MenuIcon />
           </IconButton>
           <Avatar 

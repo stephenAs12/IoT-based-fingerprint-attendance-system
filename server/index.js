@@ -129,7 +129,6 @@ app.post('/createRegistrar', (req,res) => {
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-
         // const to = "+251"+PhoneNumber;
         // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
 
@@ -166,6 +165,67 @@ app.post('/createUserFromRegistrar', (req,res) => {
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     });
 });
+
+
+
+app.post('/createDean', (req,res) => {
+
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Gender = req.body.gender
+    const Email = req.body.email
+    const PhoneNumber = req.body.phonenumber
+    const College = req.body.college
+    const Password = req.body.password
+    const Role = req.body.role
+
+    db.query(
+        "INSERT INTO dean (first_name, middle_name, last_name, sex, email, phone_number, college, password, role) VALUES (?,?,?,?,?,?,?,?,?)", 
+    [FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, md5(Password), Role ],
+    (err, result) => {
+        console.log(result);
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+        // const to = "+251"+PhoneNumber;
+        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+
+        // var result = nexmo.message.sendSms(from, to, text); 
+
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    });
+});
+
+
+
+app.post('/createUserFromDean', (req,res) => {
+
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+    const Role = req.body.role
+
+    db.query(
+        "INSERT INTO user (first_name, middle_name, email, password, role) VALUES (?,?,?,?,?)", 
+    [FirstName, MiddleName, Email, md5(Password), Role ],
+    (err, result) => {
+        console.log(result);
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+        // const to = "+251"+PhoneNumber;
+        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+
+        // var result = nexmo.message.sendSms(from, to, text); 
+
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    });
+});
+
+
 
 
 app.post("/view_profile", (req,res) => {
