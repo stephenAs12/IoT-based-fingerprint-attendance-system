@@ -147,10 +147,11 @@ app.post('/createUserFromRegistrar', (req,res) => {
     const Email = req.body.email
     const Password = req.body.password
     const Role = req.body.role
+    const College = req.body.college
 
     db.query(
-        "INSERT INTO user (first_name, middle_name, email, password, role) VALUES (?,?,?,?,?)", 
-    [FirstName, MiddleName, Email, md5(Password), Role ],
+        "INSERT INTO user (first_name, middle_name, email, password, role, college) VALUES (?,?,?,?,?,?)", 
+    [FirstName, MiddleName, Email, md5(Password), Role, College ],
     (err, result) => {
         console.log(result);
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

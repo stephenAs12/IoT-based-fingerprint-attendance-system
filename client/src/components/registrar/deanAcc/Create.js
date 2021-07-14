@@ -18,7 +18,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
-    
+    let registrar_college=null;
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +49,13 @@ const useStyles = makeStyles((theme) => ({
   }));
 
     const CreateDeanAccount = () => {
+
+      React.useEffect(() => {
+        if(localStorage.getItem("identify-registrar-college")) {
+          registrar_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
+         console.log("registrar_college "+registrar_college);
+        }
+      }, []);
 
       const[genderReg, setGenderReg] = useState('');
       const[collegeReg, setCollegeReg] = useState('');

@@ -28,6 +28,7 @@ import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import {userEmail} from '../login';
+import {registrarCollege} from '../login';
 import CustomizedDialogs from '../dialog';
 import "./registrar.css";
 
@@ -226,6 +227,17 @@ export default function SideMenu() {
 
   React.useEffect(() => {
     localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
+  });
+
+  React.useEffect(() => {
+    if(localStorage.getItem("identify-registrar-college")) {
+      const registrar_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
+     console.log("registrar_college "+registrar_college);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("identify-registrar-college", JSON.stringify(registrarCollege));
   });
 
   // var Transferuser=user;

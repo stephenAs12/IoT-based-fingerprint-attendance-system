@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
 
 var userEmail=null;
 export {userEmail};
+var registrarCollege=null;
+export {registrarCollege};
+
 
 export default function SignInSide() {
 
@@ -78,6 +81,8 @@ export default function SignInSide() {
           path =  'admin/index';
         } else{
           path = 'registrar/index';
+          registrarCollege=response.data[0].college;
+          console.log("from login page : "+registrarCollege);
         }
         history.push(path);
         // setLoginStatus(response.data[0].email);

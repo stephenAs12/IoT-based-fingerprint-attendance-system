@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
               role: JSON.stringify("registrar").replace(/['"]+/g, ''),
+              college: collegeReg,
               
             }).then((response) => {
               console.log(response);
