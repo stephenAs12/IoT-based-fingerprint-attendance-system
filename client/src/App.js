@@ -13,6 +13,13 @@ import Home_dept from './components/Dept_head/Home_dept';
 import Home_dean from './components/College_dean/Home_dean';
 import RegistrarIndex from './components/registrar/index';
 import CreateDeanAccount from './components/registrar/deanAcc/Create';
+import viewCollegeDean from './components/registrar/deanAcc/ViewDean';
+import UpdateRegistrarAccount from './components/registrar/my_account/Update';
+import CreateHeadAccount from './components/registrar/headAcc/Create';
+import viewDepartmentHead from './components/registrar/headAcc/HeadList';
+import RegisterStudent from './components/registrar/studentReg/Create';
+import viewRegisteredStudent from './components/registrar/studentReg/StudentList';
+
 
 
 
@@ -35,6 +42,12 @@ function App() {
       <Route path="/College_dean/home_dean" exact component={Home_dean}/>
       <Route path="/registrar/index" exact component={RegistrarIndex}/>
       <Route path="/registrar/index/dean_account/create_dean" exact component={CreateDeanAccount}/>
+      <Route path="/registrar/index/dean_account/view_dean" exact component={viewCollegeDean}/>
+      <Route path="/registrar/index/my_account/update" exact component={UpdateRegistrarAccount}/>
+      <Route path="/registrar/index/head_account/create_head" exact component={CreateHeadAccount}/>
+      <Route path="/registrar/index/head_account/view_head" exact component={viewDepartmentHead}/>
+      <Route path="/registrar/index/add/student" exact component={RegisterStudent}/>
+      <Route path="/registrar/index/view_registered/student" exact component={viewRegisteredStudent}/>
 
 
 

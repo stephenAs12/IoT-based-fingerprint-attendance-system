@@ -19,6 +19,7 @@ let set_fname=null;
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
+    width: '1500px',
   },
   image: {
     backgroundRepeat: 'no-repeat',
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(8, 4), 
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -104,14 +105,14 @@ export default function UpdateMyAccount() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-    <div className="box">
+    <div className="form_box">
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Update Registrar Account
           </Typography>
           <form  className={classes.form} >
               <label>{set_fname}</label>
@@ -130,7 +131,7 @@ export default function UpdateMyAccount() {
               }}
             />
 
-<TextField
+            <TextField
               variant="outlined"
               margin="normal"
               required
@@ -144,7 +145,7 @@ export default function UpdateMyAccount() {
               }}
             />
 
-<TextField
+            <TextField
               variant="outlined"
               margin="normal"
               required
@@ -178,7 +179,7 @@ export default function UpdateMyAccount() {
 
 
 
-<Button
+      <Button
               type="submit"
               fullWidth
               variant="contained"

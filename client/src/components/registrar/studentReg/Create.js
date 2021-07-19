@@ -54,16 +54,19 @@ const useStyles = makeStyles((theme) => ({
       React.useEffect(() => {
         if(localStorage.getItem("identify-registrar-college")) {
           registrar_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
-         console.log("registrar_college from create "+registrar_college);
+         console.log("registrar_college "+registrar_college);
         }
       }, []);
 
       const[genderReg, setGenderReg] = useState('');
-      const[collegeReg, setCollegeReg] = useState('');
+      const[departmentReg, setDepartmentReg] = useState('');
+      const[batchReg, setBatchReg] = useState('');
 
         const phoneRegExp=/^[0-9]{8}/
         const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
         const initialValues = {
+            sid: '',
+            fid: '',
             fname: '',
             mname: '',
             lname: '',
@@ -71,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
             phoneNumber: '',
             email: '',
             college: '',
-            password: '',
+            batch: '',
             confirmPassword:'',
         }
         const validationSchema = Yup.object().shape({
@@ -89,7 +92,9 @@ const useStyles = makeStyles((theme) => ({
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
-            Axios.post("http://localhost:3001/createDean", {
+            Axios.post("http://localhost:3001/addStudent", {
+              schooolid: JSON.stringify(values.sid).replace(/['"]+/g, ''),
+              fingerprintid: JSON.stringify(values.fid).replace(/['"]+/g, ''),
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
@@ -97,8 +102,9 @@ const useStyles = makeStyles((theme) => ({
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
               college: registrar_college,
-              password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("dean").replace(/['"]+/g, ''),
+              department: departmentReg,
+              batch: batchReg,
+              role: JSON.stringify("student").replace(/['"]+/g, ''),
               
             }).then((response) => {
               console.log(response);
@@ -109,17 +115,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-            Axios.post("http://localhost:3001/createUserFromDean", {
-              firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
-              middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
-              email: JSON.stringify(values.email).replace(/['"]+/g, ''),
-              password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("dean").replace(/['"]+/g, ''),
-              college: registrar_college,
+            // Axios.post("http://localhost:3001/createUserFromDean", {
+            //   firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
+            //   middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
+            //   email: JSON.stringify(values.email).replace(/['"]+/g, ''),
+            //   password: JSON.stringify(values.password).replace(/['"]+/g, ''),
+            //   role: JSON.stringify("dean").replace(/['"]+/g, ''),
               
-            }).then((response) => {
-              console.log(response);
-            });
+            // }).then((response) => {
+            //   console.log(response);
+            // });
         }
 
 
@@ -135,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create College Dean
+            Student Registration
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
@@ -143,6 +148,42 @@ const useStyles = makeStyles((theme) => ({
                                 {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
                         onChange={props.handleChange} /> */}
     
+                               <Field 
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    name='sid' 
+                                    id="school_id"
+                                    label='School Id' 
+                                    fullWidth
+                                    error={props.errors.sid && props.touched.sid}
+                                    helperText={<ErrorMessage name='sid' />} 
+                                    required
+                                    type="text"
+                                    autoFocus
+                                    // onChange={(e) => {
+                                    //   setFirstNameReg(e.target.value);
+                                    // }}
+                                     />
+
+                            <Field 
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    name='fid' 
+                                    id="fingerprint_id"
+                                    label='Fingerprint Id' 
+                                    fullWidth
+                                    error={props.errors.fid && props.touched.fid}
+                                    helperText={<ErrorMessage name='fid' />} 
+                                    required
+                                    type="text"
+                                    autoFocus
+                                    // onChange={(e) => {
+                                    //   setFirstNameReg(e.target.value);
+                                    // }}
+                                     />
+
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -250,40 +291,70 @@ const useStyles = makeStyles((theme) => ({
                                       //   setPhoneReg(e.target.value);
                                       // }}
                                 />
-    
 
-                                <Field 
-                                    as={TextField} 
-                                    variant="outlined"
-                                    margin="normal"
-                                    name='password' 
-                                    label='Password'
-                                    type='password' 
-                                    fullWidth
-                                    error={props.errors.password && props.touched.password}
-                                    helperText={<ErrorMessage name='password' />} 
-                                    required 
-                                    // onChange={(e) => {
-                                    //   setPasswordReg(e.target.value);
-                                    // }}
-                                />
-    
-                                <Field 
-                                    as={TextField} 
-                                    variant="outlined"
-                                    margin="normal"
-                                    name='confirmPassword' 
-                                    label='Confirm Password' 
-                                    type='password' 
-                                    fullWidth
-                                    error={props.errors.confirmPassword && props.touched.confirmPassword}
-                                    helperText={<ErrorMessage name='confirmPassword' />}
-                                    required 
-                                    // onChange={(e) => {
-                                    //   setPasswordReg(e.target.value);
-                                    // }}
-                                />
+                                    <FormControl 
+                              fullWidth variant="outlined" 
+                              className={classes.formControl}
+                              name="department"
+                              required
+                              >
+                                      <InputLabel id="demo-simple-select-outlined-label">Department of</InputLabel>
+                                      <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        required
+                                        label="Department of"
+                                        onChange={(e) => {
+                                          setDepartmentReg(e.target.value);
+                                        }}
+                                        
+                                      >
+                                        <MenuItem value="">
+                                          <em>None</em>
+                                        </MenuItem>
+                                        <MenuItem value={"Software Engineering"}>Software Engineering</MenuItem>
+                                        <MenuItem value={"Information Technology"}>Information Technology</MenuItem>
+                                        <MenuItem value={"Information System"}>Information System</MenuItem>
+                                        <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
+                    
 
+                                      </Select>
+                                    </FormControl>
+
+                                        
+
+                           <FormControl 
+                              fullWidth variant="outlined" 
+                              className={classes.formControl}
+                              name="batch"
+                              required
+                              >
+                                      <InputLabel id="demo-simple-select-outlined-label">Batch</InputLabel>
+                                      <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        required
+                                        label="Batch"
+                                        onChange={(e) => {
+                                          setBatchReg(e.target.value);
+                                        }}
+                                        
+                                      >
+                                        <MenuItem value="">
+                                          <em>None</em>
+                                        </MenuItem>
+                                        <MenuItem value={"1"}>1 st</MenuItem>
+                                        <MenuItem value={"2"}>2 nd</MenuItem>
+                                        <MenuItem value={"3"}>3 rd</MenuItem>
+                                        <MenuItem value={"4"}>4 th</MenuItem>
+                    
+
+                                      </Select>
+                                    </FormControl>
+
+
+
+                                
                               
     
                                 <Button 

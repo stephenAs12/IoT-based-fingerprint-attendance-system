@@ -49,17 +49,17 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-    const CreateDeanAccount = () => {
+    const CreateHeadAccount = () => {
 
       React.useEffect(() => {
         if(localStorage.getItem("identify-registrar-college")) {
           registrar_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
-         console.log("registrar_college from create "+registrar_college);
+         console.log("registrar_college "+registrar_college);
         }
       }, []);
 
       const[genderReg, setGenderReg] = useState('');
-      const[collegeReg, setCollegeReg] = useState('');
+      const[departmentReg, setDepartmentReg] = useState('');
 
         const phoneRegExp=/^[0-9]{8}/
         const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
             phoneNumber: '',
             email: '',
             college: '',
+            department: '',
             password: '',
             confirmPassword:'',
         }
@@ -89,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
-            Axios.post("http://localhost:3001/createDean", {
+            Axios.post("http://localhost:3001/createHead", {
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
@@ -97,8 +98,9 @@ const useStyles = makeStyles((theme) => ({
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
               college: registrar_college,
+              department: departmentReg,
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("dean").replace(/['"]+/g, ''),
+              role: JSON.stringify("head").replace(/['"]+/g, ''),
               
             }).then((response) => {
               console.log(response);
@@ -109,13 +111,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-            Axios.post("http://localhost:3001/createUserFromDean", {
+            Axios.post("http://localhost:3001/createUserFromHead", {
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("dean").replace(/['"]+/g, ''),
+              role: JSON.stringify("head").replace(/['"]+/g, ''),
               college: registrar_college,
+              department: departmentReg,
               
             }).then((response) => {
               console.log(response);
@@ -135,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create College Dean
+            Create Department Head
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
@@ -252,6 +255,35 @@ const useStyles = makeStyles((theme) => ({
                                 />
     
 
+                           <FormControl 
+                              fullWidth variant="outlined" 
+                              className={classes.formControl}
+                              name="college"
+                              required
+                              >
+                                      <InputLabel id="demo-simple-select-outlined-label">Department of</InputLabel>
+                                      <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        required
+                                        label="Department of"
+                                        onChange={(e) => {
+                                          setDepartmentReg(e.target.value);
+                                        }}
+                                        
+                                      >
+                                        <MenuItem value="">
+                                          <em>None</em>
+                                        </MenuItem>
+                                        <MenuItem value={"Software Engineering"}>Software Engineering</MenuItem>
+                                        <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
+                                        <MenuItem value={"Information System"}>Information System</MenuItem>
+                                        <MenuItem value={"Information Technology"}>Information Technology</MenuItem>
+                    
+
+                                      </Select>
+                                    </FormControl>
+
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -306,4 +338,4 @@ const useStyles = makeStyles((theme) => ({
         )
     }
     
-    export default CreateDeanAccount;
+    export default CreateHeadAccount;

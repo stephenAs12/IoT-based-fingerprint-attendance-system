@@ -167,7 +167,7 @@ app.post('/createUserFromRegistrar', (req,res) => {
     });
 });
 
-
+//          Dean
 
 app.post('/createDean', (req,res) => {
 
@@ -207,10 +207,11 @@ app.post('/createUserFromDean', (req,res) => {
     const Email = req.body.email
     const Password = req.body.password
     const Role = req.body.role
+    const College = req.body.college
 
     db.query(
-        "INSERT INTO user (first_name, middle_name, email, password, role) VALUES (?,?,?,?,?)", 
-    [FirstName, MiddleName, Email, md5(Password), Role ],
+        "INSERT INTO user (first_name, middle_name, email, password, role, college) VALUES (?,?,?,?,?,?)", 
+    [FirstName, MiddleName, Email, md5(Password), Role, College],
     (err, result) => {
         console.log(result);
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -227,7 +228,111 @@ app.post('/createUserFromDean', (req,res) => {
 });
 
 
+//      ~~~~~~~~~~
 
+
+//          Head
+
+app.post('/createHead', (req,res) => {
+
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Gender = req.body.gender
+    const Email = req.body.email
+    const PhoneNumber = req.body.phonenumber
+    const College = req.body.college
+    const Department = req.body.department
+    const Password = req.body.password
+    const Role = req.body.role
+
+    db.query(
+        "INSERT INTO head (first_name, middle_name, last_name, sex, email, phone_number, college, department, password, role) VALUES (?,?,?,?,?,?,?,?,?,?)", 
+    [FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, md5(Password), Role ],
+    (err, result) => {
+        console.log(result);
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+        // const to = "+251"+PhoneNumber;
+        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+
+        // var result = nexmo.message.sendSms(from, to, text); 
+
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    });
+});
+
+
+
+app.post('/createUserFromHead', (req,res) => {
+
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+    const Role = req.body.role
+    const College = req.body.college
+    const Department = req.body.department
+
+    db.query(
+        "INSERT INTO user (first_name, middle_name, email, password, role, college, department) VALUES (?,?,?,?,?,?,?)", 
+    [FirstName, MiddleName, Email, md5(Password), Role, College, Department],
+    (err, result) => {
+        console.log(result);
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+        // const to = "+251"+PhoneNumber;
+        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+
+        // var result = nexmo.message.sendSms(from, to, text); 
+
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    });
+});
+
+
+//      ~~~~~~~~~~
+
+//      ~~~~~~~~~~~~~~~~~~~
+
+
+app.post('/addStudent', (req,res) => {
+
+    const SchoolId = req.body.schooolid
+    const FingerPrintId = req.body.fingerprintid
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Gender = req.body.gender
+    const Email = req.body.email
+    const PhoneNumber = req.body.phonenumber
+    const College = req.body.college
+    const Department = req.body.department
+    const Batch = req.body.batch
+    const Role = req.body.role
+
+    db.query(
+        "INSERT INTO student (school_id, fingerprint_id, first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
+    [SchoolId, FingerPrintId, FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Role ],
+    (err, result) => {
+        console.log(err);
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+        // const to = "+251"+PhoneNumber;
+        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+
+        // var result = nexmo.message.sendSms(from, to, text); 
+
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    });
+});
+
+
+//          ================================
 
 app.post("/view_profile", (req,res) => {
     const Email = req.body.email
