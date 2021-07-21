@@ -1,9 +1,13 @@
 const express = require('express') ;
+const ap = require('express')();
 const mysql =  require('mysql');
 const cors = require('cors');
 const Nexmo = require('nexmo');
+const appWs = require('express-ws')(ap);
 
 var md5 = require('md5');
+
+var finger_id=null;
 
 const nexmo = new Nexmo({
 	apiKey: '758148e8',
@@ -301,8 +305,8 @@ app.post('/createUserFromHead', (req,res) => {
 
 app.post('/addStudent', (req,res) => {
 
-    const SchoolId = req.body.schooolid
-    const FingerPrintId = req.body.fingerprintid
+    const SchoolId = req.body.schoolid
+    const FingerprintId = req.body.fingerprintid
     const FirstName = req.body.firstname
     const MiddleName = req.body.middlename
     const LastName = req.body.lastname
@@ -315,9 +319,10 @@ app.post('/addStudent', (req,res) => {
     const Role = req.body.role
 
     db.query(
-        "INSERT INTO student (school_id, fingerprint_id, first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
-    [SchoolId, FingerPrintId, FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Role ],
+        "INSERT INTO student (school_id, fingerprint_id,first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
+    [SchoolId, FingerprintId,FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Role ],
     (err, result) => {
+        finger_id=FingerprintId;
         console.log(err);
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -355,6 +360,20 @@ console.log("from server "+Email);
 });
 
 
+ap.ws('/echo', ws => {
+    ws.on('message', msg => {
+        console.log('Received: ', msg);
+        console.log(finger_id);
+        if(finger_id != null){
+            ws.send(finger_id);
+            finger_id=null;
+        }
+         
+    });
+});
+
+ap.listen(1337, () => console.log('Socket Server has been started at 1337'));
+
 app.listen(3001, () => {
-    console.log("running server on port 3001");
+    console.log("running web server on port 3001");
 });

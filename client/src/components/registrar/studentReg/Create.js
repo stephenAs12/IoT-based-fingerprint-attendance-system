@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-    const CreateDeanAccount = () => {
+    const AddStudent = () => {
 
       React.useEffect(() => {
         if(localStorage.getItem("identify-registrar-college")) {
@@ -61,39 +61,38 @@ const useStyles = makeStyles((theme) => ({
       const[genderReg, setGenderReg] = useState('');
       const[departmentReg, setDepartmentReg] = useState('');
       const[batchReg, setBatchReg] = useState('');
-
+      
         const phoneRegExp=/^[0-9]{8}/
         const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
         const initialValues = {
             sid: '',
-            fid: '',
-            fname: '',
+            fid: '',  
+             fname: '',
             mname: '',
             lname: '',
             gender: '',
             phoneNumber: '',
             email: '',
             college: '',
+            department: '',
             batch: '',
-            confirmPassword:'',
         }
         const validationSchema = Yup.object().shape({
+            sid: Yup.string().min(3, "It's too short").required("Required"),
+            // fid: Yup.string().min(3, "It's too short").required("Required"),
             fname: Yup.string().min(3, "It's too short").required("Required"),
             mname: Yup.string().min(3, "It's too short").required("Required"),
             lname: Yup.string().min(3, "It's too short").required("Required"),
             email: Yup.string().email("Enter valid email").required("Required"),
             // phoneNumber: Yup.number().typeError("Enter valid Phone number").required("Required"),
             phoneNumber:Yup.string().matches(phoneRegExp,"Enter valid Phone number").required("Required"),
-            password: Yup.string().min(8, "Minimum characters should be 8")
-            .matches(passwordRegExp,"Password must have one upper, lower case, number, special symbol").required('Required'),
-            confirmPassword:Yup.string().oneOf([Yup.ref('password')],"Password not matches").required('Required'),
         })
         const onSubmit = (values, props) => {
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
             Axios.post("http://localhost:3001/addStudent", {
-              schooolid: JSON.stringify(values.sid).replace(/['"]+/g, ''),
+              schoolid: JSON.stringify(values.sid).replace(/['"]+/g, ''),
               fingerprintid: JSON.stringify(values.fid).replace(/['"]+/g, ''),
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
@@ -114,18 +113,34 @@ const useStyles = makeStyles((theme) => ({
             console.log(genderReg);
 
 
-
-            // Axios.post("http://localhost:3001/createUserFromDean", {
-            //   firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
-            //   middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
-            //   email: JSON.stringify(values.email).replace(/['"]+/g, ''),
-            //   password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-            //   role: JSON.stringify("dean").replace(/['"]+/g, ''),
-              
-            // }).then((response) => {
-            //   console.log(response);
-            // });
         }
+
+
+        let data=[];
+const Computing_and_Informatics = ["Software Engineering", "Computer Science", "Information Systems", "Information Technology"];
+const Engineering_and_Technology = ["Civil Engineering", "Mechanical Engineering", "Electrical Engineering", "Chemical Engineering", "Construction Technology & Management", "Garment Engineering", "Food Engineering", "Architecture Engineering", "Hydraulics Engineering", "Fashion Design Engineering", "Textile Engineering"];
+const Medicine_and_Health_Sciences = ["Public Health", "Midwifery", "Medicine", "Medical Laboratory Science", "Nursing"];
+const Natural_and_Computational_Sciences = ["Biology", "Chemistry", "Mathematics", "Statistics", "Physics", "Biotechnology", "Sport Science"];
+const Social_Science_and_Humanities = ["Psychology", "English", "Civics and Ethical", "Governance and Development"];
+const Business_and_Economics = ["Accounting and Finance", "Economics", "Master of Business Administration", "Project Planning and Management"];
+const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Animal Production and Technology", "Agricultural Economics", "Natural Resources and Management", "Horticulture"];
+  
+    if(registrar_college==="Computing and Informatics"){
+      data=Computing_and_Informatics;
+  }if(registrar_college==="Engineering and Technology"){
+      data=Engineering_and_Technology;
+  }
+  if(registrar_college==="Medicine and Health Sciences"){
+    data=Medicine_and_Health_Sciences;
+}if(registrar_college==="Natural and Computational Sciences"){
+  data=Natural_and_Computational_Sciences;
+}if(registrar_college==="Social Science and Humanities"){
+  data=Social_Science_and_Humanities;
+}if(registrar_college==="Business and Economics"){
+  data=Business_and_Economics;
+}if(registrar_college==="Agriculture Science"){
+  data=Agriculture_Science;
+}
 
 
         const classes = useStyles();
@@ -140,7 +155,7 @@ const useStyles = makeStyles((theme) => ({
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Student Registration
+            Create Department Head
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
@@ -148,7 +163,7 @@ const useStyles = makeStyles((theme) => ({
                                 {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
                         onChange={props.handleChange} /> */}
     
-                               <Field 
+    <Field 
                                     as={TextField}
                                     variant="outlined"
                                     margin="normal"
@@ -166,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
                                     // }}
                                      />
 
-                            <Field 
+                                <Field 
                                     as={TextField}
                                     variant="outlined"
                                     margin="normal"
@@ -174,8 +189,8 @@ const useStyles = makeStyles((theme) => ({
                                     id="fingerprint_id"
                                     label='Fingerprint Id' 
                                     fullWidth
-                                    error={props.errors.fid && props.touched.fid}
-                                    helperText={<ErrorMessage name='fid' />} 
+                                    // error={props.errors.fid && props.touched.fid}
+                                    // helperText={<ErrorMessage name='fid' />} 
                                     required
                                     type="text"
                                     autoFocus
@@ -201,6 +216,8 @@ const useStyles = makeStyles((theme) => ({
                                     //   setFirstNameReg(e.target.value);
                                     // }}
                                      />
+
+
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -291,11 +308,12 @@ const useStyles = makeStyles((theme) => ({
                                       //   setPhoneReg(e.target.value);
                                       // }}
                                 />
+    
 
-                                    <FormControl 
+                           <FormControl 
                               fullWidth variant="outlined" 
                               className={classes.formControl}
-                              name="department"
+                              name="college"
                               required
                               >
                                       <InputLabel id="demo-simple-select-outlined-label">Department of</InputLabel>
@@ -312,18 +330,19 @@ const useStyles = makeStyles((theme) => ({
                                         <MenuItem value="">
                                           <em>None</em>
                                         </MenuItem>
-                                        <MenuItem value={"Software Engineering"}>Software Engineering</MenuItem>
-                                        <MenuItem value={"Information Technology"}>Information Technology</MenuItem>
-                                        <MenuItem value={"Information System"}>Information System</MenuItem>
-                                        <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
+                                        
+                                        {data.map(number => (
+                                            <MenuItem value={number}>
+                                                  {number}
+                                              </MenuItem>
+                                            ))}
                     
 
                                       </Select>
                                     </FormControl>
 
-                                        
 
-                           <FormControl 
+                                    <FormControl 
                               fullWidth variant="outlined" 
                               className={classes.formControl}
                               name="batch"
@@ -343,18 +362,17 @@ const useStyles = makeStyles((theme) => ({
                                         <MenuItem value="">
                                           <em>None</em>
                                         </MenuItem>
-                                        <MenuItem value={"1"}>1 st</MenuItem>
-                                        <MenuItem value={"2"}>2 nd</MenuItem>
-                                        <MenuItem value={"3"}>3 rd</MenuItem>
-                                        <MenuItem value={"4"}>4 th</MenuItem>
+                                        <MenuItem value={"1"}>1st</MenuItem>
+                                        <MenuItem value={"2"}>2nd</MenuItem>
+                                        <MenuItem value={"3"}>3rd</MenuItem>
+                                        <MenuItem value={"4"}>4th</MenuItem>
                     
 
                                       </Select>
                                     </FormControl>
 
-
-
                                 
+
                               
     
                                 <Button 
@@ -377,4 +395,4 @@ const useStyles = makeStyles((theme) => ({
         )
     }
     
-    export default CreateDeanAccount;
+    export default AddStudent;
