@@ -62,6 +62,7 @@ app.post("/login", (req,res) => {
     (err, result) => {
         if (err) {
             res.send({err: err});
+            res.send({message: "Something was wrong !"});
         }
 
         if (result.length > 0) {
@@ -316,11 +317,12 @@ app.post('/addStudent', (req,res) => {
     const College = req.body.college
     const Department = req.body.department
     const Batch = req.body.batch
+    const Semester = req.body.semester
     const Role = req.body.role
 
     db.query(
-        "INSERT INTO student (school_id, fingerprint_id,first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
-    [SchoolId, FingerprintId,FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Role ],
+        "INSERT INTO student (school_id, fingerprint_id,first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, semester, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+    [SchoolId, FingerprintId,FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Semester, Role ],
     (err, result) => {
         finger_id=FingerprintId;
         console.log(err);
@@ -360,9 +362,30 @@ console.log("from server "+Email);
 });
 
 
-ap.ws('/echo', ws => {
+ap.ws('/echo', (ws, rse) => {
     ws.on('message', msg => {
-        console.log('Received: ', msg);
+        if(msg != "Active"){
+            let Fid = msg-48;
+            db.query(
+                "SELECT * FROM student WHERE fingerprint_id = ?",
+            [Fid],
+            (err, result) => {
+                if (err) {
+                    res.send({err: err});
+                }
+        
+                if (result.length > 0) {
+                    // res.send(result);
+                    console.log(result);
+                } else {
+                    // res.send({message: "Incorrect email/password !"});
+                    // console.log(md5(Password));
+                }
+            });
+            let today = new Date();
+            console.log('ID: ', Fid, " >> at ", today.toString());
+        }
+       
         console.log(finger_id);
         if(finger_id != null){
             ws.send(finger_id);

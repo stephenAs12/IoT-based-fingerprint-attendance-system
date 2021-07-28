@@ -37,7 +37,11 @@
   }
 }
 .box{
-  margin-left: 35%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.loginbox{
+  margin-left: 40%;
 }
 .form_box{
   margin-left: 28%;
@@ -69,4 +73,33 @@ h1{
 p{
   font-size: large;
   font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+.personal{
+  display: flex;
+  flex-direction: row;
+}
+.fname{
+  width: 33%
+}
+.mname{
+  padding-left: 10px;
+  width: 33%
+}
+.lname{
+  padding-left: 10px;
+  width: 33%;
+}
+.email{
+  width: 50%
+}
+.phone{
+  padding-left: 10px;
+  width: 50%
+}
+.password{
+  width: 50%;
+}
+.confirmpassword{
+  padding-left: 10px;
+  width: 50%;
 }

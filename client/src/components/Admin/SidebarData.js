@@ -9,7 +9,7 @@ export const SidebarData1 = [
    
     {
         title: "View and Update",
-        icon: <UpdateIcon fontSize="large" color="primary"/>,
+        icon: <UpdateIcon fontSize="large" htmlColor="#092139"/>,
         link: "/admin/index/my_account/update"
     },
 ]
@@ -17,12 +17,12 @@ export const SidebarData1 = [
 export const SidebarData2 = [
     {
         title: "Create Registrar ",
-        icon: <CreateIcon fontSize="large" color="primary"/>,
+        icon: <CreateIcon fontSize="large" htmlColor="#092139"/>,
         link: "/admin/index/registrar_account/create_registrar"
     },
     {
         title: "View Registrar ",
-        icon: <ViewmyaccountIcon fontSize="large" color="primary"/>,
+        icon: <ViewmyaccountIcon fontSize="large" htmlColor="#092139"/>,
         link: "/admin/index/registrar_account/view_list"
     },
 ]
@@ -30,7 +30,7 @@ export const SidebarData2 = [
 export const SidebarData3 = [
     {
         title: "Logout",
-        icon: <LogoutIcon fontSize="large" color="primary"/>,
+        icon: <LogoutIcon fontSize="large" color="secondary"/>,
         link: "/"
     },
     

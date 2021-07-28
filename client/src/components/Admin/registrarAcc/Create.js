@@ -22,24 +22,27 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-
+import Divider from '@material-ui/core/Divider';
     
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
       height: '100vh',
+      width: "50%",
+      paddingLeft: '0%'
     },
     
     paper: {
-      margin: theme.spacing(8, 4),
-      display: 'flex',
-      flexDirection: 'column',
+      margin: theme.spacing(1, 4),
+      
       alignItems: 'center',
+      width: "90%",    //  text fild width
     },
     avatar: {
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
+      marginLeft: '48%',
     },
     form: {
       width: '100%', // Fix IE 11 issue.
@@ -122,11 +125,10 @@ const useStyles = makeStyles((theme) => ({
         const classes = useStyles();
 
         return (
-            <Grid container component="main" className={classes.root}>
-      <CssBaseline />
+            // <Grid container component="main" className={classes.root}>
     <div className="box">
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
+      <Grid item component={Paper} elevation={6} square>
+        <div className={classes.paper} >
           <Avatar className={classes.avatar}>
             <PersonAddIcon />
           </Avatar>
@@ -139,6 +141,13 @@ const useStyles = makeStyles((theme) => ({
                                 {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
                         onChange={props.handleChange} /> */}
     
+                    
+
+                      <legend>personal Information:</legend>
+
+
+                                <div className="personal">
+                                <div className="fname">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -156,6 +165,8 @@ const useStyles = makeStyles((theme) => ({
                                     //   setFirstNameReg(e.target.value);
                                     // }}
                                      />
+                                </div>
+                                <div className="mname">   
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -168,10 +179,13 @@ const useStyles = makeStyles((theme) => ({
                                     helperText={<ErrorMessage name='mname' />} 
                                     required
                                     type="text"
+                                    
                                     // onChange={(e) => {
                                     //   setMiddleNameReg(e.target.value);
                                     // }}
                                      />
+                                </div>
+                                <div className="lname">
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -184,10 +198,13 @@ const useStyles = makeStyles((theme) => ({
                                     helperText={<ErrorMessage name='lname' />} 
                                     required
                                     type="text"
+                                    
                                     // onChange={(e) => {
                                     //   setLastNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
+                                </div>
     
                            <FormControl 
                               fullWidth variant="outlined" 
@@ -211,7 +228,10 @@ const useStyles = makeStyles((theme) => ({
                                         <MenuItem value={"Female"} >Female</MenuItem>
                                       </Select>
                                     </FormControl>
-    
+                        <hr/>
+                        <legend>Contact Information:</legend>
+                        <div className="personal">
+                                <div className="email">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -226,7 +246,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setEmailReg(e.target.value);
                                     // }}
                                 />
+                                </div>
     
+                                <div className="phone">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -246,8 +268,9 @@ const useStyles = makeStyles((theme) => ({
                                       //   setPhoneReg(e.target.value);
                                       // }}
                                 />
+                                </div>
     
-
+                        </div>
                            <FormControl 
                               fullWidth variant="outlined" 
                               className={classes.formControl}
@@ -279,7 +302,10 @@ const useStyles = makeStyles((theme) => ({
 
                                       </Select>
                                     </FormControl>
-
+                                    <hr/>
+                                    <legend>Password Information:</legend>
+                                    <div className="personal">
+                                <div className="password">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -295,7 +321,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setPasswordReg(e.target.value);
                                     // }}
                                 />
+                                </div>
     
+                                <div className="confirmpassword">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -311,8 +339,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setPasswordReg(e.target.value);
                                     // }}
                                 />
+                                </div>
 
-                              
+                              </div>
     
                                 <Button 
                                     type='submit' 
@@ -330,7 +359,7 @@ const useStyles = makeStyles((theme) => ({
                 </div>
       </Grid>
       </div>
-    </Grid>
+    // </Grid>
         )
     }
     

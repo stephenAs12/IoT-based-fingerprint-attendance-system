@@ -77,9 +77,13 @@ export default function SignInSide() {
       } else {
         userEmail=response.data[0].email;
         let path = null;
+        console.log(response.data[0].role);
         if(response.data[0].role == "admin"){
+          console.log("role: ",response.data[0].role);
           path =  'admin/index';
-        } else{
+        }if(response.data[0].role == "head"){
+          path =  'head/index';
+        } if(response.data[0].role == "registrar"){
           path = 'registrar/index';
           registrarCollege=response.data[0].college;
           console.log("from login page : "+registrarCollege);
@@ -97,7 +101,7 @@ export default function SignInSide() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-     <div className="box"> 
+     <div className="loginbox"> 
       <Grid item xs={8} sm={8} md={12} component={Paper} elevation={2} square >
         <div className={classes.paper} >
           <Bounce top>

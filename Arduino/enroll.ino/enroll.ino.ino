@@ -14,7 +14,7 @@ uint8_t id;
 const char* ssid     = "AR";
 const char* password = "12344321";
 char path[] = "/echo";
-char host[] = "10.194.76.147";
+char host[] = "10.194.76.146";
 
 int connectPin = 12;
 
@@ -60,7 +60,7 @@ void setup() {
   
 
   // Connect to the websocket server
-  if (client.connect("10.194.76.147", 1337)) {
+  if (client.connect("10.194.76.146", 1337)) {
     Serial.println("Connected");
     digitalWrite(connectPin,LOW);
     lcd.clear();
@@ -103,7 +103,7 @@ String data;
  
   if (client.connected()) {
  
-    webSocketClient.sendData("wert");
+    webSocketClient.sendData("Active");
  
     webSocketClient.getData(data);
     if (data.length() > 0) {

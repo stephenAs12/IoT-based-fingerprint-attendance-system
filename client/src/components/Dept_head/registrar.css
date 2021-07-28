@@ -46,10 +46,13 @@ body {
     padding-left: 20px;
     padding-right: 10px;
 }
-
+.mainText{
+    text-align: center;
+    padding-top: 5px;
+    font-weight: bolder;
+}
 .anchor{
     text-align: center;
-    padding-top: 3%;
 }
 .web{
     color: gray;
@@ -72,8 +75,4 @@ body {
 }
 .iconLink{
     text-align: center;
-    padding-top: 0%;
-}
-.contact{
-    padding-top: 1%;
 }

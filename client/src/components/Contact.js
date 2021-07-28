@@ -79,8 +79,9 @@ export default function Contact() {
                       Estifanos Aschale 
                     </Typography>
                     <Typography>
+                    
                         
-                    <a href="https://estifanosaschale12@gmail.com/">estifanosaschale12@gmail.com</a>
+                    <a href="mailto:estifanosaschale12@gmail.com">estifanosaschale12@gmail.com</a>
                       
                     </Typography>
                     <Typography>
@@ -103,7 +104,7 @@ export default function Contact() {
                       Esayas Totoba
                     </Typography>
                     <Typography>
-                    esayastotoba@gmail.com
+                    <a href="mailto:esayastotoba@gmail.com">esayastotoba@gmail.com</a>
                     </Typography>
                     <Typography>
                     +251 924382406
@@ -125,7 +126,7 @@ export default function Contact() {
                       Nuh Asrar
                     </Typography>
                     <Typography>
-                      nuhasrar28@gmail.com
+                      <a href="mailto:nuhasrar28@gmail.com">nuhasrar28@gmail.com</a>
                     </Typography>
                     <Typography>
                       +251 928675040

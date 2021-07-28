@@ -117,9 +117,16 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginLeft:950,
-    width: '100%',
+    marginLeft:850,
+    width: '0%',
    
+  },
+  logout:{
+    marginLeft:750,
+  },
+  logoutIcon:{
+    marginLeft:40,
+    marginTop:5,
   },
 
 
@@ -255,7 +262,7 @@ export default function SideMenu() {
               [classes.hide]: open,
             })}
           >
-          ADMINISTRATOR
+          FAS for WKU
             <MenuIcon />
           </IconButton>
           <Avatar 
@@ -264,18 +271,37 @@ export default function SideMenu() {
             className={classes.large} 
            
             />
-        <Typography variant="h6" className={classes.wku} >
+        {/* <Typography variant="h6" className={classes.wku} >
             FAS for WKU
-          </Typography>
+          </Typography> */}
+       
 
           <div className={classes.search}>
             
-            <p>{userEmail}</p>
             
+        
           </div>
+          <AccordionDetails className={classes.logout}>
+            <p>{userEmail} </p>
+           <div className={classes.logoutIcon}>
           
+            {SidebarData3.map((val,key) => {
+                    return (
+                        <ListItem
+                            key={key}
+                            className="row"
+                            >
+                            <Link to={val.link} variant="body2" className="row">
+                                <ListItemIcon className="icon"> {val.icon}</ListItemIcon>
+                                {/* <ListItemText className="title">{val.title}</ListItemText> */}
+                          </Link>
+                        </ListItem>
+                    )
+                })}</div>
+                </AccordionDetails>
         </Toolbar>
       </AppBar>
+
      
       <Drawer
         variant="permanent"
@@ -325,8 +351,8 @@ export default function SideMenu() {
                 
                 
             <Divider />
-            <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
                 <Typography>Registrar</Typography>
                 </AccordionSummary>
                 <AccordionDetails> <div>
@@ -346,26 +372,7 @@ export default function SideMenu() {
                 </AccordionDetails>
             </Accordion>
             <Divider />
-            <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>Other</Typography>
-                </AccordionSummary>
-                <AccordionDetails> <div>
-            {SidebarData3.map((val,key) => {
-                    return (
-                        <ListItem
-                            key={key}
-                            className="row"
-                            >
-                            <Link to={val.link} variant="body2" className="row">
-                                <ListItemIcon className="icon"> {val.icon}</ListItemIcon>
-                                <ListItemText className="title">{val.title}</ListItemText>
-                          </Link>
-                        </ListItem>
-                    )
-                })}</div>
-                </AccordionDetails>
-            </Accordion>
+            
             </List>        
       </Drawer>
       <main className={classes.content}>

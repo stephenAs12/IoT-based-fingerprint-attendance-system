@@ -124,31 +124,7 @@ const useStyles = makeStyles((theme) => ({
               console.log(response);
             });
         }
-        let data=[];
-        const Computing_and_Informatics = ["Software Engineering", "Computer Science", "Information Systems", "Information Technology"];
-        const Engineering_and_Technology = ["Civil Engineering", "Mechanical Engineering", "Electrical Engineering", "Chemical Engineering", "Construction Technology & Management", "Garment Engineering", "Food Engineering", "Architecture Engineering", "Hydraulics Engineering", "Fashion Design Engineering", "Textile Engineering"];
-        const Medicine_and_Health_Sciences = ["Public Health", "Midwifery", "Medicine", "Medical Laboratory Science", "Nursing"];
-        const Natural_and_Computational_Sciences = ["Biology", "Chemistry", "Mathematics", "Statistics", "Physics", "Biotechnology", "Sport Science"];
-        const Social_Science_and_Humanities = ["Psychology", "English", "Civics and Ethical", "Governance and Development"];
-        const Business_and_Economics = ["Accounting and Finance", "Economics", "Master of Business Administration", "Project Planning and Management"];
-        const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Animal Production and Technology", "Agricultural Economics", "Natural Resources and Management", "Horticulture"];
-          
-            if(registrar_college==="Computing and Informatics"){
-              data=Computing_and_Informatics;
-          }if(registrar_college==="Engineering and Technology"){
-              data=Engineering_and_Technology;
-          }
-          if(registrar_college==="Medicine and Health Sciences"){
-            data=Medicine_and_Health_Sciences;
-        }if(registrar_college==="Natural and Computational Sciences"){
-          data=Natural_and_Computational_Sciences;
-        }if(registrar_college==="Social Science and Humanities"){
-          data=Social_Science_and_Humanities;
-        }if(registrar_college==="Business and Economics"){
-          data=Business_and_Economics;
-        }if(registrar_college==="Agriculture Science"){
-          data=Agriculture_Science;
-        }
+
 
         const classes = useStyles();
 
@@ -299,12 +275,11 @@ const useStyles = makeStyles((theme) => ({
                                         <MenuItem value="">
                                           <em>None</em>
                                         </MenuItem>
-                                        
-                                        {data.map(number => (
-                                            <MenuItem value={number}>
-                                                  {number}
-                                              </MenuItem>
-                                            ))}
+                                        <MenuItem value={"Software Engineering"}>Software Engineering</MenuItem>
+                                        <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
+                                        <MenuItem value={"Information System"}>Information System</MenuItem>
+                                        <MenuItem value={"Information Technology"}>Information Technology</MenuItem>
+                    
 
                                       </Select>
                                     </FormControl>
