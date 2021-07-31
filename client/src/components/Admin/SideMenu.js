@@ -278,8 +278,6 @@ export default function SideMenu() {
 
           <div className={classes.search}>
             
-            
-        
           </div>
           <AccordionDetails className={classes.logout}>
             <p>{userEmail} </p>

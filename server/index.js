@@ -61,7 +61,7 @@ app.post("/login", (req,res) => {
     [Email,  md5(Password)],
     (err, result) => {
         if (err) {
-            res.send({err: err});
+            // res.send({err: err});
             res.send({message: "Something was wrong !"});
         }
 
@@ -130,16 +130,31 @@ app.post('/createRegistrar', (req,res) => {
         "INSERT INTO registrar (first_name, middle_name, last_name, sex, email, phone_number, college, password) VALUES (?,?,?,?,?,?,?,?)", 
     [FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, md5(Password) ],
     (err, result) => {
-        console.log(result);
-//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+            
+        }
 
-
-        // const to = "+251"+PhoneNumber;
-        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
-
-        // var result = nexmo.message.sendSms(from, to, text); 
-
-//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Registered!");
+            // res.send(result);
+            // console.log(result);
+            //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            
+            
+                    // const to = "+251"+PhoneNumber;
+                    // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+            
+                    // var result = nexmo.message.sendSms(from, to, text); 
+            
+            //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            res.send({message: "Successfully Registered!"});
+        }
     });
 });
 
@@ -317,12 +332,12 @@ app.post('/addStudent', (req,res) => {
     const College = req.body.college
     const Department = req.body.department
     const Batch = req.body.batch
-    const Semester = req.body.semester
+    const Course = req.body.course
     const Role = req.body.role
 
     db.query(
-        "INSERT INTO student (school_id, fingerprint_id,first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, semester, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", 
-    [SchoolId, FingerprintId,FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Semester, Role ],
+        "INSERT INTO student (school_id, fingerprint_id,first_name, middle_name, last_name, sex, email, phone_number, college, department, batch, course, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+    [SchoolId, FingerprintId,FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, Batch, Course, Role ],
     (err, result) => {
         finger_id=FingerprintId;
         console.log(err);

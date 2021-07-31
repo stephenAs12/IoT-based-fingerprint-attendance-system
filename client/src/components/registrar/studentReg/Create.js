@@ -18,11 +18,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import ListItemText from '@material-ui/core/ListItemText';
 
 
 const GreenCheckbox = withStyles({
@@ -41,19 +40,29 @@ const GreenCheckbox = withStyles({
 
 const useStyles = makeStyles((theme) => ({
     root: {
+      // height: '100vh',
+      // width: '1500px',
       height: '100vh',
-      width: '1500px',
+      width: "50%",
+      paddingLeft: '0%'
     },
     
     paper: {
-      margin: theme.spacing(8, 4),
-      display: 'flex',
-      flexDirection: 'column',
+      // margin: theme.spacing(4, 4),
+      // display: 'flex',
+      // flexDirection: 'column',
+      // alignItems: 'center',
+      margin: theme.spacing(1, 4),
+      
       alignItems: 'center',
+      width: "90%",    //  text fild width
     },
     avatar: {
+      // margin: theme.spacing(1),
+      // backgroundColor: theme.palette.secondary.main,
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
+      marginLeft: '48%',
     },
     form: {
       width: '100%', // Fix IE 11 issue.
@@ -79,13 +88,16 @@ const useStyles = makeStyles((theme) => ({
       const[genderReg, setGenderReg] = useState('');
       const[departmentReg, setDepartmentReg] = useState('');
       const[batchReg, setBatchReg] = useState('');
-      const[semesterReg, setsemesterReg] = useState('');
       const [state, setState] = React.useState({
         checkedG: true,
       });
+      const [courseReg, setCourseReg] = React.useState([]);
+
+      var holdCourse=courseReg;
 
       const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });
+        setCourseReg(event.target.value);
       };
       
       
@@ -103,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
             college: '',
             department: '',
             batch: '',
-            semester: '',
+            course: '',
         }
         const validationSchema = Yup.object().shape({
             sid: Yup.string().min(3, "It's too short").required("Required"),
@@ -131,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
               college: registrar_college,
               department: departmentReg,
               batch: batchReg,
-              semester: semesterReg,
+              course: courseReg.join(),
               role: JSON.stringify("student").replace(/['"]+/g, ''),
               
             }).then((response) => {
@@ -140,8 +152,10 @@ const useStyles = makeStyles((theme) => ({
             // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');
             // console.log(someStr);
             console.log(genderReg);
+            console.log(courseReg.join());
+            console.log(departmentReg);
 
-
+            window.location.reload();
         }
 
 
@@ -171,20 +185,46 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
   data=Agriculture_Science;
 }
 
+let course=[];
+
+const sw = ["C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
+const is = ["Digital Logic", "Artificial Intelligence", "C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
+
+if(departmentReg==="Software Engineering"){
+  course=sw;
+}if(departmentReg==="Information Systems"){
+  course=is;
+}
+
+
+// const handleChange = (event) => {
+  
+// };
+
+const handleChangeMultiple = (event) => {
+  const { options } = event.target;
+  const value = [];
+  for (let i = 0, l = options.length; i < l; i += 1) {
+    if (options[i].selected) {
+      value.push(options[i].value);
+    }
+  }
+  setCourseReg(value);
+};
 
         const classes = useStyles();
 
         return (
-            <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-    <div className="form_box">
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      //       <Grid container component="main" className={classes.root}>
+      // <CssBaseline />
+    <div className="box">
+      <Grid item component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create Department Head
+            Register Student
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
@@ -192,24 +232,29 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                 {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
                         onChange={props.handleChange} /> */}
     
-    <Field 
-                                    as={TextField}
-                                    variant="outlined"
-                                    margin="normal"
-                                    name='sid' 
-                                    id="school_id"
-                                    label='School Id' 
-                                    fullWidth
-                                    error={props.errors.sid && props.touched.sid}
-                                    helperText={<ErrorMessage name='sid' />} 
-                                    required
-                                    type="text"
-                                    autoFocus
-                                    // onChange={(e) => {
-                                    //   setFirstNameReg(e.target.value);
-                                    // }}
-                                     />
+                            <legend>ID Information:</legend>
+                           <div className="idinfo">
+                              <div className="sid">
+                                    <Field 
+                                      as={TextField}
+                                      variant="outlined"
+                                      margin="normal"
+                                      name='sid' 
+                                      id="school_id"
+                                      label='School Id' 
+                                      fullWidth
+                                      error={props.errors.sid && props.touched.sid}
+                                      helperText={<ErrorMessage name='sid' />} 
+                                      required
+                                      type="text"
+                                      autoFocus
+                                      // onChange={(e) => {
+                                      //   setFirstNameReg(e.target.value);
+                                      // }}
+                                      />
+                                  </div>
 
+                                  <div className="fid">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -222,12 +267,17 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                     // helperText={<ErrorMessage name='fid' />} 
                                     required
                                     type="text"
-                                    autoFocus
                                     // onChange={(e) => {
                                     //   setFirstNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
+                                  </div>
 
+                              <hr/>
+                            <legend>personal Information:</legend>
+                           <div className="personal">
+                              <div className="fname">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -240,13 +290,14 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                     helperText={<ErrorMessage name='fname' />} 
                                     required
                                     type="text"
-                                    autoFocus
                                     // onChange={(e) => {
                                     //   setFirstNameReg(e.target.value);
                                     // }}
                                      />
+                                  </div>
 
 
+                                  <div className="mname"> 
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -263,6 +314,9 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                     //   setMiddleNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
+
+                                <div className="lname">
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -279,6 +333,8 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                     //   setLastNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
+                             </div>
     
                            <FormControl 
                               fullWidth variant="outlined" 
@@ -303,6 +359,10 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                       </Select>
                                     </FormControl>
     
+                                    <hr/>
+                        <legend>Contact Information:</legend>
+                        <div className="personal">
+                              <div className="email">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -317,7 +377,9 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                     //   setEmailReg(e.target.value);
                                     // }}
                                 />
+                                </div>
     
+                                <div className="phone">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -337,122 +399,111 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                                       //   setPhoneReg(e.target.value);
                                       // }}
                                 />
-    
-
-                           <FormControl 
-                              fullWidth variant="outlined" 
-                              className={classes.formControl}
-                              name="college"
-                              required
-                              >
-                                      <InputLabel id="demo-simple-select-outlined-label">Department of</InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        required
-                                        label="Department of"
-                                        onChange={(e) => {
-                                          setDepartmentReg(e.target.value);
-                                        }}
-                                        
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        
-                                        {data.map(number => (
-                                            <MenuItem value={number}>
-                                                  {number}
-                                              </MenuItem>
-                                            ))}
-                    
-
-                                      </Select>
-                                    </FormControl>
-
-                                    <p></p>
-                                    <FormControl 
-                              fullWidth variant="outlined" 
-                              className={classes.formControl}
-                              name="batch"
-                              required
-                              >
-                                      <InputLabel id="demo-simple-select-outlined-label">Batch</InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        required
-                                        label="Batch"
-                                        onChange={(e) => {
-                                          setBatchReg(e.target.value);
-                                        }}
-                                        
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem value={"1"}>1<sup>st</sup>  Year</MenuItem>
-                                        <MenuItem value={"2"}>2<sup>nd</sup>   Year</MenuItem>
-                                        <MenuItem value={"3"}>3<sup>rd</sup>   Year</MenuItem>
-                                        <MenuItem value={"4"}>4<sup>th</sup>  Year</MenuItem>
-                    
-
-                                      </Select>
-                                    </FormControl>
-
-<p></p>
-
-                                    <FormControl 
-                              fullWidth variant="outlined" 
-                              className={classes.formControl}
-                              name="semester"
-                              required
-                              >
-                                      <InputLabel id="demo-simple-select-outlined-label">Semester</InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        required
-                                        label="semester"
-                                        onChange={(e) => {
-                                          setsemesterReg(e.target.value);
-                                        }}
-                                        
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem value={"1"}>1<sup>st</sup>    semester</MenuItem>
-                                        <MenuItem value={"2"}>2<sup>nd</sup>    semester</MenuItem>
-                    
-
-                                      </Select>
-                                    </FormControl>
-{/* <p>Select Course</p>
-                                    <FormControlLabel
-                                          control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-                                          label="C++"
-                                    />
-                                    <FormControlLabel
-                                          control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-                                          label="JAVA++"
-                                    />
-                                    <FormControlLabel
-                                          control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-                                          label="Android"
-                                    />
-                                    <FormControlLabel
-                                          control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-                                          label="SQA"
-                                    /> */}
-                               
-
-                                    
-
+                                </div>
+                                
+                                </div>
+                                
+                                      <hr/>
+                                <legend>Academic Information:</legend>
+                           <div className="acinfo">
+                                  <div className="dept">
+                                      <FormControl 
+                                          fullWidth variant="outlined" 
+                                          className={classes.formControl}
+                                          name="college"
+                                          required
+                                          >
+                                                  <InputLabel id="demo-simple-select-outlined-label">Department of</InputLabel>
+                                                  <Select
+                                                    labelId="demo-simple-select-outlined-label"
+                                                    id="demo-simple-select-outlined"
+                                                    required
+                                                    label="Department of"
+                                                    onChange={(e) => {
+                                                      setDepartmentReg(e.target.value);
+                                                    }}
+                                                    
+                                                  >
+                                                    <MenuItem value="">
+                                                      <em>None</em>
+                                                    </MenuItem>
+                                                    
+                                                    {data.map(number => (
+                                                        <MenuItem value={number}>
+                                                              {number}
+                                                          </MenuItem>
+                                                        ))}
                                 
 
-                              
-    
+                                                  </Select>
+                                                </FormControl>
+                                        </div>
+                                        <p></p>
+
+                                   <div className="batch">     
+                                                  <FormControl 
+                                            fullWidth variant="outlined" 
+                                            className={classes.formControl}
+                                            name="batch"
+                                            required
+                                            >
+                                                    <InputLabel id="demo-simple-select-outlined-label">Batch</InputLabel>
+                                                    <Select
+                                                      labelId="demo-simple-select-outlined-label"
+                                                      id="demo-simple-select-outlined"
+                                                      required
+                                                      label="Batch"
+                                                      onChange={(e) => {
+                                                        setBatchReg(e.target.value);
+                                                      }}
+                                                      
+                                                    >
+                                                      <MenuItem value="">
+                                                        <em>None</em>
+                                                      </MenuItem>
+                                                      <MenuItem value={"1"}>1<sup>st</sup>  Year</MenuItem>
+                                                      <MenuItem value={"2"}>2<sup>nd</sup>   Year</MenuItem>
+                                                      <MenuItem value={"3"}>3<sup>rd</sup>   Year</MenuItem>
+                                                      <MenuItem value={"4"}>4<sup>th</sup>  Year</MenuItem>
+                                  
+
+                                                    </Select>
+                                                  </FormControl>
+                                              </div>
+                                    </div>                                            
+                                          <p></p>
+
+                                    <FormControl
+                                    fullWidth
+                                    variant="outlined"
+                                    className={classes.formControl}
+                                    >
+                                      <InputLabel id="demo-mutiple-checkbox-label">Courses</InputLabel>
+                                      <Select
+                                      labelId="demo-mutiple-checkbox-label"
+                                      id="demo-mutiple-checkbox"
+                                      multiple
+                                      value={courseReg}
+                                      onChange={handleChange}
+                                      // input={<Input />}
+                                      renderValue={(selected) => selected.join(', ')}
+                                      required
+                                      >
+                                        {course.map((name) => (
+                                              <MenuItem key={name} value={name}>
+                                                <Checkbox checked={courseReg.indexOf(name) > -1} />
+                                                <ListItemText primary={name} />
+                                              </MenuItem>
+                                            ))}
+
+                                      </Select>
+                                      
+                                    </FormControl>
+                                    
+
+                               
+
+ 
                                 <Button 
                                     type='submit' 
                                     fullWidth
@@ -469,7 +520,7 @@ const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Ani
                 </div>
       </Grid>
       </div>
-    </Grid>
+    // </Grid>
         )
     }
     

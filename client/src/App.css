@@ -103,3 +103,25 @@ p{
   padding-left: 10px;
   width: 50%;
 }
+.idinfo{
+  display: flex;
+  flex-direction: row;
+}
+.sid{
+  width: 50%
+}
+.fid{
+  padding-left: 10px;
+  width: 50%
+}
+.acinfo{
+  display: flex;
+  flex-direction: row;
+}
+.dept{
+  width: 50%;
+}
+.batch{
+  padding-left: 10px;
+  width: 50%
+}

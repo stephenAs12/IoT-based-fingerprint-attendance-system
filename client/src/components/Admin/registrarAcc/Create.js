@@ -101,6 +101,13 @@ const useStyles = makeStyles((theme) => ({
               
             }).then((response) => {
               console.log(response);
+              if (response.data.message==="Successfully Registered!") {
+                // setLoginStatus(response.data.message);
+                alert(response.data.message);
+                window.location.reload();
+              }else{
+                alert(response.data.message);
+              }
             });
             // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');
             // console.log(someStr);
@@ -143,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     
                     
 
-                      <legend>personal Information:</legend>
+                      <legend>Personal Information:</legend>
 
 
                                 <div className="personal">
