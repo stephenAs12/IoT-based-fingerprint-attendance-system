@@ -7,7 +7,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
-import "./registrar.css";
+import "./head.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {

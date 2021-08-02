@@ -9,55 +9,37 @@ export const SidebarData1 = [
    
     {
         title: "View and Update",
-        icon: <UpdateIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/my_account/update"
+        icon: <UpdateIcon fontSize="large" htmlColor="#092139"/>,
+        link: "/head/index/my_account/update"
     },
 ]
 
 export const SidebarData2 = [
     {
-        title: "Create Dean ",
-        icon: <CreateIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/dean_account/create_dean"
+        title: "Create Teacher ",
+        icon: <CreateIcon fontSize="large" htmlColor="#092139"/>,
+        link: "/head/index/teacher_account/create_teacher"
     },
     {
-        title: "View Dean ",
-        icon: <ViewmyaccountIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/dean_account/view_dean"
+        title: "View Teacher ",
+        icon: <ViewmyaccountIcon fontSize="large" htmlColor="#092139"/>,
+        link: "/head/index/teacher_account/view_teacher"
     },
 ]
 
 
 export const SidebarData3 = [
     {
-        title: "Create Head ",
-        icon: <CreateIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/head_account/create_head"
-    },
-    {
-        title: "View Head ",
-        icon: <ViewmyaccountIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/head_account/view_head"
+        title: "View Student ",
+        icon: <ViewmyaccountIcon fontSize="large" htmlColor="#092139"/>,
+        link: "/head/index/student_management/view_student"
     },
 ]
 
 export const SidebarData4 = [
     {
-        title: "Register Student ",
-        icon: <CreateIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/add/student"
-    },
-    {
-        title: "View Student ",
-        icon: <ViewmyaccountIcon fontSize="large" color="primary"/>,
-        link: "/registrar/index/view_registered/student"
-    },
-]
-
-export const SidebarData5 = [
-    {
         title: "Logout",
-        icon: <LogoutIcon fontSize="large" color="primary"/>,
+        icon: <LogoutIcon fontSize="large" color="secondary"/>,
         link: "/"
     },
     

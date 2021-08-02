@@ -112,7 +112,7 @@ export default function UpdateMyAccount() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Update Registrar Account
+            Update Head Account
           </Typography>
           <form  className={classes.form} >
               <label>{set_fname}</label>

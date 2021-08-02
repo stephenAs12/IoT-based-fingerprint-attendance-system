@@ -18,6 +18,10 @@ import viewDepartmentHead from './components/registrar/headAcc/HeadList';
 import RegisterStudent from './components/registrar/studentReg/Create';
 import viewRegisteredStudent from './components/registrar/studentReg/StudentList';
 import HeadIndex from './components/Dept_head/index';
+import UpdateHeadAccount from './components/Dept_head/my_account/Update';
+import CreateTeacherAccount from './components/Dept_head/teacherAcc/Create';
+import viewTeacher from './components/Dept_head/teacherAcc/TeacherList';
+import viewStudent from './components/Dept_head/studentManagement/StudentList';
 
 
 
@@ -46,6 +50,10 @@ function App() {
       <Route path="/registrar/index/add/student" exact component={RegisterStudent}/>
       <Route path="/registrar/index/view_registered/student" exact component={viewRegisteredStudent}/>
       <Route path="/head/index" exact component={HeadIndex}/>
+      <Route path="/head/index/my_account/update" exact component={UpdateHeadAccount}/>
+      <Route path="/head/index/teacher_account/create_teacher" exact component={CreateTeacherAccount}/>
+      <Route path="/head/index/teacher_account/view_teacher" exact component={viewTeacher}/>
+      <Route path="/head/index/student_management/view_student" exact component={viewStudent}/>
 
 
 

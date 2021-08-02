@@ -9,7 +9,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
-import "../../../App.css"
+import "../../../App.css";
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'    
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -17,25 +17,55 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { green } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import ListItemText from '@material-ui/core/ListItemText';
+import DateFnsUtils from '@date-io/date-fns';
+import {MuiPickersUtilsProvider, KeyboardTimePicker} from '@material-ui/pickers';
 
-    let registrar_college=null;
+let head_college=null;
+let head_department=null;
+
+
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
+      // height: '100vh',
+      // width: '1500px',
       height: '100vh',
-      width: '1500px',
+      width: "50%",
+      paddingLeft: '0%'
     },
     
     paper: {
-      margin: theme.spacing(8, 4),
-      display: 'flex',
-      flexDirection: 'column',
+      // margin: theme.spacing(4, 4),
+      // display: 'flex',
+      // flexDirection: 'column',
+      // alignItems: 'center',
+      margin: theme.spacing(1, 4),
+      
       alignItems: 'center',
+      width: "90%",    //  text fild width
     },
     avatar: {
+      // margin: theme.spacing(1),
+      // backgroundColor: theme.palette.secondary.main,
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
+      marginLeft: '48%',
     },
     form: {
       width: '100%', // Fix IE 11 issue.
@@ -49,58 +79,108 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-    const CreateHeadAccount = () => {
+    const AddTeacher = () => {
 
       React.useEffect(() => {
-        if(localStorage.getItem("identify-registrar-college")) {
-          registrar_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
-         console.log("registrar_college "+registrar_college);
+        if(localStorage.getItem("identify-head-college")) {
+          head_college = JSON.parse(localStorage.getItem("identify-head-college"));
+         console.log("head_college from create "+head_college);
+        }
+      }, []);
+
+
+      React.useEffect(() => {
+        if(localStorage.getItem("identify-head-department")) {
+          head_department = JSON.parse(localStorage.getItem("identify-head-department"));
+         console.log("head_department from create "+head_department);
         }
       }, []);
 
       const[genderReg, setGenderReg] = useState('');
       const[departmentReg, setDepartmentReg] = useState('');
+      const[batchReg, setBatchReg] = useState('');
+      const [state, setState] = React.useState({
+        checkedG: true,
+      });
+      const [courseReg, setCourseReg] = React.useState([]);
 
+      var holdCourse=courseReg;
+      const[dateReg, setDateReg] = useState('');
+      const [selectedTimeFrom, setSelectedTimeFrom] = React.useState(new Date('2013-11-24T02:30:00'));
+      const [selectedTimeTo, setSelectedTimeTo] = React.useState(new Date('2013-11-24T04:30:00'));
+
+      const handleTimeFromChange = (time) => {
+        setSelectedTimeFrom(time);
+      };
+      const handleTimeToChange = (time) => {
+        setSelectedTimeTo(time);
+      };
+
+      const handleChange = (event) => {
+        setState({ ...state, [event.target.name]: event.target.checked });
+        setCourseReg(event.target.value);
+      };
+      
+      
         const phoneRegExp=/^[0-9]{8}/
         const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-        const initialValues = {
-            fname: '',
+        const initialValues = { 
+             fname: '',
             mname: '',
             lname: '',
             gender: '',
-            phoneNumber: '',
+            fid: '', 
             email: '',
+            phoneNumber: '',
+            password: '',
             college: '',
             department: '',
-            password: '',
-            confirmPassword:'',
+            batch: '',
+            course: '',
+            day: '',
+            timeFrom: '',
+            timeTo: '',
         }
         const validationSchema = Yup.object().shape({
+            // sid: Yup.string().min(3, "It's too short").required("Required"),
+            // fid: Yup.string().min(3, "It's too short").required("Required"),
             fname: Yup.string().min(3, "It's too short").required("Required"),
             mname: Yup.string().min(3, "It's too short").required("Required"),
             lname: Yup.string().min(3, "It's too short").required("Required"),
             email: Yup.string().email("Enter valid email").required("Required"),
             // phoneNumber: Yup.number().typeError("Enter valid Phone number").required("Required"),
             phoneNumber:Yup.string().matches(phoneRegExp,"Enter valid Phone number").required("Required"),
-            password: Yup.string().min(8, "Minimum characters should be 8")
-            .matches(passwordRegExp,"Password must have one upper, lower case, number, special symbol").required('Required'),
-            confirmPassword:Yup.string().oneOf([Yup.ref('password')],"Password not matches").required('Required'),
         })
         const onSubmit = (values, props) => {
+          var fromOne=selectedTimeFrom+"he";
+            var fromTwo=fromOne.split(" ");
+            console.log(fromTwo[4]);
+
+            var toOne=selectedTimeTo+"he";
+            var toTwo=toOne.split(" ");
+            console.log(toTwo[4]);
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
-            Axios.post("http://localhost:3001/createHead", {
+            Axios.post("http://localhost:3001/addTeacher", {
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
               gender: genderReg,
+              fingerprintid: JSON.stringify(values.fid).replace(/['"]+/g, ''),
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
-              college: registrar_college,
-              department: departmentReg,
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("head").replace(/['"]+/g, ''),
+              college: head_college,
+              // department: departmentReg,
+              department: head_department,
+              batch: batchReg,
+              course: courseReg,
+              course: courseReg,
+              date: dateReg,
+              timefrom: fromTwo[4],
+              timeto:  toTwo[4],
+              role: JSON.stringify("teacher").replace(/['"]+/g, ''),
               
             }).then((response) => {
               console.log(response);
@@ -108,37 +188,81 @@ const useStyles = makeStyles((theme) => ({
             // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');
             // console.log(someStr);
             console.log(genderReg);
+            console.log(courseReg.join());
+            console.log(departmentReg);
+            
+            
 
-
-
-            Axios.post("http://localhost:3001/createUserFromHead", {
-              firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
-              middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
-              email: JSON.stringify(values.email).replace(/['"]+/g, ''),
-              password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("head").replace(/['"]+/g, ''),
-              college: registrar_college,
-              department: departmentReg,
-              
-            }).then((response) => {
-              console.log(response);
-            });
+            // window.location.reload();
         }
 
+
+        let data=[];
+const Computing_and_Informatics = ["Software Engineering", "Computer Science", "Information Systems", "Information Technology"];
+const Engineering_and_Technology = ["Civil Engineering", "Mechanical Engineering", "Electrical Engineering", "Chemical Engineering", "Construction Technology & Management", "Garment Engineering", "Food Engineering", "Architecture Engineering", "Hydraulics Engineering", "Fashion Design Engineering", "Textile Engineering"];
+const Medicine_and_Health_Sciences = ["Public Health", "Midwifery", "Medicine", "Medical Laboratory Science", "Nursing"];
+const Natural_and_Computational_Sciences = ["Biology", "Chemistry", "Mathematics", "Statistics", "Physics", "Biotechnology", "Sport Science"];
+const Social_Science_and_Humanities = ["Psychology", "English", "Civics and Ethical", "Governance and Development"];
+const Business_and_Economics = ["Accounting and Finance", "Economics", "Master of Business Administration", "Project Planning and Management"];
+const Agriculture_Science = ["Agribusiness", "Plant science", "Ecotourism", "Animal Production and Technology", "Agricultural Economics", "Natural Resources and Management", "Horticulture"];
+  
+    if(head_college==="Computing and Informatics"){
+      data=Computing_and_Informatics;
+  }if(head_college==="Engineering and Technology"){
+      data=Engineering_and_Technology;
+  }
+  if(head_college==="Medicine and Health Sciences"){
+    data=Medicine_and_Health_Sciences;
+}if(head_college==="Natural and Computational Sciences"){
+  data=Natural_and_Computational_Sciences;
+}if(head_college==="Social Science and Humanities"){
+  data=Social_Science_and_Humanities;
+}if(head_college==="Business and Economics"){
+  data=Business_and_Economics;
+}if(head_college==="Agriculture Science"){
+  data=Agriculture_Science;
+}
+
+let course=[];
+
+const sw = ["C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
+const is = ["Digital Logic", "Artificial Intelligence", "C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
+
+if(head_department==="Software Engineering"){
+  course=sw;
+}if(head_department==="Information Systems"){
+  course=is;
+}
+
+
+// const handleChange = (event) => {
+  
+// };
+
+const handleChangeMultiple = (event) => {
+  const { options } = event.target;
+  const value = [];
+  for (let i = 0, l = options.length; i < l; i += 1) {
+    if (options[i].selected) {
+      value.push(options[i].value);
+    }
+  }
+  setCourseReg(value);
+};
 
         const classes = useStyles();
 
         return (
-            <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-    <div className="form_box">
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      //       <Grid container component="main" className={classes.root}>
+      // <CssBaseline />
+    <div className="box">
+      <Grid item component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create Department Head
+            Register Teacher
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
@@ -146,6 +270,10 @@ const useStyles = makeStyles((theme) => ({
                                 {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
                         onChange={props.handleChange} /> */}
     
+                                  
+                            <legend>personal Information:</legend>
+                           <div className="personal">
+                              <div className="fname">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -158,11 +286,14 @@ const useStyles = makeStyles((theme) => ({
                                     helperText={<ErrorMessage name='fname' />} 
                                     required
                                     type="text"
-                                    autoFocus
                                     // onChange={(e) => {
                                     //   setFirstNameReg(e.target.value);
                                     // }}
                                      />
+                                  </div>
+
+
+                                  <div className="mname"> 
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -179,6 +310,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setMiddleNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
+
+                                <div className="lname">
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -195,7 +329,11 @@ const useStyles = makeStyles((theme) => ({
                                     //   setLastNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
+                             </div>
     
+                      <div className="gender_fid">
+                      <div className="gender">
                            <FormControl 
                               fullWidth variant="outlined" 
                               className={classes.formControl}
@@ -218,7 +356,32 @@ const useStyles = makeStyles((theme) => ({
                                         <MenuItem value={"Female"} >Female</MenuItem>
                                       </Select>
                                     </FormControl>
+                                    </div>
+
+                                    <div className="fid">
+                                <Field 
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    name='fid' 
+                                    id="fingerprint_id"
+                                    label='Fingerprint Id' 
+                                    fullWidth
+                                    // error={props.errors.fid && props.touched.fid}
+                                    // helperText={<ErrorMessage name='fid' />} 
+                                    required
+                                    type="text"
+                                    // onChange={(e) => {
+                                    //   setFirstNameReg(e.target.value);
+                                    // }}
+                                     />
+                                     </div>
+                                     </div>
     
+                                    <hr/>
+                        <legend>Contact Information:</legend>
+                        <div className="personal">
+                              <div className="email">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -233,7 +396,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setEmailReg(e.target.value);
                                     // }}
                                 />
+                                </div>
     
+                                <div className="phone">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -253,37 +418,14 @@ const useStyles = makeStyles((theme) => ({
                                       //   setPhoneReg(e.target.value);
                                       // }}
                                 />
-    
+                                </div>
+                                
+                                </div>
 
-                           <FormControl 
-                              fullWidth variant="outlined" 
-                              className={classes.formControl}
-                              name="college"
-                              required
-                              >
-                                      <InputLabel id="demo-simple-select-outlined-label">Department of</InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        required
-                                        label="Department of"
-                                        onChange={(e) => {
-                                          setDepartmentReg(e.target.value);
-                                        }}
-                                        
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem value={"Software Engineering"}>Software Engineering</MenuItem>
-                                        <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
-                                        <MenuItem value={"Information System"}>Information System</MenuItem>
-                                        <MenuItem value={"Information Technology"}>Information Technology</MenuItem>
-                    
-
-                                      </Select>
-                                    </FormControl>
-
+                                <hr/>
+                                    <legend>Password Information:</legend>
+                                    <div className="personal">
+                                <div className="password">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -299,7 +441,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setPasswordReg(e.target.value);
                                     // }}
                                 />
+                                </div>
     
+                                <div className="confirmpassword">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -315,9 +459,174 @@ const useStyles = makeStyles((theme) => ({
                                     //   setPasswordReg(e.target.value);
                                     // }}
                                 />
+                                </div>
 
-                              
-    
+                              </div>
+                                
+                                      <hr/>
+                                <legend>Academic Information:</legend>  
+                                                  <FormControl 
+                                            fullWidth variant="outlined" 
+                                            className={classes.formControl}
+                                            name="batch"
+                                            required
+                                            >
+                                                    <InputLabel id="demo-simple-select-outlined-label">Batch</InputLabel>
+                                                    <Select
+                                                      labelId="demo-simple-select-outlined-label"
+                                                      id="demo-simple-select-outlined"
+                                                      required
+                                                      label="Batch"
+                                                      onChange={(e) => {
+                                                        setBatchReg(e.target.value);
+                                                      }}
+                                                      
+                                                    >
+                                                      <MenuItem value="">
+                                                        <em>None</em>
+                                                      </MenuItem>
+                                                      <MenuItem value={"1"}>1<sup>st</sup>  Year</MenuItem>
+                                                      <MenuItem value={"2"}>2<sup>nd</sup>   Year</MenuItem>
+                                                      <MenuItem value={"3"}>3<sup>rd</sup>   Year</MenuItem>
+                                                      <MenuItem value={"4"}>4<sup>th</sup>  Year</MenuItem>
+                                  
+
+                                                    </Select>
+                                                  </FormControl>                                       
+                                          <p></p>
+
+                                    {/* <FormControl
+                                    fullWidth
+                                    variant="outlined"
+                                    className={classes.formControl}
+                                    >
+                                      <InputLabel id="demo-mutiple-checkbox-label">Courses</InputLabel>
+                                      <Select
+                                      labelId="demo-mutiple-checkbox-label"
+                                      id="demo-mutiple-checkbox"
+                                      multiple
+                                      value={courseReg}
+                                      onChange={handleChange}
+                                      // input={<Input />}
+                                      renderValue={(selected) => selected.join(', ')}
+                                      required
+                                      >
+                                        {course.map((name) => (
+                                              <MenuItem key={name} value={name}>
+                                                <Checkbox checked={courseReg.indexOf(name) > -1} />
+                                                <ListItemText primary={name} />
+                                              </MenuItem>
+                                            ))}
+
+                                      </Select>
+                                      
+                                    </FormControl> */}
+
+                                    <div className="first_day">
+                                      <div className="course">
+                                      <FormControl 
+                                          fullWidth variant="outlined" 
+                                          className={classes.formControl}
+                                          name="college"
+                                          required
+                                          >
+                                                  <InputLabel id="demo-simple-select-outlined-label">Select Course</InputLabel>
+                                                  <Select
+                                                    labelId="demo-simple-select-outlined-label"
+                                                    id="demo-simple-select-outlined"
+                                                    required
+                                                    label="Course"
+                                                    onChange={(e) => {
+                                                      setCourseReg(e.target.value);
+                                                    }}
+                                                    
+                                                  >
+                                                    <MenuItem value="">
+                                                      <em>None</em>
+                                                    </MenuItem>
+                                                    
+                                                    {course.map(number => (
+                                                        <MenuItem value={number}>
+                                                              {number}
+                                                          </MenuItem>
+                                                        ))}
+                                
+
+                                                  </Select>
+                                                </FormControl>
+                                      </div>
+
+                                      <div className="date">
+                                      <FormControl 
+                                            fullWidth variant="outlined" 
+                                            className={classes.formControl}
+                                            name="date"
+                                            required
+                                            >
+                                                    <InputLabel id="demo-simple-select-outlined-label">Date</InputLabel>
+                                                    <Select
+                                                      labelId="demo-simple-select-outlined-label"
+                                                      id="demo-simple-select-outlined"
+                                                      required
+                                                      label="Date"
+                                                      onChange={(e) => {
+                                                        setDateReg(e.target.value);
+                                                      }}
+                                                      
+                                                    >
+                                                      <MenuItem value="">
+                                                        <em>None</em>
+                                                      </MenuItem>
+                                                      <MenuItem value={"Mon"}>Monday</MenuItem>
+                                                      <MenuItem value={"Tue"}>Tuesday</MenuItem>
+                                                      <MenuItem value={"Wed"}>Wednesday</MenuItem>
+                                                      <MenuItem value={"Thu"}>Thursday</MenuItem>
+                                                      <MenuItem value={"Fri"}>Friday</MenuItem>
+                                  
+
+                                                    </Select>
+                                                  </FormControl>
+                                      </div>
+
+                                      <div className="time">
+                                      <div className="from">
+                                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                          <KeyboardTimePicker
+                                          // fullWidth variant="outlined" 
+                                              margin="normal"
+                                              id="time-from-picker"
+                                              label="From"
+                                              value={selectedTimeFrom}
+                                              onChange={handleTimeFromChange}
+                                              KeyboardButtonProps={{
+                                                'aria-label': 'change time',
+                                              }}
+                                            />
+                                            </MuiPickersUtilsProvider>
+                                      </div>
+
+                                      <div className="to">
+                                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                          <KeyboardTimePicker
+                                          // fullWidth variant="outlined" 
+                                              margin="normal"
+                                              id="time-to-picker"
+                                              label="To"
+                                              value={selectedTimeTo}
+                                              onChange={handleTimeToChange}
+                                              KeyboardButtonProps={{
+                                                'aria-label': 'change time',
+                                              }}
+                                            />
+                                            </MuiPickersUtilsProvider>
+                                      </div>
+                                      </div>
+                                    </div>
+                                    
+
+                               
+
+ 
                                 <Button 
                                     type='submit' 
                                     fullWidth
@@ -334,8 +643,8 @@ const useStyles = makeStyles((theme) => ({
                 </div>
       </Grid>
       </div>
-    </Grid>
+    // </Grid>
         )
     }
     
-    export default CreateHeadAccount;
+    export default AddTeacher;

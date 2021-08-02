@@ -125,3 +125,38 @@ p{
   padding-left: 10px;
   width: 50%
 }
+.gender_fid{
+  display: flex;
+  flex-direction: row;
+}
+.gender{
+  width: 50%;
+  padding-top: 16px;;
+}
+.first_day{
+  display: flex;
+  flex-direction: row;
+}
+.course{
+  padding-top: 10px;
+  width: 33%
+}
+.date{
+  padding-left: 10px;
+  padding-top: 10px;
+  width: 33%
+}
+.time{
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+  width: 33%;
+}
+.from{
+  padding-left: 10px;
+  width: 50%;
+}
+.to{
+  padding-left: 10px;
+  width: 50%;
+}

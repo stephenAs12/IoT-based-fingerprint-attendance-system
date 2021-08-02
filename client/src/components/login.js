@@ -53,6 +53,10 @@ var userEmail=null;
 export {userEmail};
 var registrarCollege=null;
 export {registrarCollege};
+var headCollege=null;
+export {headCollege};
+var headDepartment=null;
+export {headDepartment};
 
 
 export default function SignInSide() {
@@ -83,6 +87,10 @@ export default function SignInSide() {
           path =  'admin/index';
         }if(response.data[0].role == "head"){
           path =  'head/index';
+          headCollege=response.data[0].college;
+          console.log("headCollege from login page : "+headCollege);
+          headDepartment=response.data[0].department;
+          console.log("headDepartment from login page : "+headDepartment);
         } if(response.data[0].role == "registrar"){
           path = 'registrar/index';
           registrarCollege=response.data[0].college;
