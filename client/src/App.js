@@ -1,6 +1,5 @@
 import SignInSide  from './components/login';
 import {Switch,Route} from 'react-router-dom';
-import SignupSide  from './components/signup';
 import UserRegistrationForm from './components/UserRegistration';
 import AdminIndex from './components/Admin/index';
 import UpdateAdminAccount from './components/Admin/my_account/Update';
@@ -22,6 +21,10 @@ import UpdateHeadAccount from './components/Dept_head/my_account/Update';
 import CreateTeacherAccount from './components/Dept_head/teacherAcc/Create';
 import viewTeacher from './components/Dept_head/teacherAcc/TeacherList';
 import viewStudent from './components/Dept_head/studentManagement/StudentList';
+import ViewStudentAttendance from './components/Dept_head/studentManagement/StudentAttendance';
+
+
+import CheckTableView from './components/Dept_head/studentManagement/CheakTable';
 
 
 
@@ -32,7 +35,6 @@ function App() {
     <>
     <Switch>
     <Route path="/" exact component={SignInSide}/>
-      <Route path="/signup" exact component={SignupSide}/>
       <Route path="/user/registration" exact component={UserRegistrationForm}/>
       <Route path="/admin/index" exact component={AdminIndex}/>
       <Route path="/admin/index/my_account/update" exact component={UpdateAdminAccount}/>
@@ -54,6 +56,9 @@ function App() {
       <Route path="/head/index/teacher_account/create_teacher" exact component={CreateTeacherAccount}/>
       <Route path="/head/index/teacher_account/view_teacher" exact component={viewTeacher}/>
       <Route path="/head/index/student_management/view_student" exact component={viewStudent}/>
+      <Route path="/head/index/student_management/view_student_attendance" exact component={ViewStudentAttendance}/>
+
+      <Route path="/view_table" exact component={CheckTableView}/>
 
 
 

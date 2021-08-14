@@ -2,7 +2,8 @@ import React from 'react'
 import ViewmyaccountIcon from '@material-ui/icons/AccountCircle';
 import UpdateIcon from '@material-ui/icons/Update';
 import CreateIcon from '@material-ui/icons/Add';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
+import AttendanceIcon from '@material-ui/icons/Timer';
 
 
 export const SidebarData1 = [
@@ -33,6 +34,12 @@ export const SidebarData3 = [
         title: "View Student ",
         icon: <ViewmyaccountIcon fontSize="large" htmlColor="#092139"/>,
         link: "/head/index/student_management/view_student"
+    },
+
+    {
+        title: "Student Attendance",
+        icon: <AttendanceIcon fontSize="large" htmlColor="#092139"/>,
+        link: "/head/index/student_management/view_student_attendance"
     },
 ]
 

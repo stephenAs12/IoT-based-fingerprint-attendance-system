@@ -14,10 +14,10 @@ SoftwareSerial mySerial(13, 15);
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 
-const char* ssid     = "AR";
-const char* password = "12344321";
+const char* ssid     = "semre";
+const char* password = "13131313";
 char path[] = "/echo";
-char host[] = "10.194.76.147";
+char host[] = "192.168.137.243";
 
 int connectPin = 12;
 
@@ -62,7 +62,7 @@ void setup() {
   
 
   // Connect to the websocket server
-  if (client.connect("10.194.76.147", 1337)) {
+  if (client.connect("192.168.137.243", 1337)) {
     Serial.println("Connected");
     digitalWrite(connectPin,LOW);
     lcd.clear();

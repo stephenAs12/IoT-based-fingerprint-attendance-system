@@ -150,6 +150,9 @@ const useStyles = makeStyles((theme) => ({
             email: Yup.string().email("Enter valid email").required("Required"),
             // phoneNumber: Yup.number().typeError("Enter valid Phone number").required("Required"),
             phoneNumber:Yup.string().matches(phoneRegExp,"Enter valid Phone number").required("Required"),
+            password: Yup.string().min(8, "Minimum characters should be 8")
+            .matches(passwordRegExp,"Password must have one upper, lower case, number, special symbol").required('Required'),
+            confirmPassword:Yup.string().oneOf([Yup.ref('password')],"Password not matches").required('Required'),
         })
         const onSubmit = (values, props) => {
           var fromOne=selectedTimeFrom+"he";

@@ -74,6 +74,77 @@ app.post("/login", (req,res) => {
     });
 });
 
+// @@@@@@@@@@@@@@@@@@  Admin  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+app.get("/view_admin_info", (req,res) => {
+    const Role = "admin"
+    db.query(
+        "SELECT * FROM user WHERE role = ?",
+        [Role],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+app.put("/update_admin_info", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+    const Role = "admin"
+
+    const sqlUpdate = "UPDATE user SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE role = ?";
+
+    db.query(sqlUpdate, [FirstName, MiddleName, Email, md5(Password), Role], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+// @@@@@@@@@@@@@@@@@@  Registrar  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+app.get("/registrar", (req,res) => {
+ 
+    db.query(
+        "SELECT * FROM registrar",
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
 app.post("/registrar", (req,res) => {
  
     db.query(
@@ -186,6 +257,131 @@ app.post('/createUserFromRegistrar', (req,res) => {
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     });
 });
+
+
+
+app.post("/view_registrar_info_in_registrar", (req,res) => {
+    const Email = req.body.email
+    const Role = "registrar"
+    db.query(
+        "SELECT * FROM registrar WHERE email = ? AND role = ?",
+        [Email, Role],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+            console.log(Email)
+        }
+    });
+});
+
+app.put("/update_registrar_info_in_user", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+
+    const sqlUpdate = "UPDATE user SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE email = ?";
+
+    db.query(sqlUpdate, [FirstName, MiddleName, Email, Password, Email], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+app.put("/update_registrar_info_in_registrar", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Email = req.body.email
+    const PhoneNumber = req.body.phone
+    const Password = req.body.password
+    const Role = "registrar"
+
+    const sqlUpdate = "UPDATE registrar SET first_name = ?, middle_name = ?, last_name = ?, email = ?, phone_number = ?, password = ? WHERE email = ? AND role = ?";
+
+    db.query(sqlUpdate, [FirstName, MiddleName, LastName, Email, PhoneNumber, Password, Email, Role], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+// ********************************************************************************
+
+// app.get("/view_registrar_info_in_registrar", (req,res) => {
+//     const Role = "registrar"
+//     db.query(
+//         "SELECT * FROM registrar WHERE role = ?",
+//         [Role],
+//     (err, result) => {
+//         if (err) {
+//             res.send({err: err});
+//         }
+
+//         if (result.length > 0) {
+//             res.send(result);
+//         } else {
+//             res.send({message: "Incorrect email/password !"});
+//         }
+//     });
+// });
+
+// app.put("/update_registrar_info_in_registrar", (req, res) => {
+//     const FirstName = req.body.firstname
+//     const MiddleName = req.body.middlename
+//     const Email = req.body.email
+//     const Password = req.body.password
+//     const Role = "registrar"
+
+//     const sqlUpdate = "UPDATE registrar SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE role = ?";
+
+//     db.query(sqlUpdate, [FirstName, MiddleName, Email, Password, Role], (err, result) => {
+//         if (err) {
+//             // res.send({err: err});
+//             res.send({message: "Something was wrong!"});
+//             console.log( "Something was wrong!");
+//             console.log(err);
+//         }
+//         if (result.length > 0) {
+//             console.log(result);
+//         } else {
+//             console.log("Successfully Updated!");
+//             res.send({message: "Successfully Updated!"});
+//         }
+//     });
+// });
+
+
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 //          Dean
 
@@ -690,6 +886,23 @@ ap.ws('/echo', (ws, rse) => {
             finger_id=null;
         }
          
+    });
+});
+
+app.post("/student_attendance", (req,res) => {
+ 
+    db.query(
+        "SELECT * FROM attendance",
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
     });
 });
 

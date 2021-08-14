@@ -21,7 +21,7 @@ import Bounce from 'react-reveal/Bounce';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '150%',
   },
   image: {
     backgroundRepeat: 'no-repeat',
@@ -31,21 +31,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(8, 8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(4),
+    marginTop: theme.spacing(4),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    width: '130%', // Fix IE 11 issue.
+    marginTop: theme.spacing(2),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(5, 0, 6),
   },
 }));
 
@@ -176,9 +177,7 @@ export default function SignInSide() {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link to="signup" variant="body2">
-                  <p>Don't have an account? Sign Up</p>
-                </Link>
+              
               </Grid>
             </Grid>
             <Box mt={5}>

@@ -2,7 +2,7 @@ import React from 'react'
 import ViewmyaccountIcon from '@material-ui/icons/AccountCircle';
 import UpdateIcon from '@material-ui/icons/Update';
 import CreateIcon from '@material-ui/icons/Add';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
 
 
 export const SidebarData1 = [

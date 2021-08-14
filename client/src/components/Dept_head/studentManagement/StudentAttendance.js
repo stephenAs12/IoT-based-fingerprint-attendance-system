@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -21,23 +21,22 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Axios from 'axios';
-import { TextField } from '@material-ui/core';
-import { Search } from "@material-ui/icons";
-import InputAdornment from '@material-ui/core/InputAdornment';
 
 // function createData(college, first_name, phone_number, email) {
 //   return {college , first_name, phone_number, email };
 // }
 
 let rows = [];
-
+Axios.post("http://localhost:3001/student_attendance", {
+}).then((response) => {
+  rows=response.data;
+});
 let deleteThis=null;
 
   const deleteRegistrar = (deleteCollege) => {
     Axios.delete(`http://localhost:3001/registrar/delete/${deleteCollege}`);
     console.log(deleteThis);
-    console.log("clicked");
-    window.location.reload();
+    console.log("clicked")
   };
 
   
@@ -69,10 +68,14 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'college', numeric: false, disablePadding: true, label: 'College Name' },
-  { id: 'first_name', numeric: false, disablePadding: false, label: 'Registrars Name' },
-  { id: 'phone_number', numeric: true, disablePadding: false, label: 'Phone Number' },
-  { id: 'email', numeric: false, disablePadding: false, label: 'Email Address' },
+  { id: 'fingerprint_id', numeric: false, disablePadding: true, label: 'Fingerprint Id' },
+  { id: 'school_id', numeric: false, disablePadding: true, label: 'School Id' },
+  { id: 'first_name', numeric: false, disablePadding: true, label: 'Full Name' },
+  { id: 'batch', numeric: false, disablePadding: false, label: 'Batch' },
+  { id: 'course', numeric: false, disablePadding: false, label: 'Course' },
+  { id: 'date', numeric: true, disablePadding: false, label: 'Date' },
+  { id: 'time', numeric: true, disablePadding: false, label: 'Time of arrived' },
+  { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
 ];
 
 function EnhancedTableHead(props) {
@@ -152,20 +155,6 @@ const useToolbarStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
-  const [filterFn, setFilterFn] = React.useState({ fn: items => { return items; } })
-
-  const handleSearch = e => {
-    let target = e.target;
-    setFilterFn({
-        fn: items => {
-            if (target.value == "")
-                return items;
-            else
-                return items.filter(x => x.first_name.toLowerCase().includes(target.value))
-        }
-    })
-}
-
 
   return (
     <Toolbar
@@ -179,19 +168,9 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Registered Student 
+           Student Attendance List
         </Typography>
       )}
-      <TextField 
-         label="Search Employees"
-         className={classes.searchInput}
-         InputProps={{
-             startAdornment: (<InputAdornment position="start">
-                 <Search />
-             </InputAdornment>)
-         }}
-         onChange={handleSearch}
-                     />
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -216,9 +195,10 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '80%',        // table width
-    paddingTop: "70px",
-    paddingLeft: "18%",
+    width: '98%',        // table width
+    paddingTop: "10px",
+    paddingRight: "1%",
+    paddingLeft: "1%",
   },
   paper: {
     width: '100%',           // table width
@@ -240,27 +220,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RegistrarListPage() {
+export default function StudentAttendanceListPage() {
 
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('first_name');
+  const [orderBy, setOrderBy] = React.useState('time');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [studentList, setStudentList] = useState([]);
-  
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/registrar").then((response) => {
-      console.log(response.data);
-      //  rows=response.data;
-      setStudentList(response.data);
-      
-    });
-  }, [])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -270,7 +239,7 @@ export default function RegistrarListPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.college);
+      const newSelecteds = rows.map((n) => n.time);
       setSelected(newSelecteds);
       deleteThis=newSelecteds;
       return;
@@ -278,12 +247,12 @@ export default function RegistrarListPage() {
     setSelected([]);
   };
 
-  const handleClick = (event, college) => {
-    const selectedIndex = selected.indexOf(college);
+  const handleClick = (event, time) => {
+    const selectedIndex = selected.indexOf(time);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, college);
+      newSelected = newSelected.concat(selected, time);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -312,11 +281,10 @@ export default function RegistrarListPage() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (college) => selected.indexOf(college) !== -1;
+  const isSelected = (time) => selected.indexOf(time) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
- 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -341,17 +309,17 @@ export default function RegistrarListPage() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.college);
+                  const isItemSelected = isSelected(row.time);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.college)}
+                      onClick={(event) => handleClick(event, row.time)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.college}
+                      key={row.time}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -360,12 +328,14 @@ export default function RegistrarListPage() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.college}
-                      </TableCell>
-                      <TableCell align="left">{row.first_name+" "+row.middle_name}</TableCell>
-                      <TableCell align="right">+2519{row.phone_number}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="center">{row.fingerprint_id}</TableCell>
+                      <TableCell align="left">{row.school_id}</TableCell>
+                      <TableCell align="left">{row.first_name + " " + row.middle_name + " " + row.last_name}</TableCell>
+                      <TableCell align="left">{row.batch + " year" }</TableCell>
+                      <TableCell align="left">{row.course}</TableCell>
+                      <TableCell align="right">{row.date}</TableCell>
+                      <TableCell align="center">{row.arrive_time}</TableCell>
+                      <TableCell align="right">{row.status}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -392,11 +362,6 @@ export default function RegistrarListPage() {
         label="Dense padding"
       />
       {/* <button onClick={Login}>Check</button> */}
-      {studentList.map((val) => {
-        rows=studentList;
-        console.log("data ",rows);
-      })}
     </div>
   );
 }
-
