@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {SidebarData1} from './SidebarData';
 import {SidebarData2} from './SidebarData';
 import {SidebarData3} from './SidebarData';
@@ -29,12 +29,19 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import {userEmail} from '../login';
 import CustomizedDialogs from '../dialog';
+import "./dean.css";
+import { Button } from '@material-ui/core';
+import Axios from 'axios';
+import ConfirmDialog from './ConfirmDialog'
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
+import { useHistory } from "react-router-dom";
 
 
 const drawerWidth = 240;
 
 
-
+let rows = [{email: null, id: null, password: null, status: null}];
+let rows_for_isLogin = [{email: null, id: null, password: null, status: null}];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -116,47 +123,41 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginLeft:950,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      
-      width: 'auto',
-      alignItems: "right",
-      
-    },
+    marginLeft:850,
+    width: '0%',
+   
   },
   profile:{
-    
-marginLeft:940,
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  email_holder: {
+    paddingLeft: '78%',
+  },
+  logout_icon:{
+    paddingLeft: '2%',
+        color: theme.palette.secondary.main,
+       
+        '& .MuiSvgIcon-root': {
+            fontSize: '2rem',
+        }
+  },
+  logout:{
+    marginLeft:750,
+  },
+  logoutIcon:{
+    marginLeft:40,
+    marginTop:5,
   },
 
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft:0,
-  },
+
+ 
  
   inputRoot: {
     color: 'inherit',
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
+ 
   logo_design: {
     display: 'flex',
     '& > *': {
@@ -167,6 +168,9 @@ marginLeft:940,
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
+  wku: {
+    paddingLeft: "20px",
+  } ,
   if1: {
       width: "100%",
       height: "70vh",
@@ -220,12 +224,70 @@ const Accordion = withStyles({
     },
   }))(MuiAccordionDetails);
 
-
-export default function Home_dean() {
+ 
+export default function SideMenu() {
   
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [loggedUserData, setLoggedUserData] = React.useState([]);
+  const [IsLogin, setIsLogin] = React.useState([]);
+  const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/view_admin_info").then((response) => {
+      console.log(response.data);
+      //  rows=response.data;
+      setLoggedUserData(response.data);
+    });
+  }, [])
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/get_logged_user_info").then((response) => {
+      console.log(response.data);
+      //  rows=response.data;
+      setIsLogin(response.data);
+    });
+  }, [])
+
+  const history = useHistory();
+
+  if(rows_for_isLogin[0].status==="no"){
+history.push("/");
+window.location.reload();
+  }
+
+  function handleLogout(){
+
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false
+    })
+
+    
+      Axios.get("http://localhost:3001/get_logged_user_info").then((response) => {
+        console.log(response.data);
+        //  rows=response.data;
+        Axios.put("http://localhost:3001/authorize_user", {
+              
+              
+          email: response.data[0].email,
+          password: response.data[0].password,
+          status: "no"
+        }).then((response) => {
+          console.log(response);
+          if (response.data.message==="Successfully Updated!") {
+            history.push("/");
+          }else{
+            
+          }
+        });        
+      });
+    
+            
+          console.log("clicked")
+          
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -241,21 +303,24 @@ export default function Home_dean() {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
+  let user="nullops";
+  React.useEffect(() => {
+    if(localStorage.getItem("identify-logged-user")) {
+      user = JSON.parse(localStorage.getItem("identify-logged-user"));
+     console.log("user ",user);
+    }
+  }, []);
 
-  // React.useEffect(() => {
-  //   if(localStorage.getItem("identify-logged-user")) {
-  //     user = JSON.parse(localStorage.getItem("identify-logged-user"));
-  //   }
-  // }, []);
-
-  // React.useEffect(() => {
-  //   localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
-  // });
+  React.useEffect(() => {
+    if(userEmail != null){
+      localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
+    }
+  });
 
   // var Transferuser=user;
   // console.log("Transferuser"+Transferuser);
 
-
+  
 
 
   
@@ -279,7 +344,7 @@ export default function Home_dean() {
               [classes.hide]: open,
             })}
           >
-          
+          FAS for WKU sdfs
             <MenuIcon />
           </IconButton>
           <Avatar 
@@ -288,31 +353,36 @@ export default function Home_dean() {
             className={classes.large} 
            
             />
-        <Typography variant="h6" noWrap>
+        {/* <Typography variant="h6" className={classes.wku} >
             FAS for WKU
-          </Typography>
+          </Typography> */}
+       
 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-              
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-            
-          </div>
           <div className={classes.profile}>
-          
-          <CustomizedDialogs  />
+          <p className={classes.email_holder}>{rows[0].email}</p>
+
+<IconButton 
+          color="secondary"
+          className={classes.logout_icon}
+          onClick={() => {
+              setConfirmDialog({
+                  isOpen: true,
+                  title: ' Are you sure to logout from this site ? ',
+                  subTitle: " You can login later ! ",
+                  onConfirm: () =>{handleLogout()},
+                 
+              })
+              // deleteRegistrar(personName.join())
+          }}>
+        {/* <Avatar className={classes.delete_icon}> */}
+        <LogoutIcon />
+        {/* </Avatar> */}
+    </IconButton>
           </div>
+
         </Toolbar>
       </AppBar>
+
      
       <Drawer
         variant="permanent"
@@ -333,7 +403,7 @@ export default function Home_dean() {
           </IconButton>
         </div>
         
-        <p>Email : {userEmail}</p>
+        
         <Divider />
             <List >
                 
@@ -342,7 +412,7 @@ export default function Home_dean() {
                 <Typography >My Own</Typography>
                 
                 </AccordionSummary>
-                <AccordionDetails> <div>
+                <AccordionDetails> <div className="rowHolder">
                 {SidebarData1.map((val,key) => {
                     return (
                         <ListItem
@@ -362,9 +432,9 @@ export default function Home_dean() {
                 
                 
             <Divider />
-            <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>Registrar</Typography>
+            <Accordion square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                <Typography>View</Typography>
                 </AccordionSummary>
                 <AccordionDetails> <div>
             {SidebarData2.map((val,key) => {
@@ -382,37 +452,42 @@ export default function Home_dean() {
                 })}</div>
                 </AccordionDetails>
             </Accordion>
+
+            
             <Divider />
-            <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>Other</Typography>
-                </AccordionSummary>
-                <AccordionDetails> <div>
-            {SidebarData3.map((val,key) => {
-                    return (
-                        <ListItem
-                            key={key}
-                            className="row"
-                            >
-                            <Link to={val.link} variant="body2" className="row">
-                                <ListItemIcon className="icon"> {val.icon}</ListItemIcon>
-                                <ListItemText className="title">{val.title}</ListItemText>
-                          </Link>
-                        </ListItem>
-                    )
-                })}</div>
-                </AccordionDetails>
-            </Accordion>
+            
             </List>        
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <iframe title="iframe" name="content" className={classes.if1} id="content"></iframe>
+        <iframe title="iframe" name="content" className={classes.if1} id="content" src="/images/111.png" >
+       
+        </iframe>
         
         
         
       </main>
+
+      <ConfirmDialog
+          confirmDialog={confirmDialog}
+          setConfirmDialog={setConfirmDialog}
+      />
+
+
+      {loggedUserData.map((val) => {
+        rows=loggedUserData;
+        console.log("data ", rows[0].id);
+      })}
+
+{IsLogin.map((val) => {
+        rows_for_isLogin=IsLogin;
+        console.log("status ", rows_for_isLogin[0].status);
+      })}
+      
+
+
     </div>
     
   );
+  
 }

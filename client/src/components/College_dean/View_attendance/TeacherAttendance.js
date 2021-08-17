@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import ViewComfyRoundedIcon from '@material-ui/icons/ViewComfyRounded';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import "../admin.css"
+import "../dean.css"
 import { makeStyles , useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -200,7 +200,7 @@ export default function RegistrarListPage() {
             <ViewComfyRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" className={classes.typo}>
-            College Registrars List
+          Teacher Attendance List
           </Typography>
 
             </div>

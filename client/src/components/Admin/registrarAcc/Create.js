@@ -101,12 +101,13 @@ const useStyles = makeStyles((theme) => ({
               
             }).then((response) => {
               console.log(response);
+              console.log(response.data.message);
               if (response.data.message==="Successfully Registered!") {
                 // setLoginStatus(response.data.message);
                 alert(response.data.message);
                 window.location.reload();
               }else{
-                alert(response.data.message);
+                alert("Something was wrong");
               }
             });
             // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');

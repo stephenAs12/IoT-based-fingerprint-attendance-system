@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+
+import "./components/FontawesonmeIcons";
+
 import SignInSide  from './components/login';
 import {Switch,Route} from 'react-router-dom';
 import UserRegistrationForm from './components/UserRegistration';
@@ -20,17 +24,22 @@ import HeadIndex from './components/Dept_head/index';
 import UpdateHeadAccount from './components/Dept_head/my_account/Update';
 import CreateTeacherAccount from './components/Dept_head/teacherAcc/Create';
 import viewTeacher from './components/Dept_head/teacherAcc/TeacherList';
+import viewTeacherAttendance from './components/Dept_head/teacherAcc/TeacherAttendance';
 import viewStudent from './components/Dept_head/studentManagement/StudentList';
 import ViewStudentAttendance from './components/Dept_head/studentManagement/StudentAttendance';
+import DeanIndex from './components/College_dean/index';
+import UpdateDeanAccount from './components/College_dean/my_account/Update';
+import viewTeacherAttendanceFromDean from './components/College_dean/View_attendance/TeacherAttendance';
+import viewStudentAttendanceFromDean from './components/College_dean/View_attendance/StudentAttendance';
 
 
 import CheckTableView from './components/Dept_head/studentManagement/CheakTable';
 
 
 
-
-
 function App() {
+
+
   return (
     <>
     <Switch>
@@ -55,8 +64,13 @@ function App() {
       <Route path="/head/index/my_account/update" exact component={UpdateHeadAccount}/>
       <Route path="/head/index/teacher_account/create_teacher" exact component={CreateTeacherAccount}/>
       <Route path="/head/index/teacher_account/view_teacher" exact component={viewTeacher}/>
+      <Route path="/head/index/teacher_account/view_teacher_attendance" exact component={viewTeacherAttendance}/>
       <Route path="/head/index/student_management/view_student" exact component={viewStudent}/>
       <Route path="/head/index/student_management/view_student_attendance" exact component={ViewStudentAttendance}/>
+      <Route path="/dean/index" exact component={DeanIndex}/>
+      <Route path="/dean/index/my_account/update" exact component={UpdateDeanAccount}/>
+      <Route path="/dean/index/view_attendance/from_dean/view_teacher" exact component={viewTeacherAttendanceFromDean}/>
+      <Route path="/dean/index/view_attendance/from_dean/view_student" exact component={viewStudentAttendanceFromDean}/>
 
       <Route path="/view_table" exact component={CheckTableView}/>
 

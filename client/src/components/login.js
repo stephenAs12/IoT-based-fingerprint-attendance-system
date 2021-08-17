@@ -59,6 +59,8 @@ export {headCollege};
 var headDepartment=null;
 export {headDepartment};
 
+var logged_user_role=null;
+
 
 export default function SignInSide() {
 
@@ -66,6 +68,18 @@ export default function SignInSide() {
   const [password,  setPassword] = useState('');
 
   // const [loginStatus, setLoginStatus] = useState("");
+
+  React.useEffect(() => {
+    localStorage.setItem("identify-logged-user-role", JSON.stringify(logged_user_role));
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("identify-logged-user", JSON.stringify(null));
+  });
+
+  let status = "No";
+
+ 
 
   const history = useHistory();
 
@@ -86,6 +100,26 @@ export default function SignInSide() {
         if(response.data[0].role == "admin"){
           console.log("role: ",response.data[0].role);
           path =  'admin/index';
+          logged_user_role=response.data[0].role;
+          status="yes";
+
+
+          Axios.put("http://localhost:3001/authorize_user", {
+              
+              
+              email: response.data[0].email,
+              password: response.data[0].password,
+              status: "yes"
+            }).then((response) => {
+              console.log(response);
+              if (response.data.message==="Successfully Updated!") {
+                
+              }else{
+                
+              }
+            });
+
+
         }if(response.data[0].role == "head"){
           path =  'head/index';
           headCollege=response.data[0].college;
@@ -104,6 +138,13 @@ export default function SignInSide() {
     });
    event.preventDefault();
   };
+
+  
+  React.useEffect(() => {
+    localStorage.setItem("login-status", JSON.stringify(status));
+  });
+  console.log(status);
+
 
   const classes = useStyles();
 

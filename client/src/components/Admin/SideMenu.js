@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {SidebarData1} from './SidebarData';
 import {SidebarData2} from './SidebarData';
 import {SidebarData3} from './SidebarData';
@@ -30,12 +30,18 @@ import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import {userEmail} from '../login';
 import CustomizedDialogs from '../dialog';
 import "./admin.css";
+import { Button } from '@material-ui/core';
+import Axios from 'axios';
+import ConfirmDialog from './ConfirmDialog'
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
+import { useHistory } from "react-router-dom";
 
 
 const drawerWidth = 240;
 
 
-
+let rows = [{email: null, id: null, password: null, status: null}];
+let rows_for_isLogin = [{email: null, id: null, password: null, status: null}];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -121,6 +127,22 @@ const useStyles = makeStyles((theme) => ({
     width: '0%',
    
   },
+  profile:{
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  email_holder: {
+    paddingLeft: '78%',
+  },
+  logout_icon:{
+    paddingLeft: '2%',
+        color: theme.palette.secondary.main,
+       
+        '& .MuiSvgIcon-root': {
+            fontSize: '2rem',
+        }
+  },
   logout:{
     marginLeft:750,
   },
@@ -202,12 +224,70 @@ const Accordion = withStyles({
     },
   }))(MuiAccordionDetails);
 
-
+ 
 export default function SideMenu() {
   
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [loggedUserData, setLoggedUserData] = React.useState([]);
+  const [IsLogin, setIsLogin] = React.useState([]);
+  const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/view_admin_info").then((response) => {
+      console.log(response.data);
+      //  rows=response.data;
+      setLoggedUserData(response.data);
+    });
+  }, [])
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/get_logged_user_info").then((response) => {
+      console.log(response.data);
+      //  rows=response.data;
+      setIsLogin(response.data);
+    });
+  }, [])
+
+  const history = useHistory();
+
+  if(rows_for_isLogin[0].status==="no"){
+history.push("/");
+window.location.reload();
+  }
+
+  function handleLogout(){
+
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false
+    })
+
+    
+      Axios.get("http://localhost:3001/get_logged_user_info").then((response) => {
+        console.log(response.data);
+        //  rows=response.data;
+        Axios.put("http://localhost:3001/authorize_user", {
+              
+              
+          email: response.data[0].email,
+          password: response.data[0].password,
+          status: "no"
+        }).then((response) => {
+          console.log(response);
+          if (response.data.message==="Successfully Updated!") {
+            history.push("/");
+          }else{
+            
+          }
+        });        
+      });
+    
+            
+          console.log("clicked")
+          
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -223,22 +303,24 @@ export default function SideMenu() {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
+  let user="nullops";
   React.useEffect(() => {
     if(localStorage.getItem("identify-logged-user")) {
-     const user = JSON.parse(localStorage.getItem("identify-logged-user"));
-     console.log(user);
+      user = JSON.parse(localStorage.getItem("identify-logged-user"));
+     console.log("user ",user);
     }
   }, []);
 
   React.useEffect(() => {
-    localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
+    if(userEmail != null){
+      localStorage.setItem("identify-logged-user", JSON.stringify(userEmail));
+    }
   });
 
   // var Transferuser=user;
   // console.log("Transferuser"+Transferuser);
 
-
+  
 
 
   
@@ -276,27 +358,28 @@ export default function SideMenu() {
           </Typography> */}
        
 
-          <div className={classes.search}>
-            
+          <div className={classes.profile}>
+          <p className={classes.email_holder}>{rows[0].email}</p>
+
+<IconButton 
+          color="secondary"
+          className={classes.logout_icon}
+          onClick={() => {
+              setConfirmDialog({
+                  isOpen: true,
+                  title: ' Are you sure to logout from this site ? ',
+                  subTitle: " You can login later ! ",
+                  onConfirm: () =>{handleLogout()},
+                 
+              })
+              // deleteRegistrar(personName.join())
+          }}>
+        {/* <Avatar className={classes.delete_icon}> */}
+        <LogoutIcon />
+        {/* </Avatar> */}
+    </IconButton>
           </div>
-          <AccordionDetails className={classes.logout}>
-            <p>{userEmail} </p>
-           <div className={classes.logoutIcon}>
-          
-            {SidebarData3.map((val,key) => {
-                    return (
-                        <ListItem
-                            key={key}
-                            className="row"
-                            >
-                            <Link to={val.link} variant="body2" className="row">
-                                <ListItemIcon className="icon"> {val.icon}</ListItemIcon>
-                                {/* <ListItemText className="title">{val.title}</ListItemText> */}
-                          </Link>
-                        </ListItem>
-                    )
-                })}</div>
-                </AccordionDetails>
+
         </Toolbar>
       </AppBar>
 
@@ -382,7 +465,27 @@ export default function SideMenu() {
         
         
       </main>
+
+      <ConfirmDialog
+          confirmDialog={confirmDialog}
+          setConfirmDialog={setConfirmDialog}
+      />
+
+
+      {loggedUserData.map((val) => {
+        rows=loggedUserData;
+        console.log("data ", rows[0].id);
+      })}
+
+{IsLogin.map((val) => {
+        rows_for_isLogin=IsLogin;
+        console.log("status ", rows_for_isLogin[0].status);
+      })}
+      
+
+
     </div>
     
   );
+  
 }

@@ -101,9 +101,21 @@ app.put("/update_admin_info", (req, res) => {
     const Password = req.body.password
     const Role = "admin"
 
+    let PasswordChecker=null;
+
     const sqlUpdate = "UPDATE user SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE role = ?";
 
-    db.query(sqlUpdate, [FirstName, MiddleName, Email, md5(Password), Role], (err, result) => {
+    if(Password.length===32){
+        console.log("Password.length ",Password.length)
+        PasswordChecker=Password;
+        console.log("PasswordChecker when = 32",PasswordChecker)
+    }if(Password.length!=32){
+        PasswordChecker=md5(Password);
+        console.log("PasswordChecker when != 32",PasswordChecker)
+    }
+
+
+    db.query(sqlUpdate, [FirstName, MiddleName, Email, PasswordChecker, Role], (err, result) => {
         if (err) {
             // res.send({err: err});
             res.send({message: "Something was wrong!"});
@@ -111,9 +123,10 @@ app.put("/update_admin_info", (req, res) => {
             console.log(err);
         }
         if (result.length > 0) {
-            console.log(result);
+            console.log(result); 
         } else {
             console.log("Successfully Updated!");
+            console.log(result);
             res.send({message: "Successfully Updated!"});
         }
     });
@@ -162,9 +175,34 @@ app.post("/registrar", (req,res) => {
     });
 });
 
-app.delete("/registrar/delete/:college", (req,res) => {
+
+app.delete("/registrar/delete_from_registrar/:college", (req,res) => {
 
     const sqlDelete = "DELETE FROM registrar WHERE college = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+app.delete("/registrar/delete_from_user/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM user WHERE college = ? ";
 
 var College_Name = req.params.college;
 if (College_Name.includes(",")){
@@ -201,31 +239,36 @@ app.post('/createRegistrar', (req,res) => {
         "INSERT INTO registrar (first_name, middle_name, last_name, sex, email, phone_number, college, password) VALUES (?,?,?,?,?,?,?,?)", 
     [FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, md5(Password) ],
     (err, result) => {
-        if (err) {
-            // res.send({err: err});
-            res.send({message: "Something was wrong!"});
-            console.log( "Something was wrong!");
-            console.log(err);
+        try {
+            if (err) {
+                // res.send({err: err});
+                res.send({message: "Something was wrong!"});
+                console.log( "Something was wrong!");
+                console.log(err);
+               
+            }
+    
+            if (result.length > 0) {
+                console.log(result);
+            } else {
+                console.log("Successfully Registered!");
+                // res.send(result);
+                // console.log(result);
+                //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                
+                
+                        // const to = "+251"+PhoneNumber;
+                        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+                
+                        // var result = nexmo.message.sendSms(from, to, text); 
+                
+                //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                res.send({message: "Successfully Registered!"});
+            }
+        } catch (error) {
             
-        }
-
-        if (result.length > 0) {
-            console.log(result);
-        } else {
-            console.log("Successfully Registered!");
-            // res.send(result);
-            // console.log(result);
-            //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            
-            
-                    // const to = "+251"+PhoneNumber;
-                    // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
-            
-                    // var result = nexmo.message.sendSms(from, to, text); 
-            
-            //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            res.send({message: "Successfully Registered!"});
-        }
+        } 
+        
     });
 });
 
@@ -595,6 +638,27 @@ app.post('/addTeacher', (req,res) => {
 });
 
 
+
+app.get("/registered_teacher", (req,res) => {
+ 
+    db.query(
+        "SELECT * FROM teacher",
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+
+
 //          ================================
 
 app.post("/view_profile", (req,res) => {
@@ -889,10 +953,11 @@ ap.ws('/echo', (ws, rse) => {
     });
 });
 
-app.post("/student_attendance", (req,res) => {
- 
+app.get("/teacher_attendance", (req,res) => {
+ const Role = "teacher"
     db.query(
-        "SELECT * FROM attendance",
+        "SELECT * FROM attendance WHERE role=?",
+        [Role],
     (err, result) => {
         if (err) {
             res.send({err: err});
@@ -905,6 +970,75 @@ app.post("/student_attendance", (req,res) => {
         }
     });
 });
+
+app.get("/student_attendance", (req,res) => {
+ const Role = "student"
+    db.query(
+        "SELECT * FROM attendance  WHERE role=?",
+        [Role],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+
+//   Authorization #########################################################
+
+app.get("/get_logged_user_info", (req,res) => {
+    const Id = 1
+    db.query(
+        "SELECT * FROM authorize WHERE id = ?",
+        [Id],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+app.put("/authorize_user", (req, res) => {
+    const Email = req.body.email
+    const Password = req.body.password
+    const Status = req.body.status
+    const Id = 1
+
+
+    const sqlUpdate = "UPDATE authorize SET email = ?, password = ?, status = ? WHERE id = ?";
+
+    db.query(sqlUpdate, [Email, Password, Status, Id], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result); 
+        } else {
+            console.log("Successfully Updated!");
+            console.log(result);
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+// ################################################################################
 
 ap.listen(1337, () => console.log('Socket Server has been started at 1337'));
 

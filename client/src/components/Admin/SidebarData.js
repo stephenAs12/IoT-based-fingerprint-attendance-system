@@ -1,7 +1,7 @@
 import React from 'react'
-import ViewmyaccountIcon from '@material-ui/icons/AccountCircle';
+import ViewmyaccountIcon from '@material-ui/icons/ViewComfyRounded';
 import UpdateIcon from '@material-ui/icons/Update';
-import CreateIcon from '@material-ui/icons/Add';
+import CreateIcon from '@material-ui/icons/PersonAddRounded';
 import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
 
 

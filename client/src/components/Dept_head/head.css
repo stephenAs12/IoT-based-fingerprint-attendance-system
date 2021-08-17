@@ -1,8 +1,9 @@
 .App{
     width: 100vw;
     height: 100vh;
+    
 }
-
+::-webkit-scrollbar {display:none;}
 body {
     padding: 0;
     margin: 0;

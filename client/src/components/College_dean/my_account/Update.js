@@ -186,7 +186,7 @@ const useStyles = makeStyles((theme) => ({
             <UpdateRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Update Account
+            Update Dean Account
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
