@@ -79,12 +79,12 @@ const columns = [
   {
     field: 'school_id',
     headerName: 'School Id',
-    width: 100,
+    width: 150,
   },
   {
     field: 'fingerprint_id',
     headerName: 'Fingerprint Id',
-    width: 100,
+    width: 170,
     type: 'number',
   },
   {
@@ -95,7 +95,7 @@ const columns = [
   {
     field: 'middle_name',
     headerName: 'Middle Name',
-    width: 150,
+    width: 170,
   },
   {
     field: 'last_name',
@@ -105,7 +105,7 @@ const columns = [
   {
     field: 'batch',
     headerName: 'Batch',
-    width: 50,
+    width: 120,
   },
   {
     field: 'course',
@@ -115,7 +115,7 @@ const columns = [
   {
     field: 'date',
     headerName: 'Day',
-    width: 100,
+    width: 120,
   },
   {
     field: 'full_time_info',

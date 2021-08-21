@@ -593,6 +593,79 @@ app.post('/addStudent', (req,res) => {
 });
 
 
+
+app.get("/view_registered_student_info", (req,res) => {
+    db.query(
+        "SELECT * FROM student",
+    (err, result) => {
+        try {
+            if (err) {
+                res.send({err: err});
+            }
+    
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({message: "Incorrect email/password !"});
+                console.log(Email)
+            }
+        } catch (error) {
+            
+        }
+    });
+});
+
+
+app.post("/view_registered_student_for_course", (req,res) => {
+    const SchoolId = req.body.schoolid
+    db.query(
+        "SELECT * FROM student WHERE school_id = ?",
+        [SchoolId],
+    (err, result) => {
+        try {
+            if (err) {
+                res.send({err: err});
+            }
+    
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({message: "Incorrect email/password !"});
+                console.log(Email)
+            }
+        } catch (error) {
+            
+        }
+    });
+});
+
+
+
+app.put("/update_student_courses", (req, res) => {
+    const SchoolId = req.body.schoolid
+    const Courses = req.body.courses
+
+
+    const sqlUpdate = "UPDATE student SET course = ? WHERE school_id = ?";
+
+    db.query(sqlUpdate, [Courses, SchoolId], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+
 //          ================================
 
 
@@ -846,7 +919,7 @@ ap.ws('/echo', (ws, rse) => {
                     const Department = result[0].department;
                     const Batch = result[0].batch;
                     const Course = result[0].course;
-                    let Status = null;
+                    let Status = "attended";
                     const Role = result[0].role;
 
                     //  to identify
@@ -880,26 +953,26 @@ ap.ws('/echo', (ws, rse) => {
                     var Time_from_split = result[0].time_from.split(":"); 
                     var Time_to_split = result[0].time_to.split(":");
 
-                    if(Time_from_split[0] === arrive_time_split[0]){
+                    // if(Time_from_split[0] === arrive_time_split[0]){
      
-                        if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+5 ){
-                            console.log("on time");
-                            Status = "on time";
-                        }else if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+10 ){
-                            console.log("Delayed by 5 min");
-                            Status = "Delayed by 5 min";
-                        }else if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+20 ){
-                            console.log("Delayed by 15 min");
-                            Status = "Delayed by 15 min";
-                        }else if(parseInt(arrive_time_split[1]) <= parseInt(Time_to_split[1]) ){
-                            console.log("very late");
-                            Status = "very late";
-                        }else{
-                            console.log("absent");
-                            Status = "very late or absent";
-                        }
+                    //     if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+5 ){
+                    //         console.log("on time");
+                    //         Status = "on time";
+                    //     }else if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+10 ){
+                    //         console.log("Delayed by 5 min");
+                    //         Status = "Delayed by 5 min";
+                    //     }else if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+20 ){
+                    //         console.log("Delayed by 15 min");
+                    //         Status = "Delayed by 15 min";
+                    //     }else if(parseInt(arrive_time_split[1]) <= parseInt(Time_to_split[1]) ){
+                    //         console.log("very late");
+                    //         Status = "very late";
+                    //     }else{
+                    //         console.log("absent");
+                    //         Status = "very late or absent";
+                    //     }
                         
-                    }
+                    // }
 
 
 

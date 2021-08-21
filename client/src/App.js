@@ -19,10 +19,12 @@ import UpdateRegistrarAccount from './components/registrar/my_account/Update';
 import CreateHeadAccount from './components/registrar/headAcc/Create';
 import viewDepartmentHead from './components/registrar/headAcc/HeadList';
 import RegisterStudent from './components/registrar/studentReg/Create';
+import RegisterStudentOnCourses from './components/registrar/studentReg/RegisterOnCourse';
 import viewRegisteredStudent from './components/registrar/studentReg/StudentList';
 import HeadIndex from './components/Dept_head/index';
 import UpdateHeadAccount from './components/Dept_head/my_account/Update';
 import CreateTeacherAccount from './components/Dept_head/teacherAcc/Create';
+import AssignCourseForTeacher from './components/Dept_head/teacherAcc/AssignCourse';
 import viewTeacher from './components/Dept_head/teacherAcc/TeacherList';
 import viewTeacherAttendance from './components/Dept_head/teacherAcc/TeacherAttendance';
 import viewStudent from './components/Dept_head/studentManagement/StudentList';
@@ -59,10 +61,12 @@ function App() {
       <Route path="/registrar/index/head_account/create_head" exact component={CreateHeadAccount}/>
       <Route path="/registrar/index/head_account/view_head" exact component={viewDepartmentHead}/>
       <Route path="/registrar/index/add/student" exact component={RegisterStudent}/>
+      <Route path="/registrar/index/studentReg/register_on_courses" exact component={RegisterStudentOnCourses}/>
       <Route path="/registrar/index/view_registered/student" exact component={viewRegisteredStudent}/>
       <Route path="/head/index" exact component={HeadIndex}/>
       <Route path="/head/index/my_account/update" exact component={UpdateHeadAccount}/>
       <Route path="/head/index/teacher_account/create_teacher" exact component={CreateTeacherAccount}/>
+      <Route path="/head/index/teacher_account/assign_course_for_teacher" exact component={AssignCourseForTeacher}/>
       <Route path="/head/index/teacher_account/view_teacher" exact component={viewTeacher}/>
       <Route path="/head/index/teacher_account/view_teacher_attendance" exact component={viewTeacherAttendance}/>
       <Route path="/head/index/student_management/view_student" exact component={viewStudent}/>
@@ -71,7 +75,7 @@ function App() {
       <Route path="/dean/index/my_account/update" exact component={UpdateDeanAccount}/>
       <Route path="/dean/index/view_attendance/from_dean/view_teacher" exact component={viewTeacherAttendanceFromDean}/>
       <Route path="/dean/index/view_attendance/from_dean/view_student" exact component={viewStudentAttendanceFromDean}/>
-
+      
       <Route path="/view_table" exact component={CheckTableView}/>
 
 
