@@ -24,6 +24,7 @@ import Input from '@material-ui/core/Input';
 import ListItemText from '@material-ui/core/ListItemText';
 import DateFnsUtils from '@date-io/date-fns';
 import {MuiPickersUtilsProvider, KeyboardTimePicker} from '@material-ui/pickers';
+import { uuid } from 'uuidv4';
 
 let head_college=null;
 let head_department=null;
@@ -81,23 +82,11 @@ const useStyles = makeStyles((theme) => ({
 
     const AddTeacher = () => {
 
-      React.useEffect(() => {
-        if(localStorage.getItem("identify-head-college")) {
-          head_college = JSON.parse(localStorage.getItem("identify-head-college"));
-         console.log("head_college from create "+head_college);
-        }
-      }, []);
-
-
-      React.useEffect(() => {
-        if(localStorage.getItem("identify-head-department")) {
-          head_department = JSON.parse(localStorage.getItem("identify-head-department"));
-         console.log("head_department from create "+head_department);
-        }
-      }, []);
+      
 
       const[genderReg, setGenderReg] = useState('');
       const[departmentReg, setDepartmentReg] = useState('');
+      const[collegeReg, setColleggeReg] = useState('');
       const[batchReg, setBatchReg] = useState('');
       const [state, setState] = React.useState({
         checkedG: true,
@@ -108,6 +97,26 @@ const useStyles = makeStyles((theme) => ({
       const[dateReg, setDateReg] = useState('');
       const [selectedTimeFrom, setSelectedTimeFrom] = React.useState(new Date('2013-11-24T02:30:00'));
       const [selectedTimeTo, setSelectedTimeTo] = React.useState(new Date('2013-11-24T04:30:00'));
+
+
+      React.useEffect(() => {
+        if(localStorage.getItem("identify-head-college")) {
+          head_college = JSON.parse(localStorage.getItem("identify-head-college"));
+         console.log("head_college from create "+head_college);
+         setColleggeReg(  JSON.parse(localStorage.getItem("identify-head-college")));
+        }
+      }, []);
+
+
+      React.useEffect(() => {
+        if(localStorage.getItem("identify-head-department")) {
+          head_department = JSON.parse(localStorage.getItem("identify-head-department"));
+          setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+         console.log("head_department from create "+head_department);
+        }
+      }, []); 
+
+
 
       const handleTimeFromChange = (time) => {
         setSelectedTimeFrom(time);
@@ -165,7 +174,9 @@ const useStyles = makeStyles((theme) => ({
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
+            var uuid_val = uuid();
             Axios.post("http://localhost:3001/addTeacher", {
+              specialid: uuid_val,
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
@@ -174,9 +185,9 @@ const useStyles = makeStyles((theme) => ({
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
               phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
               password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              college: head_college,
+              college: collegeReg,
               // department: departmentReg,
-              department: head_department,
+              department: departmentReg,
               batch: batchReg,
               course: courseReg,
               course: courseReg,
@@ -188,6 +199,24 @@ const useStyles = makeStyles((theme) => ({
             }).then((response) => {
               console.log(response);
             });
+
+
+            Axios.post("http://localhost:3001/addTeacher_in_user", {
+              specialid: uuid_val,
+              firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
+              middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
+              email: JSON.stringify(values.email).replace(/['"]+/g, ''),
+              password: JSON.stringify(values.password).replace(/['"]+/g, ''),
+              college: head_college,
+              department: head_department,
+              role: JSON.stringify("teacher").replace(/['"]+/g, ''),
+              
+            }).then((response) => {
+              console.log(response);
+              window.alert("Successfully Registered");
+
+            
+            });
             // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');
             // console.log(someStr);
             console.log(genderReg);
@@ -195,8 +224,7 @@ const useStyles = makeStyles((theme) => ({
             console.log(departmentReg);
             
             
-
-            // window.location.reload();
+            window.location.reload();
         }
 
 
@@ -231,10 +259,18 @@ let course=[];
 const sw = ["C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
 const is = ["Digital Logic", "Artificial Intelligence", "C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
 
+const cve = ["Mechanics", "Hydraulics", "Surveying ", "Solid Mechanics"];
+const me = ["Manufacturing and Design", "Dynamics", "Thermodynamics ", "Engineering Design", "Fluid Mechanics"];
+
 if(head_department==="Software Engineering"){
   course=sw;
 }if(head_department==="Information Systems"){
   course=is;
+}if(departmentReg==="Civil Engineering"){
+  course=cve;
+}
+if(departmentReg==="Mechanical Engineering"){
+  course=me;
 }
 
 
@@ -483,7 +519,7 @@ const handleChangeMultiple = (event) => {
                                                       onChange={(e) => {
                                                         setBatchReg(e.target.value);
                                                       }}
-                                                      
+                                                    
                                                     >
                                                       <MenuItem value="">
                                                         <em>None</em>
@@ -492,6 +528,9 @@ const handleChangeMultiple = (event) => {
                                                       <MenuItem value={"2"}>2<sup>nd</sup>   Year</MenuItem>
                                                       <MenuItem value={"3"}>3<sup>rd</sup>   Year</MenuItem>
                                                       <MenuItem value={"4"}>4<sup>th</sup>  Year</MenuItem>
+                                                      <MenuItem value={"5"}>5<sup>th</sup>   Year</MenuItem>
+                                                      <MenuItem value={"6"}>6<sup>th</sup>   Year</MenuItem>
+                                                      <MenuItem value={"7"}>7<sup>th</sup>  Year</MenuItem>
                                   
 
                                                     </Select>

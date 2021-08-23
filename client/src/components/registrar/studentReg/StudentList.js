@@ -170,12 +170,21 @@ export default function RegistrarListPage() {
     };
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/view_registered_student_info").then((response) => {
+      var student_college = null;
+
+      if(localStorage.getItem("identify-registrar-college")) {
+        student_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
+       console.log("dean_college from view dean "+student_college);
+      }
+
+        Axios.post("http://localhost:3001/show_registered_student_for_registrar", {
+          college: student_college,
+        }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);
             
             for(var i=0;  i<response.data.length; i++){
-              colleges=colleges.concat(response.data[i].college);
+              colleges=colleges.concat(response.data[i].fingerprint_id);
             }
           }else{
 
@@ -196,17 +205,18 @@ export default function RegistrarListPage() {
           isOpen: false
         })
 
-                Axios.delete(`http://localhost:3001/registrar/delete_from_registrar/${deleteCollege}`);
+                Axios.delete(`http://localhost:3001/delete_student_from_student/${deleteCollege}`);
 
-              Axios.delete(`http://localhost:3001/registrar/delete_from_user/${deleteCollege}`);
+              // Axios.delete(`http://localhost:3001/teacher/delete_from_user/${deleteCollege}`);
               // console.log(deleteThis);
-              console.log("clicked")
+              console.log("deleteCollege ",deleteCollege);
 
               setNotify({
                   isOpen: true,
                   message: 'Deleted Successfully',
-                  type: 'error' 
+                  type: 'success' 
               })
+              window.location.reload();
       };
 
 
@@ -224,7 +234,7 @@ export default function RegistrarListPage() {
             <ViewComfyRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" className={classes.typo}>
-          List of Registered Teachers
+          List of Registered Students
           </Typography>
 
             </div>
@@ -232,7 +242,7 @@ export default function RegistrarListPage() {
             <div className="delete">
                 
           <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">College Name</InputLabel>
+        <InputLabel id="demo-mutiple-checkbox-label">Fingerprint ID</InputLabel>
         <Select
           labelId="demo-mutiple-checkbox-label"
           id="demo-mutiple-checkbox"

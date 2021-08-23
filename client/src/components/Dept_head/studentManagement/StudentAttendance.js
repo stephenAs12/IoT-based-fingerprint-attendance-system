@@ -22,6 +22,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Notification from '../Notification'
 import ConfirmDialog from '../ConfirmDialog'
 
+var head_department = null;
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     // margin: theme.spacing(1, 10),
@@ -110,7 +112,7 @@ const columns = [
   {
     field: 'course',
     headerName: 'Course',
-    width: 150,
+    width: 250,
   },
   {
     field: 'date',
@@ -120,7 +122,7 @@ const columns = [
   {
     field: 'full_time_info',
     headerName: 'Date Info',
-    width: 150,
+    width: 250,
   },
 ];
 
@@ -159,7 +161,18 @@ export default function RegistrarListPage() {
     };
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/student_attendance").then((response) => {
+
+
+      if(localStorage.getItem("identify-head-department")) {
+        head_department = JSON.parse(localStorage.getItem("identify-head-department"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("head_department from teacher attendance "+head_department);
+      }
+
+
+        Axios.post("http://localhost:3001/student_attendance",{
+          headdepartment: head_department,
+        }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);
             

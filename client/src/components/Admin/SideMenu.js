@@ -232,6 +232,7 @@ export default function SideMenu() {
   const [open, setOpen] = React.useState(false);
   const [loggedUserData, setLoggedUserData] = React.useState([]);
   const [IsLogin, setIsLogin] = React.useState([]);
+  const [UserRole, setUserRole] = React.useState("");
   const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
   useEffect(() => {
@@ -244,14 +245,35 @@ export default function SideMenu() {
 
   useEffect(() => {
     Axios.get("http://localhost:3001/get_logged_user_info").then((response) => {
-      console.log(response.data);
+      console.log("logged user data ",response.data);
       //  rows=response.data;
+      setUserRole(response.data[0].role);
+      console.log("userRole ",UserRole);
       setIsLogin(response.data);
     });
   }, [])
 
+  console.log("userRole ",UserRole);
   const history = useHistory();
 
+  console.log(window.location.pathname);
+  if(window.location.pathname.includes(UserRole)){
+    console.log("true");
+  }else{
+    console.log("false");
+    if(UserRole === "registrar"){
+      history.push("/registrar/index");
+    }
+    if(UserRole === "head"){
+      history.push("/head/index");
+    }
+    if(UserRole === "dean"){
+      history.push("/dean/index");
+    }
+    if(UserRole === "teacher"){
+      history.push("/teacher/index");
+    }
+  }
   if(rows_for_isLogin[0].status==="no"){
 history.push("/");
 window.location.reload();

@@ -23,6 +23,8 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import Notification from '../Notification'
 import ConfirmDialog from '../ConfirmDialog'
 
+var headDepartmentVal = null;
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     // margin: theme.spacing(1, 10),
@@ -119,11 +121,6 @@ const columns = [
     width: 120,
   },
   {
-    field: 'course',
-    headerName: 'Course',
-    width: 150,
-  },
-  {
     field: 'date',
     headerName: 'Day',
     width: 110,
@@ -137,6 +134,11 @@ const columns = [
     field: 'time_to',
     headerName: 'To',
     width: 150,
+  },
+  {
+    field: 'course',
+    headerName: 'Course',
+    width: 250,
   },
 ];
 
@@ -167,6 +169,8 @@ export default function RegistrarListPage() {
     const [studentList, setStudentList] = useState([]);
     const [personName, setPersonName] = React.useState([]);
 
+    const[departmentReg, setDepartmentReg] = useState('');
+
     const [notify, setNotify] = useState({isOpen:false, message:'', type:''})
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
@@ -174,13 +178,25 @@ export default function RegistrarListPage() {
       setPersonName(event.target.value);
     };
 
+    React.useEffect(() => {
+      if(localStorage.getItem("identify-head-department")) {
+        setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+        headDepartmentVal =  JSON.parse(localStorage.getItem("identify-head-department"));
+      }
+    }, []); 
+
+    
+
     useEffect(() => {
-        Axios.get("http://localhost:3001/registered_teacher").then((response) => {
+      console.log("headDepartmentVal ",headDepartmentVal);
+        Axios.post("http://localhost:3001/registered_teacher",{
+          headdepartment: headDepartmentVal,
+        }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);
             
             for(var i=0;  i<response.data.length; i++){
-              colleges=colleges.concat(response.data[i].college);
+              colleges=colleges.concat(response.data[i].email);
             }
           }else{
 
@@ -200,18 +216,19 @@ export default function RegistrarListPage() {
           ...confirmDialog,
           isOpen: false
         })
+        
+                Axios.delete(`http://localhost:3001/teacher/delete_from_teacher/${deleteCollege}`);
 
-                Axios.delete(`http://localhost:3001/registrar/delete_from_registrar/${deleteCollege}`);
-
-              Axios.delete(`http://localhost:3001/registrar/delete_from_user/${deleteCollege}`);
+              Axios.delete(`http://localhost:3001/teacher/delete_from_user/${deleteCollege}`);
               // console.log(deleteThis);
               console.log("clicked")
 
               setNotify({
                   isOpen: true,
                   message: 'Deleted Successfully',
-                  type: 'error' 
+                  type: 'success' 
               })
+              window.location.reload();
       };
 
 
@@ -237,7 +254,7 @@ export default function RegistrarListPage() {
             <div className="delete">
                 
           <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">College Name</InputLabel>
+        <InputLabel id="demo-mutiple-checkbox-label">Email</InputLabel>
         <Select
           labelId="demo-mutiple-checkbox-label"
           id="demo-mutiple-checkbox"

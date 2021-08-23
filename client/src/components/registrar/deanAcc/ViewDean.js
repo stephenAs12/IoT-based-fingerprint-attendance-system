@@ -78,12 +78,6 @@ let names = [
 
 const columns = [
   {
-    field: 'fingerprint_id',
-    headerName: 'Fingerprint Id',
-    width: 165,
-    type: 'number',
-  },
-  {
     field: 'first_name',
     headerName: 'First Name',
     width: 150,
@@ -111,31 +105,6 @@ const columns = [
   {
     field: 'phone_number',
     headerName: 'Phone',
-    width: 150,
-  },
-  {
-    field: 'batch',
-    headerName: 'Batch',
-    width: 120,
-  },
-  {
-    field: 'course',
-    headerName: 'Course',
-    width: 150,
-  },
-  {
-    field: 'date',
-    headerName: 'Day',
-    width: 110,
-  },
-  {
-    field: 'time_from',
-    headerName: 'From',
-    width: 150,
-  },
-  {
-    field: 'time_to',
-    headerName: 'To',
     width: 150,
   },
 ];
@@ -175,12 +144,21 @@ export default function RegistrarListPage() {
     };
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/registered_teacher").then((response) => {
+      var dean_college = null;
+
+      if(localStorage.getItem("identify-registrar-college")) {
+        dean_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
+       console.log("dean_college from view dean "+dean_college);
+      }
+
+        Axios.post("http://localhost:3001/show_registered_dean_for_registrar", {
+          college: dean_college,
+        }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);
             
             for(var i=0;  i<response.data.length; i++){
-              colleges=colleges.concat(response.data[i].college);
+              colleges=colleges.concat(response.data[i].email);
             }
           }else{
 
@@ -201,9 +179,9 @@ export default function RegistrarListPage() {
           isOpen: false
         })
 
-                Axios.delete(`http://localhost:3001/registrar/delete_from_registrar/${deleteCollege}`);
+                Axios.delete(`http://localhost:3001/dean_from_dean/delete_from_registrar/${deleteCollege}`);
 
-              Axios.delete(`http://localhost:3001/registrar/delete_from_user/${deleteCollege}`);
+              Axios.delete(`http://localhost:3001/dean_from_user/delete_from_user/${deleteCollege}`);
               // console.log(deleteThis);
               console.log("clicked")
 
@@ -212,6 +190,7 @@ export default function RegistrarListPage() {
                   message: 'Deleted Successfully',
                   type: 'error' 
               })
+              window.location.reload();
       };
 
 
@@ -229,7 +208,7 @@ export default function RegistrarListPage() {
             <ViewComfyRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" className={classes.typo}>
-          List of Registered Teachers
+          College Dean
           </Typography>
 
             </div>
@@ -237,7 +216,7 @@ export default function RegistrarListPage() {
             <div className="delete">
                 
           <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">College Name</InputLabel>
+        <InputLabel id="demo-mutiple-checkbox-label">Dean Email</InputLabel>
         <Select
           labelId="demo-mutiple-checkbox-label"
           id="demo-mutiple-checkbox"

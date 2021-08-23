@@ -302,6 +302,196 @@ app.post('/createUserFromRegistrar', (req,res) => {
 });
 
 
+app.post("/show_registered_dean_for_registrar", (req,res) => {
+    const College = req.body.college
+    db.query(
+        "SELECT * FROM dean WHERE college = ?",
+        [College],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+            console.log(err);
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+            console.log(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+app.delete("/dean_from_dean/delete_from_registrar/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM dean WHERE email = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+app.delete("/dean_from_user/delete_from_user/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM user WHERE email = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+
+// %%%
+
+
+app.post("/show_registered_head_for_registrar", (req,res) => {
+    const College = req.body.college
+    db.query(
+        "SELECT * FROM head WHERE college = ?",
+        [College],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+            console.log(err);
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+            console.log(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+app.delete("/head_from_head/delete_from_registrar/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM head WHERE email = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+app.delete("/head_from_user/delete_from_registrar/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM user WHERE email = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+
+// %%%
+
+app.post("/show_registered_student_for_registrar", (req,res) => {
+    const College = req.body.college
+    db.query(
+        "SELECT * FROM student WHERE college = ?",
+        [College],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+            console.log(err);
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+            console.log(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+app.delete("/delete_student_from_student/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM student WHERE fingerprint_id = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+            //   if (err) console.log(err);
+            //   else console.log("condition 1 ",result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        // if (err) console.log(err);
+        // else console.log("condition 2 ",result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
 
 app.post("/view_registrar_info_in_registrar", (req,res) => {
     const Email = req.body.email
@@ -319,6 +509,28 @@ app.post("/view_registrar_info_in_registrar", (req,res) => {
         } else {
             res.send({message: "Incorrect email/password !"});
             console.log(Email)
+        }
+    });
+});
+
+app.post("/view_registrar_info_in_registrar_for_auth", (req,res) => {
+    const Email = req.body.email
+    const Role = "registrar"
+    db.query(
+        "SELECT * FROM registrar WHERE email = ?",
+        [Email],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+            console.log("Error = ",err);
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+            
+        } else {
+            res.send({message: "Incorrect email/password !"});
+            console.log("Email ",Email)
         }
     });
 });
@@ -493,7 +705,7 @@ app.post('/createUserFromDean', (req,res) => {
 //          Head
 
 app.post('/createHead', (req,res) => {
-
+    const SpecialId = req.body.specialid
     const FirstName = req.body.firstname
     const MiddleName = req.body.middlename
     const LastName = req.body.lastname
@@ -506,8 +718,8 @@ app.post('/createHead', (req,res) => {
     const Role = req.body.role
 
     db.query(
-        "INSERT INTO head (first_name, middle_name, last_name, sex, email, phone_number, college, department, password, role) VALUES (?,?,?,?,?,?,?,?,?,?)", 
-    [FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, md5(Password), Role ],
+        "INSERT INTO head (uuid, first_name, middle_name, last_name, sex, email, phone_number, college, department, password, role) VALUES (?,?,?,?,?,?,?,?,?,?,?)", 
+    [SpecialId, FirstName, MiddleName, LastName, Gender, Email, PhoneNumber, College, Department, md5(Password), Role ],
     (err, result) => {
         console.log(result);
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -525,7 +737,7 @@ app.post('/createHead', (req,res) => {
 
 
 app.post('/createUserFromHead', (req,res) => {
-
+    const SpecialId = req.body.specialid
     const FirstName = req.body.firstname
     const MiddleName = req.body.middlename
     const Email = req.body.email
@@ -535,8 +747,8 @@ app.post('/createUserFromHead', (req,res) => {
     const Department = req.body.department
 
     db.query(
-        "INSERT INTO user (first_name, middle_name, email, password, role, college, department) VALUES (?,?,?,?,?,?,?)", 
-    [FirstName, MiddleName, Email, md5(Password), Role, College, Department],
+        "INSERT INTO user (uuid, first_name, middle_name, email, password, role, college, department) VALUES (?,?,?,?,?,?,?,?)", 
+    [SpecialId, FirstName, MiddleName, Email, md5(Password), Role, College, Department],
     (err, result) => {
         console.log(result);
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -551,6 +763,127 @@ app.post('/createUserFromHead', (req,res) => {
 //  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     });
 });
+
+
+app.post("/view_head_info_in_head", (req,res) => {
+    const Email = req.body.email
+    const Role = "head"
+    db.query(
+        "SELECT * FROM head WHERE email = ? AND role = ?",
+        [Email, Role],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+            console.log(Email)
+        }
+    });
+});
+
+
+app.post("/view_head_info_in_head_for_auth", (req,res) => {
+    const Email = req.body.email
+    const Role = "registrar"
+    db.query(
+        "SELECT * FROM head WHERE email = ?",
+        [Email],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+            console.log("Error = ",err);
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+            
+        } else {
+            res.send({message: "Incorrect email/password !"});
+            console.log("Email ",Email)
+        }
+    });
+});
+
+
+
+
+app.put("/update_head_info_in_user", (req, res) => {
+    const UuId = req.body.uuid_val
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+    var pass =null;
+
+    if(Password.length<32){
+        pass = md5(Password);
+    }
+    else{
+        pass = Password;
+    }
+
+    const sqlUpdate = "UPDATE user SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE uuid = ?";
+
+    db.query(sqlUpdate, [FirstName, MiddleName, Email, pass, UuId], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log(result);
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+app.put("/update_head_info_in_head", (req, res) => {
+    const UuId = req.body.uuid_val
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Email = req.body.email
+    const PhoneNumber = req.body.phone
+    const Password = req.body.password
+    const Role = "head"
+
+    var pass =null;
+
+    if(Password.length<32){
+        pass = md5(Password);
+    }
+    else{
+        pass = Password;
+    }
+
+    const sqlUpdate = "UPDATE head SET first_name = ?, middle_name = ?, last_name = ?, email = ?, phone_number = ?, password = ? WHERE uuid = ? AND role = ?";
+
+    db.query(sqlUpdate, [FirstName, MiddleName, LastName, Email, PhoneNumber, pass, UuId, Role], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log(result);
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
 
 
 //      ~~~~~~~~~~
@@ -616,11 +949,37 @@ app.get("/view_registered_student_info", (req,res) => {
 });
 
 
+app.post("/view_registered_student_info_for_head", (req,res) => {
+    const Department = req.body.headdepartment
+    db.query(
+        "SELECT * FROM student WHERE department = ?",
+        [Department],
+    (err, result) => {
+        try {
+            if (err) {
+                res.send({err: err});
+            }
+    
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({message: "Incorrect email/password !"});
+                console.log(Email)
+            }
+        } catch (error) {
+            
+        }
+    });
+});
+
+
+
 app.post("/view_registered_student_for_course", (req,res) => {
     const SchoolId = req.body.schoolid
+    const StudentCollege = req.body.studentcollege
     db.query(
-        "SELECT * FROM student WHERE school_id = ?",
-        [SchoolId],
+        "SELECT * FROM student WHERE school_id = ? AND college = ?",
+        [SchoolId, StudentCollege],
     (err, result) => {
         try {
             if (err) {
@@ -675,6 +1034,7 @@ app.put("/update_student_courses", (req, res) => {
 
 app.post('/addTeacher', (req,res) => {
 
+    const UuId = req.body.specialid
     const FirstName = req.body.firstname
     const MiddleName = req.body.middlename
     const LastName = req.body.lastname
@@ -693,8 +1053,8 @@ app.post('/addTeacher', (req,res) => {
     const Role = req.body.role
 
     db.query(
-        "INSERT INTO teacher (first_name, middle_name, last_name, sex, fingerprint_id, email, phone_number, password, college, department, batch, course, date, time_from, time_to, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
-    [FirstName, MiddleName, LastName, Gender, FingerprintId, Email, PhoneNumber, md5(Password),  College, Department, Batch, Course, Day, TimeFrom, TimeTo, Role ],
+        "INSERT INTO teacher (uuid, first_name, middle_name, last_name, sex, fingerprint_id, email, phone_number, password, college, department, batch, course, date, time_from, time_to, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+    [UuId, FirstName, MiddleName, LastName, Gender, FingerprintId, Email, PhoneNumber, md5(Password),  College, Department, Batch, Course, Day, TimeFrom, TimeTo, Role ],
     (err, result) => {
         finger_id=FingerprintId;
         console.log(err);
@@ -711,14 +1071,47 @@ app.post('/addTeacher', (req,res) => {
 });
 
 
+app.post('/addTeacher_in_user', (req,res) => {
 
-app.get("/registered_teacher", (req,res) => {
- 
+    const UuId = req.body.specialid
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+    const College = req.body.college
+    const Department = req.body.department
+    const Role = req.body.role
+
     db.query(
-        "SELECT * FROM teacher",
+        "INSERT INTO user (uuid, first_name, middle_name, email, password, role, college, department) VALUES (?,?,?,?,?,?,?,?)", 
+    [UuId, FirstName, MiddleName, Email, md5(Password), Role, College, Department, ],
+    (err, result) => {
+        // finger_id=FingerprintId;
+        console.log(err);
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+        // const to = "+251"+PhoneNumber;
+        // const text = "Hello "+FirstName+" use "+Email+" & "+Password+" to login !!";
+
+        // var result = nexmo.message.sendSms(from, to, text); 
+
+//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    });
+});
+
+
+
+app.post("/registered_teacher", (req,res) => {
+    const Department = req.body.headdepartment
+    console.log("Department ",Department)
+    db.query(
+        "SELECT * FROM teacher WHERE department = ?",
+        [Department],
     (err, result) => {
         if (err) {
             res.send({err: err});
+            console.log(err);
         }
 
         if (result.length > 0) {
@@ -729,6 +1122,112 @@ app.get("/registered_teacher", (req,res) => {
     });
 });
 
+
+
+app.post("/view_registered_teacher_for_course", (req,res) => {
+    const Email = req.body.email
+    const Department = req.body.headdepartment
+    db.query(
+        "SELECT * FROM teacher WHERE email = ? AND department = ?",
+        [Email, Department],
+    (err, result) => {
+        try {
+            if (err) {
+                res.send({err: err});
+            }
+    
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({message: "Incorrect email/password !"});
+                console.log(Email)
+            }
+        } catch (error) {
+            
+        }
+    });
+});
+
+
+
+app.delete("/teacher/delete_from_teacher/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM teacher WHERE email = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+app.delete("/teacher/delete_from_user/:college", (req,res) => {
+
+    const sqlDelete = "DELETE FROM user WHERE email = ? ";
+
+var College_Name = req.params.college;
+if (College_Name.includes(",")){
+    var eachCollege = College_Name.split(",");
+    for (var key in eachCollege){
+var temp = eachCollege[key];
+          db.query(sqlDelete, temp, (err, result) => {
+              if (err) console.log(err);
+              else console.log(result);
+          })
+    }
+}
+else{
+    db.query(sqlDelete, College_Name, (err, result) => {
+        if (err) console.log(err);
+        else console.log(result);
+    })
+}
+  console.log("college Name : " + College_Name);
+});
+
+
+
+
+app.put("/update_teacher_courses", (req, res) => {
+    const Email = req.body.email
+    const Courses = req.body.courses
+    const TimeFrom = req.body.timefrom
+    const TimeTo = req.body.timeto
+    const Daye = req.body.date
+    const Batch = req.body.batch
+    const Department = req.body.department
+
+
+    const sqlUpdate = "UPDATE teacher SET batch = ?, course = ?, date = ?, time_from = ?, time_to = ? WHERE email = ? AND department = ?";
+
+    db.query(sqlUpdate, [Batch, Courses, Daye, TimeFrom, TimeTo, Email, Department], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
 
 
 
@@ -1026,11 +1525,12 @@ ap.ws('/echo', (ws, rse) => {
     });
 });
 
-app.get("/teacher_attendance", (req,res) => {
+app.post("/teacher_attendance", (req,res) => {
  const Role = "teacher"
+ const Department = req.body.headdepartment 
     db.query(
-        "SELECT * FROM attendance WHERE role=?",
-        [Role],
+        "SELECT * FROM attendance WHERE role=? AND department = ?",
+        [Role, Department],
     (err, result) => {
         if (err) {
             res.send({err: err});
@@ -1042,13 +1542,15 @@ app.get("/teacher_attendance", (req,res) => {
             res.send({message: "Incorrect email/password !"});
         }
     });
+    console.log("department ",Department);
 });
 
-app.get("/student_attendance", (req,res) => {
+app.post("/student_attendance", (req,res) => {
  const Role = "student"
+ const Department = req.body.headdepartment
     db.query(
-        "SELECT * FROM attendance  WHERE role=?",
-        [Role],
+        "SELECT * FROM attendance  WHERE role=? AND department = ?",
+        [Role, Department],
     (err, result) => {
         if (err) {
             res.send({err: err});
@@ -1068,43 +1570,51 @@ app.get("/student_attendance", (req,res) => {
 
 app.get("/get_logged_user_info", (req,res) => {
     const Id = 1
-    db.query(
-        "SELECT * FROM authorize WHERE id = ?",
-        [Id],
-    (err, result) => {
-        if (err) {
-            res.send({err: err});
-        }
-
-        if (result.length > 0) {
-            res.send(result);
-        } else {
-            res.send({message: "Incorrect email/password !"});
-        }
-    });
+    try {
+        db.query(
+            "SELECT * FROM authorize WHERE id = ?",
+            [Id],
+        (err, result) => {
+            if (err) {
+                console.log(error);
+                res.send({err: err});
+            }
+    
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({message: "Incorrect email/password !"});
+            }
+        });
+    } catch (error) {
+        
+    }
 });
 
 
 app.put("/authorize_user", (req, res) => {
     const Email = req.body.email
     const Password = req.body.password
+    const Role = req.body.role
     const Status = req.body.status
     const Id = 1
 
 
-    const sqlUpdate = "UPDATE authorize SET email = ?, password = ?, status = ? WHERE id = ?";
+    const sqlUpdate = "UPDATE authorize SET email = ?, password = ?, role = ?, status = ? WHERE id = ?";
 
-    db.query(sqlUpdate, [Email, Password, Status, Id], (err, result) => {
+    db.query(sqlUpdate, [Email, Password, Role, Status, Id], (err, result) => {
         if (err) {
             // res.send({err: err});
             res.send({message: "Something was wrong!"});
             console.log( "Something was wrong!");
-            console.log(err);
+            // console.log(err);
         }
         if (result.length > 0) {
             console.log(result); 
+            
         } else {
             console.log("Successfully Updated!");
+            console.log( "Role, ",Role);
             console.log(result);
             res.send({message: "Successfully Updated!"});
         }

@@ -8,6 +8,7 @@ import { GrUpdate} from 'react-icons/gr';
 import { MdPersonAdd} from 'react-icons/md';
 import { GrOverview} from 'react-icons/gr';
 import { GiTimeBomb} from 'react-icons/gi';
+import { FaBookReader} from 'react-icons/fa';
 
 
 export const SidebarData1 = [
@@ -24,6 +25,11 @@ export const SidebarData2 = [
         title: "Create Teacher ",
         icon: <MdPersonAdd color="#092139" size="2em"/>,
         link: "/head/index/teacher_account/create_teacher"
+    },
+    {
+        title: "Assign for Courses ",
+        icon: <FaBookReader color="#092139" size="2em"/>,
+        link: "/head/index/teacher_account/assign_course_for_teacher"    
     },
     {
         title: "View Teacher ",

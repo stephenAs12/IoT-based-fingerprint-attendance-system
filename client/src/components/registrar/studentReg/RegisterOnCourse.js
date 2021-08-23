@@ -92,10 +92,19 @@ const useStyles = makeStyles((theme) => ({
       const [adminData, setAdminData] = useState([]);
       const[searchValue, setSearchValue] = useState('');
       const[departmentReg, setDepartmentReg] = useState('');
+      // const[collegetReg, setCollegetReg] = useState('');
       const [courseReg, setCourseReg] = React.useState([]);
       const [state, setState] = React.useState({
         checkedG: true,
       });
+
+      var student_college = null;
+
+        if(localStorage.getItem("identify-registrar-college")) {
+          student_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
+          console.log("dean_college from view dean "+student_college);
+        }
+
 
       var holdCourse=courseReg;
 
@@ -119,6 +128,7 @@ const useStyles = makeStyles((theme) => ({
             if(searchValue!=0){
               Axios.post("http://localhost:3001/view_registered_student_for_course", {
                 schoolid: searchValue,
+                studentcollege: student_college,
             }).then((response) => {
               console.log(response.data);
               console.log(" user ",logged_user);
@@ -223,10 +233,19 @@ let course=[];
 const sw = ["C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
 const is = ["Digital Logic", "Artificial Intelligence", "C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
 
+const cve = ["Mechanics", "Hydraulics", "Surveying ", "Solid Mechanics"];
+const me = ["Manufacturing and Design", "Dynamics", "Thermodynamics ", "Engineering Design", "Fluid Mechanics"];
+
 if(departmentReg==="Software Engineering"){
   course=sw;
 }if(departmentReg==="Information Systems"){
   course=is;
+}
+if(departmentReg==="Civil Engineering"){
+  course=cve;
+}
+if(departmentReg==="Mechanical Engineering"){
+  course=me;
 }
 
 

@@ -22,6 +22,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Notification from '../Notification'
 import ConfirmDialog from '../ConfirmDialog'
 
+var head_department = null;
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     // margin: theme.spacing(1, 10),
@@ -75,11 +77,11 @@ const columns = [
   { 
     field: 'status', 
     headerName: 'Status', 
-    width: 150 },
+    width: 130 },
   {
     field: 'fingerprint_id',
     headerName: 'Fingerprint Id',
-    width: 100,
+    width: 170,
     type: 'number',
   },
   {
@@ -90,7 +92,7 @@ const columns = [
   {
     field: 'middle_name',
     headerName: 'Middle Name',
-    width: 150,
+    width: 170,
   },
   {
     field: 'last_name',
@@ -100,22 +102,22 @@ const columns = [
   {
     field: 'batch',
     headerName: 'Batch',
-    width: 50,
+    width: 120,
   },
   {
     field: 'course',
     headerName: 'Course',
-    width: 150,
+    width: 250,
   },
   {
     field: 'date',
     headerName: 'Day',
-    width: 100,
+    width: 150,
   },
   {
     field: 'full_time_info',
     headerName: 'Date Info',
-    width: 150,
+    width: 250,
   },
 ];
 
@@ -154,7 +156,17 @@ export default function RegistrarListPage() {
     };
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/teacher_attendance").then((response) => {
+
+
+      if(localStorage.getItem("identify-head-department")) {
+        head_department = JSON.parse(localStorage.getItem("identify-head-department"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("head_department from teacher attendance "+head_department);
+      }
+
+        Axios.post("http://localhost:3001/teacher_attendance",{
+          headdepartment: head_department,
+        }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);
             

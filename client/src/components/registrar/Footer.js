@@ -47,23 +47,23 @@ const useStyles = makeStyles((theme) => ({
                       <strong>STAY CONNECTED</strong>
                       <div className="iconLink">
                          
-                         <IconButton href="https://www.wku.edu.et/index.php/en/">
+                         <IconButton href="https://www.wku.edu.et/index.php/en/" target="content">
                              <Language >
                              </Language>
                          </IconButton>
-                         <IconButton href="https://www.facebook.com/Wolkite-University-1686935588230920/">
+                         <IconButton href="https://www.facebook.com/Wolkite-University-1686935588230920/" target="content">
                              <Facebook  className="facebook"  />
                          </IconButton>
-                         <IconButton href="https://www.youtube.com/channel/UCJo63Hv71UAZTe6oPKFR9ow">
+                         <IconButton href="https://www.youtube.com/channel/UCJo63Hv71UAZTe6oPKFR9ow" target="content">
                              <YouTube  className="youtube"/>
                          </IconButton>
-                         <IconButton href="https://twitter.com/wolkitevniversi?lang=en">
+                         <IconButton href="https://twitter.com/wolkitevniversi?lang=en" target="content">
                              <Twitter  className="twitter"/>
                          </IconButton>
-                         <IconButton  href="https://www.linkedin.com/company/wolkite-university/">
+                         <IconButton  href="https://www.linkedin.com/company/wolkite-university/" target="content">
                              <LinkedIn  className="linkedin"/>
                          </IconButton>
-                         <IconButton  href="https://t.me/wkusu">
+                         <IconButton  href="https://t.me/wkusu" target="content">
                              <Telegram  className="telegram"/>
                          </IconButton>
                          </div>

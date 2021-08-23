@@ -190,10 +190,19 @@ let course=[];
 const sw = ["C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
 const is = ["Digital Logic", "Artificial Intelligence", "C++", "Introduction to Software Engineering", "Web Design", "Java", "Web Service", "Mobile Programming", "Research", "Entrepreneur"];
 
+const cve = ["Mechanics", "Hydraulics", "Surveying ", "Solid Mechanics"];
+const me = ["Manufacturing and Design", "Dynamics", "Thermodynamics ", "Engineering Design", "Fluid Mechanics"];
+
 if(departmentReg==="Software Engineering"){
   course=sw;
 }if(departmentReg==="Information Systems"){
   course=is;
+}
+if(departmentReg==="Civil Engineering"){
+  course=cve;
+}
+if(departmentReg==="Mechanical Engineering"){
+  course=me;
 }
 
 
@@ -465,6 +474,9 @@ const handleChangeMultiple = (event) => {
                                                       <MenuItem value={"2"}>2<sup>nd</sup>   Year</MenuItem>
                                                       <MenuItem value={"3"}>3<sup>rd</sup>   Year</MenuItem>
                                                       <MenuItem value={"4"}>4<sup>th</sup>  Year</MenuItem>
+                                                      <MenuItem value={"5"}>5<sup>th</sup>   Year</MenuItem>
+                                                      <MenuItem value={"6"}>6<sup>th</sup>   Year</MenuItem>
+                                                      <MenuItem value={"7"}>7<sup>th</sup>  Year</MenuItem>
                                   
 
                                                     </Select>

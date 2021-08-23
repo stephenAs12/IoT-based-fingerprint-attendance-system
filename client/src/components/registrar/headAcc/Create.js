@@ -17,6 +17,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import Notification from '../Notification'
+import { uuid } from 'uuidv4';
 
     let registrar_college=null;
 
@@ -63,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
       const[genderReg, setGenderReg] = useState('');
       const[departmentReg, setDepartmentReg] = useState('');
+      const [notify, setNotify] = useState({isOpen:false, message:'', type:''})
 
         const phoneRegExp=/^[0-9]{8}/
         const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
@@ -89,11 +92,13 @@ const useStyles = makeStyles((theme) => ({
             .matches(passwordRegExp,"Password must have one upper, lower case, number, special symbol").required('Required'),
             confirmPassword:Yup.string().oneOf([Yup.ref('password')],"Password not matches").required('Required'),
         })
+        var uuid_val = uuid();
         const onSubmit = (values, props) => {
 
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
             Axios.post("http://localhost:3001/createHead", {
+              specialid: uuid_val,
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
@@ -115,6 +120,7 @@ const useStyles = makeStyles((theme) => ({
 
 
             Axios.post("http://localhost:3001/createUserFromHead", {
+              specialid: uuid_val,
               firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
               middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
               email: JSON.stringify(values.email).replace(/['"]+/g, ''),
@@ -126,6 +132,12 @@ const useStyles = makeStyles((theme) => ({
             }).then((response) => {
               console.log(response);
             });
+            setNotify({
+              isOpen: true,
+              message: 'Successfully',
+              type: 'success' 
+          })
+          window.location.reload();
         }
         let data=[];
         const Computing_and_Informatics = ["Software Engineering", "Computer Science", "Information Systems", "Information Technology"];
@@ -385,6 +397,10 @@ const useStyles = makeStyles((theme) => ({
                     </Formik>
                 </div>
       </Grid>
+      <Notification 
+          notify={notify}
+          setNotify={setNotify}
+      />
       </div>
         )
       }

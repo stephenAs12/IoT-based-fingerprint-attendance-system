@@ -11,6 +11,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/styles": "^4.11.4",
+    "@material-ui/x-grid": "^4.0.0-alpha.37",
     "@material-ui/x-grid-data-generator": "^4.0.0-alpha.37",
     "@material-ui/x-license": "^4.0.0-alpha.36",
     "@testing-library/jest-dom": "^5.14.1",
@@ -33,6 +34,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "simple-react-footer": "^1.0.2",
+    "uuidv4": "^6.2.12",
     "web-vitals": "^1.1.2",
     "yup": "^0.32.9"
   },

@@ -34,6 +34,8 @@ import UpdateDeanAccount from './components/College_dean/my_account/Update';
 import viewTeacherAttendanceFromDean from './components/College_dean/View_attendance/TeacherAttendance';
 import viewStudentAttendanceFromDean from './components/College_dean/View_attendance/StudentAttendance';
 
+import ErrorPage from './components/Error';
+
 
 import CheckTableView from './components/Dept_head/studentManagement/CheakTable';
 
@@ -77,6 +79,9 @@ function App() {
       <Route path="/dean/index/view_attendance/from_dean/view_student" exact component={viewStudentAttendanceFromDean}/>
       
       <Route path="/view_table" exact component={CheckTableView}/>
+
+
+      <Route component={ErrorPage} />
 
 
 

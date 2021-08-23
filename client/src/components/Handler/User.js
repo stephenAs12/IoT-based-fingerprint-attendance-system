@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState ,Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Copyright from '../../common/copyright';
+import Sex from '../../common/genderComponent';
+import Role from '../../common/role';
 import Axios from 'axios';
 import "../../../App.css"
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -17,144 +22,116 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import Notification from '../Notification'
+import Divider from '@material-ui/core/Divider';
+class User extends Component {
+    constructor() {
+        super()
+    this.state = {
+      value: []
+    }}
+    render(){
+        const[genderReg, setGenderReg] = this.useState('');
+        const[collegeReg, setCollegeReg] = this.useState('');
+  
+          const phoneRegExp=/^[0-9]{8}/
+          const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+          const initialValues = {
+              fname: '',
+              mname: '',
+              lname: '',
+              gender: '',
+              phoneNumber: '',
+              email: '',
+              college: '',
+              password: '',
+              confirmPassword:'',
+          }
+          const validationSchema = Yup.object().shape({
+              fname: Yup.string().min(3, "It's too short").required("Required"),
+              mname: Yup.string().min(3, "It's too short").required("Required"),
+              lname: Yup.string().min(3, "It's too short").required("Required"),
+              email: Yup.string().email("Enter valid email").required("Required"),
+              // phoneNumber: Yup.number().typeError("Enter valid Phone number").required("Required"),
+              phoneNumber:Yup.string().matches(phoneRegExp,"Enter valid Phone number").required("Required"),
+              password: Yup.string().min(8, "Minimum characters should be 8")
+              .matches(passwordRegExp,"Password must have one upper, lower case, number, special symbol").required('Required'),
+              confirmPassword:Yup.string().oneOf([Yup.ref('password')],"Password not matches").required('Required'),
+          })
+          const onSubmit = (values, props) => {
+  
+              // alert(JSON.stringify(values.fname), null, 2)
+              // props.resetForm()
+              Axios.post("http://localhost:3001/createRegistrar", {
+                firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
+                middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
+                lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
+                gender: genderReg,
+                email: JSON.stringify(values.email).replace(/['"]+/g, ''),
+                phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
+                college: collegeReg,
+                password: JSON.stringify(values.password).replace(/['"]+/g, ''),
+                
+              }).then((response) => {
+                console.log(response);
+                console.log(response.data.message);
+                if (response.data.message==="Successfully Registered!") {
+                  // setLoginStatus(response.data.message);
+                  alert(response.data.message);
+                  window.location.reload();
+                }else{
+                  alert("Something was wrong");
+                }
+              });
+              // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');
+              // console.log(someStr);
+              console.log(genderReg);
+  
+  
+  
+              Axios.post("http://localhost:3001/createUserFromRegistrar", {
+                firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
+                middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
+                email: JSON.stringify(values.email).replace(/['"]+/g, ''),
+                password: JSON.stringify(values.password).replace(/['"]+/g, ''),
+                role: JSON.stringify("registrar").replace(/['"]+/g, ''),
+                college: collegeReg,
+                
+              }).then((response) => {
+                console.log(response);
+              });
+          }
+  
+  
+          
 
-    let registrar_college=null;
-
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-      height: '100vh',
-      width: "50%",
-      paddingLeft: '0%'
-    },
-    
-    paper: {
-      margin: theme.spacing(1, 4),
-      
-      alignItems: 'center',
-      width: "90%",    //  text fild width
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-      marginLeft: '48%',
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-    minDivision:{
-      border: '2px solid red'
-    },
-  }));
-
-    const CreateDeanAccount = () => {
-
-      React.useEffect(() => {
-        if(localStorage.getItem("identify-registrar-college")) {
-          registrar_college = JSON.parse(localStorage.getItem("identify-registrar-college"));
-         console.log("registrar_college from create "+registrar_college);
-        }
-      }, []);
-
-      const[genderReg, setGenderReg] = useState('');
-      const[collegeReg, setCollegeReg] = useState('');
-      const [notify, setNotify] = useState({isOpen:false, message:'', type:''})
-
-        const phoneRegExp=/^[0-9]{8}/
-        const passwordRegExp=/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-        const initialValues = {
-            fname: '',
-            mname: '',
-            lname: '',
-            gender: '',
-            phoneNumber: '',
-            email: '',
-            college: '',
-            password: '',
-            confirmPassword:'',
-        }
-        const validationSchema = Yup.object().shape({
-            fname: Yup.string().min(3, "It's too short").required("Required"),
-            mname: Yup.string().min(3, "It's too short").required("Required"),
-            lname: Yup.string().min(3, "It's too short").required("Required"),
-            email: Yup.string().email("Enter valid email").required("Required"),
-            // phoneNumber: Yup.number().typeError("Enter valid Phone number").required("Required"),
-            phoneNumber:Yup.string().matches(phoneRegExp,"Enter valid Phone number").required("Required"),
-            password: Yup.string().min(8, "Minimum characters should be 8")
-            .matches(passwordRegExp,"Password must have one upper, lower case, number, special symbol").required('Required'),
-            confirmPassword:Yup.string().oneOf([Yup.ref('password')],"Password not matches").required('Required'),
-        })
-        const onSubmit = (values, props) => {
-
-            // alert(JSON.stringify(values.fname), null, 2)
-            // props.resetForm()
-            Axios.post("http://localhost:3001/createDean", {
-              firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
-              middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
-              lastname: JSON.stringify(values.lname).replace(/['"]+/g, ''),
-              gender: genderReg,
-              email: JSON.stringify(values.email).replace(/['"]+/g, ''),
-              phonenumber: JSON.stringify(values.phoneNumber).replace(/['"]+/g, ''),
-              college: registrar_college,
-              password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("dean").replace(/['"]+/g, ''),
-              
-            }).then((response) => {
-              console.log(response);
-            });
-            // var someStr =  JSON.stringify(values.fname).replace(/['"]+/g, '');
-            // console.log(someStr);
-            console.log(genderReg);
+        const classes = this.useStyles();
 
 
-
-            Axios.post("http://localhost:3001/createUserFromDean", {
-              firstname: JSON.stringify(values.fname).replace(/['"]+/g, ''),
-              middlename: JSON.stringify(values.mname).replace(/['"]+/g, ''),
-              email: JSON.stringify(values.email).replace(/['"]+/g, ''),
-              password: JSON.stringify(values.password).replace(/['"]+/g, ''),
-              role: JSON.stringify("dean").replace(/['"]+/g, ''),
-              college: registrar_college,
-              
-            }).then((response) => {
-                console.log("response ",response);
-            });
-              setNotify({
-                isOpen: true,
-                message: 'Successfully',
-                type: 'success' 
-            })
-            window.location.reload();
-        }
-
-
-        const classes = useStyles();
-
+        
         return (
-            //<Grid container component="main" className={classes.root}>
-      //<CssBaseline />
+            // <Grid container component="main" className={classes.root}>
     <div className="box">
       <Grid item component={Paper} elevation={6} square>
-        <div className={classes.paper}>
+        <div className={classes.paper} >
           <Avatar className={classes.avatar}>
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create College Dean
+            Create Registrar
           </Typography>
                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                         {(props) => (
                             <Form noValidate>
                                 {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
                         onChange={props.handleChange} /> */}
-                           <legend>personal Information:</legend>
-                           <div className="personal">
-                              <div className="fname">
+    
+                    
+
+                      <legend>Personal Information:</legend>
+
+
+                                <div className="personal">
+                                <div className="fname">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -172,8 +149,8 @@ const useStyles = makeStyles((theme) => ({
                                     //   setFirstNameReg(e.target.value);
                                     // }}
                                      />
-                                 </div>
-                                 <div className="mname">   
+                                </div>
+                                <div className="mname">   
                                      <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -186,11 +163,12 @@ const useStyles = makeStyles((theme) => ({
                                     helperText={<ErrorMessage name='mname' />} 
                                     required
                                     type="text"
+                                    
                                     // onChange={(e) => {
                                     //   setMiddleNameReg(e.target.value);
                                     // }}
                                      />
-                                  </div>
+                                </div>
                                 <div className="lname">
                                      <Field 
                                     as={TextField}
@@ -204,12 +182,14 @@ const useStyles = makeStyles((theme) => ({
                                     helperText={<ErrorMessage name='lname' />} 
                                     required
                                     type="text"
+                                    
                                     // onChange={(e) => {
                                     //   setLastNameReg(e.target.value);
                                     // }}
                                      />
+                                     </div>
                                 </div>
-                             </div>  
+    
                            <FormControl 
                               fullWidth variant="outlined" 
                               className={classes.formControl}
@@ -232,13 +212,10 @@ const useStyles = makeStyles((theme) => ({
                                         <MenuItem value={"Female"} >Female</MenuItem>
                                       </Select>
                                     </FormControl>
-
-
-                          <hr/>
+                        <hr/>
                         <legend>Contact Information:</legend>
                         <div className="personal">
-                              <div className="email">
-    
+                                <div className="email">
                                 <Field 
                                     as={TextField}
                                     variant="outlined"
@@ -253,8 +230,8 @@ const useStyles = makeStyles((theme) => ({
                                     //   setEmailReg(e.target.value);
                                     // }}
                                 />
-                            </div>
-                                
+                                </div>
+    
                                 <div className="phone">
                                 <Field 
                                     as={TextField} 
@@ -276,15 +253,43 @@ const useStyles = makeStyles((theme) => ({
                                       // }}
                                 />
                                 </div>
-                                
-                        </div>
-
-                        <hr/>
-                          <legend>Password Information:</legend>
-                          <div className="personal">
-                           <div className="password">
     
+                        </div>
+                           <FormControl 
+                              fullWidth variant="outlined" 
+                              className={classes.formControl}
+                              name="college"
+                              required
+                              >
+                                      <InputLabel id="demo-simple-select-outlined-label">College of</InputLabel>
+                                      <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        required
+                                        label="College of"
+                                        onChange={(e) => {
+                                          setCollegeReg(e.target.value);
+                                        }}
+                                        
+                                      >
+                                        <MenuItem value="">
+                                          <em>None</em>
+                                        </MenuItem>
+                                        <MenuItem value={"Computing and Informatics"}>Computing and Informatics</MenuItem>
+                                        <MenuItem value={"Engineering and Technology"}>Engineering and Technology</MenuItem>
+                                        <MenuItem value={"Medicine and Health Sciences"}>Medicine and Health Sciences</MenuItem>
+                                        <MenuItem value={"Natural and Computational Sciences"}>Natural and Computational Sciences</MenuItem>
+                                        <MenuItem value={"Social Science and Humanities"}>Social Science and Humanities</MenuItem>
+                                        <MenuItem value={"Business and Economics"}>Business and Economics</MenuItem>
+                                        <MenuItem value={"Agriculture Science"}>Agriculture Science</MenuItem>
+                    
 
+                                      </Select>
+                                    </FormControl>
+                                    <hr/>
+                                    <legend>Password Information:</legend>
+                                    <div className="personal">
+                                <div className="password">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -300,9 +305,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setPasswordReg(e.target.value);
                                     // }}
                                 />
-                          </div>
-                          <div className="confirmpassword">
+                                </div>
     
+                                <div className="confirmpassword">
                                 <Field 
                                     as={TextField} 
                                     variant="outlined"
@@ -318,10 +323,9 @@ const useStyles = makeStyles((theme) => ({
                                     //   setPasswordReg(e.target.value);
                                     // }}
                                 />
-                          </div>
-                        </div>
+                                </div>
 
-                              
+                              </div>
     
                                 <Button 
                                     type='submit' 
@@ -338,15 +342,8 @@ const useStyles = makeStyles((theme) => ({
                     </Formik>
                 </div>
       </Grid>
-
-      <Notification 
-          notify={notify}
-          setNotify={setNotify}
-      />
-
       </div>
-    //</Grid>
+    // </Grid>
         )
     }
-    
-    export default CreateDeanAccount;
+}
