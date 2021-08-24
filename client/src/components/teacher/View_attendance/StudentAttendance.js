@@ -22,7 +22,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Notification from '../Notification'
 import ConfirmDialog from '../ConfirmDialog'
 
-var head_department = null;
+var teacher_college = null;
+var teacher_department = null;
+var teacher_course = null;
+var teacher_batch = null;
+var teacher_date = null;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -163,15 +167,43 @@ export default function RegistrarListPage() {
     useEffect(() => {
 
 
-      if(localStorage.getItem("identify-dean-college")) {
-        head_department = JSON.parse(localStorage.getItem("identify-dean-college"));
+      if(localStorage.getItem("identify-teacher-college")) {
+        teacher_college = JSON.parse(localStorage.getItem("identify-teacher-college"));
         // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
-       console.log("head_department from teacher attendance "+head_department);
+       console.log("teacher_college "+teacher_college);
+      }
+
+      if(localStorage.getItem("identify-teacher-department")) {
+        teacher_department = JSON.parse(localStorage.getItem("identify-teacher-department"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("teacher_department "+teacher_department);
+      }
+
+      if(localStorage.getItem("identify-teacher-course")) {
+        teacher_course = JSON.parse(localStorage.getItem("identify-teacher-course"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("teacher_course "+teacher_course);
+      }
+
+      if(localStorage.getItem("identify-teacher-batch")) {
+        teacher_batch = JSON.parse(localStorage.getItem("identify-teacher-batch"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("teacher_batch "+teacher_batch);
+      }
+
+      if(localStorage.getItem("identify-teacher-date")) {
+        teacher_date = JSON.parse(localStorage.getItem("identify-teacher-date"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("teacher_date "+teacher_date);
       }
 
 
-        Axios.post("http://localhost:3001/student_attendance_for_dean",{
-          headdepartment: head_department,
+        Axios.post("http://localhost:3001/student_attendance_for_teacher",{
+          teacherCollege: teacher_college,
+          teacherDepartment: teacher_department,
+          teacherCourse: teacher_course,
+          teacherBatch: teacher_batch,
+          teacherDate: teacher_date,
         }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);

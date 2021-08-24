@@ -238,6 +238,9 @@ export default function SideMenu() {
   const [IsLogin, setIsLogin] = React.useState([]);
   const [UserRole, setUserRole] = React.useState("");
   const [collegeOfRegistrar, setCollegeOfRegistrar] = React.useState("");
+  const [courseOfTeacher, setCourseOfTeacher] = React.useState("");
+  const [batchOfTeacher, setBatchOfTeacher] = React.useState("");
+  const [dateOfTeacher, setDateOfTeacher] = React.useState("");
   const [departmentOfHead, setDepartmentOfHead] = React.useState("");
   const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle: ''})
 
@@ -274,7 +277,7 @@ export default function SideMenu() {
       console.log("userEmail == null ", temp_email);
     }
 
-    Axios.post("http://localhost:3001/view_dean_info", {
+    Axios.post("http://localhost:3001/view_teacher_info", {
       email: temp_email,
     }).then((response) => {
       console.log("userEmail ",userEmail);
@@ -285,6 +288,9 @@ export default function SideMenu() {
         setLoggedUserData(response.data);
         setCollegeOfRegistrar(response.data[0].college);
         setDepartmentOfHead(response.data[0].department);
+        setCourseOfTeacher(response.data[0].course);
+        setBatchOfTeacher(response.data[0].batch);
+        setDateOfTeacher(response.data[0].date);
         console.log("college_of_registrar ",collegeOfRegistrar);
         console.log("loggedUserData ",loggedUserData);
         console.log("setDepartmentOfHead ",departmentOfHead);
@@ -297,15 +303,23 @@ export default function SideMenu() {
   }, [])
 
   React.useEffect(() => {
-      localStorage.setItem("identify-registrar-college", JSON.stringify(collegeOfRegistrar));
+      localStorage.setItem("identify-teacher-course", JSON.stringify(courseOfTeacher));
   });
 
   React.useEffect(() => {
-    localStorage.setItem("identify-head-department", JSON.stringify(departmentOfHead));
+    localStorage.setItem("identify-teacher-department", JSON.stringify(departmentOfHead));
 });
 
 React.useEffect(() => {
-  localStorage.setItem("identify-dean-college", JSON.stringify(collegeOfRegistrar));
+  localStorage.setItem("identify-teacher-college", JSON.stringify(collegeOfRegistrar));
+});
+
+React.useEffect(() => {
+  localStorage.setItem("identify-teacher-batch", JSON.stringify(batchOfTeacher));
+});
+
+React.useEffect(() => {
+  localStorage.setItem("identify-teacher-date", JSON.stringify(dateOfTeacher));
 });
 
   useEffect(() => {

@@ -375,6 +375,285 @@ else{
 // %%%
 
 
+// ******************dean section***********************************************************
+
+
+app.post("/view_dean_info", (req,res) => {
+    const Role = "dean"
+    const Email = req.body.email
+    db.query(
+        "SELECT * FROM dean WHERE role = ? AND email = ?",
+        [Role, Email],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+app.put("/update_dean_info_in_user", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+
+    let PasswordChecker=null;
+
+    const sqlUpdate = "UPDATE user SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE email = ?";
+
+    if(Password.length===32){
+        console.log("Password.length ",Password.length)
+        PasswordChecker=Password;
+        console.log("PasswordChecker when = 32",PasswordChecker)
+    }if(Password.length!=32){
+        PasswordChecker=md5(Password);
+        console.log("PasswordChecker when != 32",PasswordChecker)
+    }
+
+    db.query(sqlUpdate, [FirstName, MiddleName, Email, PasswordChecker, Email], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+app.put("/update_dean_info_in_dean", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Email = req.body.email
+    const PhoneNumber = req.body.phone
+    const Password = req.body.password
+    const Role = "dean"
+
+    let PasswordChecker=null;
+
+    const sqlUpdate = "UPDATE dean SET first_name = ?, middle_name = ?, last_name = ?, email = ?, phone_number = ?, password = ? WHERE email = ? AND role = ?";
+
+    
+    if(Password.length===32){
+        console.log("Password.length ",Password.length)
+        PasswordChecker=Password;
+        console.log("PasswordChecker when = 32",PasswordChecker)
+    }if(Password.length!=32){
+        PasswordChecker=md5(Password);
+        console.log("PasswordChecker when != 32",PasswordChecker)
+    }
+
+    db.query(sqlUpdate, [FirstName, MiddleName, LastName, Email, PhoneNumber, PasswordChecker, Email, Role], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+
+
+
+app.post("/teacher_attendance_for_dean", (req,res) => {
+    const Role = "teacher"
+    const Department = req.body.headdepartment 
+       db.query(
+           "SELECT * FROM attendance WHERE role=? AND college = ?",
+           [Role, Department],
+       (err, result) => {
+           if (err) {
+               res.send({err: err});
+           }
+   
+           if (result.length > 0) {
+               res.send(result);
+           } else {
+               res.send({message: "Incorrect email/password !"});
+           }
+       });
+       console.log("department ",Department);
+   });
+
+
+   app.post("/student_attendance_for_dean", (req,res) => {
+    const Role = "student"
+    const Department = req.body.headdepartment 
+       db.query(
+           "SELECT * FROM attendance WHERE role=? AND college = ?",
+           [Role, Department],
+       (err, result) => {
+           if (err) {
+               res.send({err: err});
+           }
+   
+           if (result.length > 0) {
+               res.send(result);
+           } else {
+               res.send({message: "Incorrect email/password !"});
+           }
+       });
+       console.log("department ",Department);
+   });
+
+
+
+
+
+// ******************* teacher section ***********************************************************
+
+
+app.post("/view_teacher_info", (req,res) => {
+    const Role = "teacher"
+    const Email = req.body.email
+    db.query(
+        "SELECT * FROM teacher WHERE role = ? AND email = ?",
+        [Role, Email],
+    (err, result) => {
+        if (err) {
+            res.send({err: err});
+        }
+
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Incorrect email/password !"});
+        }
+    });
+});
+
+
+app.put("/update_teacher_info_in_user", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const Email = req.body.email
+    const Password = req.body.password
+
+    let PasswordChecker=null;
+
+    const sqlUpdate = "UPDATE user SET first_name = ?, middle_name = ?, email = ?, password = ? WHERE email = ?";
+
+    if(Password.length===32){
+        console.log("Password.length ",Password.length)
+        PasswordChecker=Password;
+        console.log("PasswordChecker when = 32",PasswordChecker)
+    }if(Password.length!=32){
+        PasswordChecker=md5(Password);
+        console.log("PasswordChecker when != 32",PasswordChecker)
+    }
+
+    db.query(sqlUpdate, [FirstName, MiddleName, Email, PasswordChecker, Email], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+app.put("/update_teacher_info_in_teacher", (req, res) => {
+    const FirstName = req.body.firstname
+    const MiddleName = req.body.middlename
+    const LastName = req.body.lastname
+    const Email = req.body.email
+    const PhoneNumber = req.body.phone
+    const Password = req.body.password
+    const Role = "teacher"
+
+    let PasswordChecker=null;
+
+    const sqlUpdate = "UPDATE teacher SET first_name = ?, middle_name = ?, last_name = ?, email = ?, phone_number = ?, password = ? WHERE email = ? AND role = ?";
+
+    
+    if(Password.length===32){
+        console.log("Password.length ",Password.length)
+        PasswordChecker=Password;
+        console.log("PasswordChecker when = 32",PasswordChecker)
+    }if(Password.length!=32){
+        PasswordChecker=md5(Password);
+        console.log("PasswordChecker when != 32",PasswordChecker)
+    }
+
+    db.query(sqlUpdate, [FirstName, MiddleName, LastName, Email, PhoneNumber, PasswordChecker, Email, Role], (err, result) => {
+        if (err) {
+            // res.send({err: err});
+            res.send({message: "Something was wrong!"});
+            console.log( "Something was wrong!");
+            console.log(err);
+        }
+        if (result.length > 0) {
+            console.log(result);
+        } else {
+            console.log("Successfully Updated!");
+            res.send({message: "Successfully Updated!"});
+        }
+    });
+});
+
+
+
+app.post("/student_attendance_for_teacher", (req,res) => {
+    const Role = "student"
+    const College = req.body.teacherCollege 
+    const Department = req.body.teacherDepartment 
+    const Course = req.body.teacherCourse 
+    const Batch = req.body.teacherBatch 
+    const Day = req.body.teacherDate 
+       db.query(
+           "SELECT * FROM attendance WHERE role=? AND college = ? AND department = ? AND course = ? AND batch = ? AND date = ?",
+           [Role, College, Department, Course, Batch, Day],
+       (err, result) => {
+           if (err) {
+               res.send({err: err});
+           }
+   
+           if (result.length > 0) {
+               res.send(result);
+           } else {
+               res.send({message: "Incorrect email/password !"});
+           }
+       });
+       console.log("College ",College);
+       console.log("Department ",Department);
+       console.log("Course ",Course);
+       console.log("Batch ",Batch);
+       console.log("Day ",Day);
+   });
+
+
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
 app.post("/show_registered_head_for_registrar", (req,res) => {
     const College = req.body.college
     db.query(
@@ -1289,6 +1568,7 @@ ap.ws('/echo', (ws, rse) => {
                     const Department = result[0].department;
                     const Batch = result[0].batch;
                     const Course = result[0].course;
+
                     var Time_from = result[0].time_from;
                     var Time_to = result[0].time_to;
                     let Status = null;
@@ -1326,8 +1606,10 @@ ap.ws('/echo', (ws, rse) => {
                                 var arrive_time_split = time.split(":");
                     var Time_from_split = result[0].time_from.split(":"); 
                     var Time_to_split = result[0].time_to.split(":");
+                    console.log("ime_from_split[0] ",Time_from_split[0]);
+                    console.log("arrive_time_split[0] ",arrive_time_split[0]);
 
-                    if(Time_from_split[0] === arrive_time_split[0]){
+                    if(parseInt(Time_from_split[0]) === parseInt(arrive_time_split[0])-6){
      
                         if(parseInt(arrive_time_split[1]) <= parseInt(Time_from_split[1])+5 ){
                             console.log("on time");

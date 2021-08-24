@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 
       useEffect(() => {
-        Axios.post("http://localhost:3001/view_dean_info", {
+        Axios.post("http://localhost:3001/view_teacher_info", {
           email: logged_user,
         }).then((response) => {
           console.log(response.data);
@@ -140,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
           
             // alert(JSON.stringify(values.fname), null, 2)
             // props.resetForm()
-            Axios.put("http://localhost:3001/update_dean_info_in_user", {
+            Axios.put("http://localhost:3001/update_teacher_info_in_user", {
               
               firstname: fname_val,
               middlename: mname_val,
@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
             });
 
 
-            Axios.put("http://localhost:3001/update_dean_info_in_dean", {
+            Axios.put("http://localhost:3001/update_teacher_info_in_teacher", {
               
               firstname: fname_val,
               middlename: mname_val,

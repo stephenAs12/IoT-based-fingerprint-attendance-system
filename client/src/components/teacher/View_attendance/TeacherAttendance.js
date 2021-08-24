@@ -77,12 +77,7 @@ const columns = [
   { 
     field: 'status', 
     headerName: 'Status', 
-    width: 150 },
-  {
-    field: 'school_id',
-    headerName: 'School Id',
-    width: 150,
-  },
+    width: 130 },
   {
     field: 'fingerprint_id',
     headerName: 'Fingerprint Id',
@@ -117,7 +112,7 @@ const columns = [
   {
     field: 'date',
     headerName: 'Day',
-    width: 120,
+    width: 150,
   },
   {
     field: 'full_time_info',
@@ -149,7 +144,7 @@ function CustomToolbar() {
 
   
 
-export default function RegistrarListPage() {
+export default function TeacherAttendanceForDean() {
     const [studentList, setStudentList] = useState([]);
     const [personName, setPersonName] = React.useState([]);
 
@@ -169,8 +164,7 @@ export default function RegistrarListPage() {
        console.log("head_department from teacher attendance "+head_department);
       }
 
-
-        Axios.post("http://localhost:3001/student_attendance_for_dean",{
+        Axios.post("http://localhost:3001/teacher_attendance_for_dean",{
           headdepartment: head_department,
         }).then((response) => {
           if(response.data.length>0){
@@ -202,7 +196,7 @@ export default function RegistrarListPage() {
             <ViewComfyRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" className={classes.typo}>
-          Student Attendance List
+            Teacher Attendance List tech
           </Typography>
 
             </div>

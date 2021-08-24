@@ -89,6 +89,30 @@ React.useEffect(() => {
   localStorage.setItem("identify-head-college", JSON.stringify(null));
 });
 
+React.useEffect(() => {
+  localStorage.setItem("identify-dean-college", JSON.stringify(null));
+});
+
+React.useEffect(() => {
+  localStorage.setItem("identify-teacher-course", JSON.stringify(null));
+});
+
+React.useEffect(() => {
+localStorage.setItem("identify-teacher-department", JSON.stringify(null));
+});
+
+React.useEffect(() => {
+localStorage.setItem("identify-teacher-college", JSON.stringify(null));
+});
+
+React.useEffect(() => {
+localStorage.setItem("identify-teacher-batch", JSON.stringify(null));
+});
+
+React.useEffect(() => {
+localStorage.setItem("identify-teacher-date", JSON.stringify(null));
+});
+
   let status = "No";
 
  
@@ -185,6 +209,59 @@ React.useEffect(() => {
               }
             });
         }
+
+        if(response.data[0].role == "dean"){
+          path = 'dean/index';
+          registrarCollege=response.data[0].college;
+          console.log("from login page : "+registrarCollege);
+
+          logged_user_role=response.data[0].role;
+          status="yes";
+
+
+          Axios.put("http://localhost:3001/authorize_user", {
+              
+              
+              email: response.data[0].email,
+              password: response.data[0].password,
+              role: response.data[0].role,
+              status: "yes"
+            }).then((response) => {
+              console.log(response);
+              if (response.data.message==="Successfully Updated!") {
+                
+              }else{
+                
+              }
+            });
+        }
+
+        if(response.data[0].role == "teacher"){
+          path = 'teacher/index';
+          registrarCollege=response.data[0].college;
+          console.log("from login page : "+registrarCollege);
+
+          logged_user_role=response.data[0].role;
+          status="yes";
+
+
+          Axios.put("http://localhost:3001/authorize_user", {
+              
+              
+              email: response.data[0].email,
+              password: response.data[0].password,
+              role: response.data[0].role,
+              status: "yes"
+            }).then((response) => {
+              console.log(response);
+              if (response.data.message==="Successfully Updated!") {
+                
+              }else{
+                
+              }
+            });
+        }
+
         history.push(path);
         // setLoginStatus(response.data[0].email);
       }

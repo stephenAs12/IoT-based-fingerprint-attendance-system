@@ -11,7 +11,6 @@ import CreateRegistrarAccount from './components/Admin/registrarAcc/Create';
 import viewRegistrarList from './components/Admin/registrarAcc/RegistrarList';
 import About from './components/About';
 import Contact from './components/Contact';
-import Home from './components/teacher/Home';
 import RegistrarIndex from './components/registrar/index';
 import CreateDeanAccount from './components/registrar/deanAcc/Create';
 import viewCollegeDean from './components/registrar/deanAcc/ViewDean';
@@ -33,6 +32,10 @@ import DeanIndex from './components/College_dean/index';
 import UpdateDeanAccount from './components/College_dean/my_account/Update';
 import viewTeacherAttendanceFromDean from './components/College_dean/View_attendance/TeacherAttendance';
 import viewStudentAttendanceFromDean from './components/College_dean/View_attendance/StudentAttendance';
+import TeacherIndex from './components/teacher/index';
+import UpdateTeacherAccount from './components/teacher/my_account/Update';
+import viewMyAttendance from './components/teacher/View_attendance/TeacherAttendance';
+import viewStudentAttendanceFromTeacher from './components/teacher/View_attendance/StudentAttendance';
 
 import ErrorPage from './components/Error';
 
@@ -55,7 +58,6 @@ function App() {
       <Route path="/admin/index/registrar_account/view_list" exact component={viewRegistrarList}/>
       <Route path="/about" exact component={About}/>
       <Route path="/contact" exact component={Contact}/>
-      <Route path="/teacher/home" exact component={Home}/>
       <Route path="/registrar/index" exact component={RegistrarIndex}/>
       <Route path="/registrar/index/dean_account/create_dean" exact component={CreateDeanAccount}/>
       <Route path="/registrar/index/dean_account/view_dean" exact component={viewCollegeDean}/>
@@ -77,6 +79,9 @@ function App() {
       <Route path="/dean/index/my_account/update" exact component={UpdateDeanAccount}/>
       <Route path="/dean/index/view_attendance/from_dean/view_teacher" exact component={viewTeacherAttendanceFromDean}/>
       <Route path="/dean/index/view_attendance/from_dean/view_student" exact component={viewStudentAttendanceFromDean}/>
+      <Route path="/teacher/index" exact component={TeacherIndex}/>
+      <Route path="/teacher/index/my_account/update" exact component={UpdateTeacherAccount}/>
+      <Route path="/teacher/index/view_attendance/from_teacher/view_student" exact component={viewStudentAttendanceFromTeacher}/>
       
       <Route path="/view_table" exact component={CheckTableView}/>
 

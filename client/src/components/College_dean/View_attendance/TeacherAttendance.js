@@ -19,9 +19,10 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import Notification from '../Notification'
 import ConfirmDialog from '../ConfirmDialog'
+
+var head_department = null;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,10 +36,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
     marginLeft: '18%',
-  },
-  delete_icon: {
-    backgroundColor: theme.palette.secondary.main,
-    marginTop: '1%',
   },
   typo: {
     marginRight: '50%',
@@ -77,16 +74,25 @@ let names = [
 
 
 const columns = [
-  { field: 'college', headerName: 'College Name', width: 250 },
+  { 
+    field: 'status', 
+    headerName: 'Status', 
+    width: 130 },
+  {
+    field: 'fingerprint_id',
+    headerName: 'Fingerprint Id',
+    width: 170,
+    type: 'number',
+  },
   {
     field: 'first_name',
-    headerName: 'First name',
+    headerName: 'First Name',
     width: 150,
   },
   {
     field: 'middle_name',
     headerName: 'Middle Name',
-    width: 150,
+    width: 170,
   },
   {
     field: 'last_name',
@@ -94,19 +100,23 @@ const columns = [
     width: 150,
   },
   {
-    field: 'sex',
-    headerName: 'Sex',
-    width: 110,
+    field: 'batch',
+    headerName: 'Batch',
+    width: 120,
   },
   {
-    field: 'phone_number',
-    headerName: 'Phone Number',
+    field: 'course',
+    headerName: 'Course',
+    width: 250,
+  },
+  {
+    field: 'date',
+    headerName: 'Day',
     width: 150,
   },
   {
-    field: 'email',
-    headerName: 'Email',
-    // type: 'number',
+    field: 'full_time_info',
+    headerName: 'Date Info',
     width: 250,
   },
 ];
@@ -134,7 +144,7 @@ function CustomToolbar() {
 
   
 
-export default function RegistrarListPage() {
+export default function TeacherAttendanceForDean() {
     const [studentList, setStudentList] = useState([]);
     const [personName, setPersonName] = React.useState([]);
 
@@ -146,7 +156,17 @@ export default function RegistrarListPage() {
     };
 
     useEffect(() => {
-        Axios.get("http://localhost:3001/registrar").then((response) => {
+
+
+      if(localStorage.getItem("identify-dean-college")) {
+        head_department = JSON.parse(localStorage.getItem("identify-dean-college"));
+        // setDepartmentReg( JSON.parse(localStorage.getItem("identify-head-department")));
+       console.log("head_department from teacher attendance "+head_department);
+      }
+
+        Axios.post("http://localhost:3001/teacher_attendance_for_dean",{
+          headdepartment: head_department,
+        }).then((response) => {
           if(response.data.length>0){
             setStudentList(response.data);
             
@@ -162,30 +182,6 @@ export default function RegistrarListPage() {
         });
       }, [])
 
-      const deleteRegistrar = (deleteCollege) => {
-        // if(window.confirm('Are you sure to delete this record ?' )) {
-
-        // }
-
-        setConfirmDialog({
-          ...confirmDialog,
-          isOpen: false
-        })
-
-                Axios.delete(`http://localhost:3001/registrar/delete_from_registrar/${deleteCollege}`);
-
-              Axios.delete(`http://localhost:3001/registrar/delete_from_user/${deleteCollege}`);
-              // console.log(deleteThis);
-              console.log("clicked")
-
-              setNotify({
-                  isOpen: true,
-                  message: 'Deleted Successfully',
-                  type: 'error' 
-              })
-      };
-
-
       const classes = useStyles();
 
   return (
@@ -200,56 +196,14 @@ export default function RegistrarListPage() {
             <ViewComfyRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" className={classes.typo}>
-          Teacher Attendance List
+            Teacher Attendance List
           </Typography>
 
-            </div>
-
-            <div className="delete">
-                
-          <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">College Name</InputLabel>
-        <Select
-          labelId="demo-mutiple-checkbox-label"
-          id="demo-mutiple-checkbox"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<Input />}
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={MenuProps}
-        >
-                        <MenuItem value="">
-                                <em>None</em>
-                          </MenuItem>
-                  {colleges.map(number => (
-                        <MenuItem key={number} value={number}>
-                          <Checkbox checked={personName.indexOf(number) > -1} />
-                          <ListItemText primary={number} />
-                       </MenuItem>
-                    ))}
-        </Select>
-      </FormControl>
-
-                                <IconButton 
-                                      onClick={() => {
-                                          setConfirmDialog({
-                                              isOpen: true,
-                                              title: ' Are you sure to delete this record ? ',
-                                              subTitle: " You can't undo this operation ! ",
-                                              onConfirm: () =>{deleteRegistrar(personName.join())}
-                                          })
-                                          // deleteRegistrar(personName.join())
-                                      }}>
-                                    <Avatar className={classes.delete_icon}>
-                                    <DeleteForeverRoundedIcon />
-                                    </Avatar>
-                                </IconButton>
             </div>
           </div>
 
 
-    <div style={{ height: 340, width: '100%' }}>
+    <div style={{ height: 430, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}

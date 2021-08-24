@@ -70,8 +70,8 @@ export default function Contact() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://scontent.fadd1-1.fna.fbcdn.net/v/t1.6435-9/185248931_345652840313794_5749689097252734586_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=nUT-0dxfZr8AX81fx6o&_nc_ht=scontent.fadd1-1.fna&oh=9d967aeaee43b9a12f9e4866b2a2e271&oe=60EB75DB"
-                    title="Image title"
+                    image="https://scontent.fadd1-1.fna.fbcdn.net/v/t1.6435-9/185248931_345652840313794_5749689097252734586_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=Rspr1FCt73EAX9HetL7&_nc_ht=scontent.fadd1-1.fna&oh=995ab1bbfa09c9fb5b6e7a7984da880a&oe=614A61DB"
+                    title="Estifanos Aschale "
                   />
                   
                   <CardContent className={classes.cardContent}>
@@ -96,8 +96,8 @@ export default function Contact() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://scontent.fadd1-1.fna.fbcdn.net/v/t1.6435-9/189355266_4049477301836745_2030669488391774574_n.jpg?_nc_cat=109&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=aPopxin55pwAX99VSiL&_nc_ht=scontent.fadd1-1.fna&oh=b8b435603e12a481ee59a76a7c810a21&oe=60ECF057"
-                    title="Image title"
+                    image="https://scontent.fadd1-1.fna.fbcdn.net/v/t1.6435-9/189355266_4049477301836745_2030669488391774574_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=jOhYoZHQ96oAX-XUhX_&_nc_ht=scontent.fadd1-1.fna&oh=e970fff57e7461c25eef257c3fce830a&oe=6147E7D7"
+                    title="Esayas Totoba"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
@@ -118,8 +118,8 @@ export default function Contact() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://scontent.fadd1-1.fna.fbcdn.net/v/t1.6435-9/89621196_1443602922467898_1721260344904515584_n.jpg?_nc_cat=100&_nc_rgb565=1&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=-jvokO8Nei4AX-fv0Ig&_nc_ht=scontent.fadd1-1.fna&oh=4bd15b70884e5498bee9164198df4b7e&oe=60EB8F00"
-                    title="Image title"
+                    image="https://scontent.fadd1-1.fna.fbcdn.net/v/t1.6435-1/s200x200/89621196_1443602922467898_1721260344904515584_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=7206a8&_nc_ohc=f8IdX7MgsqUAX-D__9-&_nc_ht=scontent.fadd1-1.fna&oh=0f939e5bcee6f42fd1a0616757f0010e&oe=614A1C1A"
+                    title="Nuh Asrar"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">

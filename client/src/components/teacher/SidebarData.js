@@ -1,42 +1,38 @@
 import React from 'react'
-import ViewmyaccountIcon from '@material-ui/icons/AccountCircle';
+import ViewmyaccountIcon from '@material-ui/icons/ViewComfyRounded';
 import UpdateIcon from '@material-ui/icons/Update';
-import CreateIcon from '@material-ui/icons/Add';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
+import CreateIcon from '@material-ui/icons/PersonAddRounded';
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { FaUserGraduate} from 'react-icons/fa';
+import { GrUpdate} from 'react-icons/gr';
+import { GiTeacher} from 'react-icons/gi';
+
+
 
 
 export const SidebarData1 = [
    
     {
-        title: "View My Account",
-        icon: <ViewmyaccountIcon fontSize="large"  color="primary"/>,
-        link: "/admin/index/my_account/view"
-    },
-    {
-        title: "Update My Account",
-        icon: <UpdateIcon fontSize="large" color="primary"/>,
-        link: "/admin/index/my_account/update"
+        title: "View and Update",
+        icon: <GrUpdate color="#092139" size="1.5em"/>,
+        link: "/teacher/index/my_account/update"
     },
 ]
 
 export const SidebarData2 = [
     {
-        title: "Create Registrar ",
-        icon: <CreateIcon fontSize="large" color="primary"/>,
-        link: "/admin/index/registrar_account/create_registrar"
-    },
-    {
-        title: "View Registrar ",
-        icon: <ViewmyaccountIcon fontSize="large" color="primary"/>,
-        link: "/admin/index/registrar_account/view_list"
+        title: "View Student ",
+        icon: <FaUserGraduate color="#092139" size="1.5em"/>,
+        link: "/teacher/index/view_attendance/from_teacher/view_student"
     },
 ]
 
 export const SidebarData3 = [
     {
-        title: "Logout",
-        icon: <LogoutIcon fontSize="large" color="primary"/>,
-        link: "/"
+        title: "View Student ",
+        icon: <ViewmyaccountIcon fontSize="large" htmlColor="#092139"/>,
+        link: "/admin/index/registrar_account/view_list"
     },
     
 ]
