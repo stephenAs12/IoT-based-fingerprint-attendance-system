@@ -10,8 +10,8 @@ var md5 = require('md5');
 var finger_id=null;
 
 const nexmo = new Nexmo({
-	apiKey: '758148e8',
-	apiSecret: 'niIL9iufJ8H7dfNW',
+	apiKey: 'xxxxxx',
+	apiSecret: 'xxxxxxxx',
 });
 const from = "FAS for WKU";
 
