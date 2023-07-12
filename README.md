@@ -1,2 +1,2 @@
-# final-project
+# IoT based fingerprint attendance system final-project
 for graduation
